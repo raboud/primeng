@@ -1,8 +1,8 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Chips } from './chips';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TimesCircleIcon } from 'primeng/icons/timescircle';
+import { Chips } from './chips';
 
 describe('Chips', () => {
     let chips: Chips;
@@ -10,8 +10,7 @@ describe('Chips', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [NoopAnimationsModule, TimesCircleIcon],
-            declarations: [Chips]
+            imports: [NoopAnimationsModule, TimesCircleIcon, Chips]
         });
 
         fixture = TestBed.createComponent(Chips);
@@ -55,9 +54,12 @@ describe('Chips', () => {
         chips.disabled = true;
         fixture.detectChanges();
 
-        const listEl = fixture.debugElement.query(By.css('.p-chips'));
+        const listEl = fixture.debugElement.query(By.css('.p-inputchips'));
+        console.log(listEl);
         const inputEl = fixture.debugElement.query(By.css('input'));
+        console.log(inputEl);
         const tokenIconEl = fixture.debugElement.query(By.css('.p-chips-token-icon'));
+        console.log(tokenIconEl);
         expect(listEl.nativeElement.className).toContain('p-disabled');
         expect(tokenIconEl).toBeFalsy();
         expect(inputEl.nativeElement.disabled).toEqual(true);
@@ -333,7 +335,7 @@ describe('Chips', () => {
         chips.value = [{ name: 'primeng' }];
         fixture.detectChanges();
 
-        const labelEl = fixture.debugElement.query(By.css('.p-chips-token-label'));
+        const labelEl = fixture.debugElement.query(By.css('.p-chip-label'));
         expect(labelEl.nativeElement.textContent).toEqual('primeng');
         expect(chips.value[0].name).toEqual('primeng');
     });
@@ -349,7 +351,7 @@ describe('Chips', () => {
         ];
         fixture.detectChanges();
 
-        const labelEl = fixture.debugElement.query(By.css('.p-chips-token-label'));
+        const labelEl = fixture.debugElement.query(By.css('.p-chip-label'));
         expect(labelEl.nativeElement.textContent).toEqual('rocks');
         expect(chips.value[0].name.primeng).toEqual('rocks');
     });

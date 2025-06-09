@@ -10,8 +10,7 @@ describe('Panel', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [NoopAnimationsModule, PlusIcon, MinusIcon],
-            declarations: [Panel]
+            imports: [NoopAnimationsModule, PlusIcon, MinusIcon, Panel]
         });
 
         fixture = TestBed.createComponent(Panel);
@@ -27,21 +26,21 @@ describe('Panel', () => {
 
     it('should not render toggle icon when not toggleable', () => {
         fixture.detectChanges();
-        const togglerEl = fixture.debugElement.query(By.css('.p-panel-toggler'));
+        const togglerEl = fixture.debugElement.query(By.css('p-panel-toggle-button'));
         expect(togglerEl).toBeNull();
     });
 
     it('should render toggle icon when toggleable', () => {
         panel.toggleable = true;
         fixture.detectChanges();
-        const togglerEl = fixture.debugElement.query(By.css('.p-panel-toggler'));
+        const togglerEl = fixture.debugElement.query(By.css('.p-panel-toggle-button'));
         expect(togglerEl).not.toBeNull();
     });
 
     it('should toggle the panel when toggler is clicked', fakeAsync(() => {
         panel.toggleable = true;
         fixture.detectChanges();
-        const togglerEl = fixture.nativeElement.querySelector('.p-panel-toggler');
+        const togglerEl = fixture.nativeElement.querySelector('.p-panel-toggle-button');
 
         togglerEl.click();
         expect(panel.collapsed).toEqual(true);
