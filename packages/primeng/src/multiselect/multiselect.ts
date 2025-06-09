@@ -476,6 +476,10 @@ export class MultiSelectItem extends BaseComponent {
     }
 })
 export class MultiSelect extends BaseInput implements OnInit, AfterViewInit, AfterContentInit, AfterViewChecked, ControlValueAccessor {
+    private zone = inject(NgZone);
+    filterService = inject(FilterService);
+    overlayService = inject(OverlayService);
+
     /**
      * Unique identifier of the component
      * @group Props
@@ -1284,11 +1288,7 @@ export class MultiSelect extends BaseInput implements OnInit, AfterViewInit, Aft
         return isNotEmpty(this.maxSelectedLabels) && this.modelValue() && this.modelValue().length > this.maxSelectedLabels ? this.modelValue().slice(0, this.maxSelectedLabels) : this.modelValue();
     });
 
-    constructor(
-        private zone: NgZone,
-        public filterService: FilterService,
-        public overlayService: OverlayService
-    ) {
+    constructor() {
         super();
         effect(() => {
             const modelValue = this.modelValue();

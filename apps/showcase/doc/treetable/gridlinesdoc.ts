@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -38,9 +38,9 @@ import { TreeNode } from 'primeng/api';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridlinesDoc {
-    files!: TreeNode[];
+    private nodeService = inject(NodeService);
 
-    constructor(private nodeService: NodeService) {}
+    files!: TreeNode[];
 
     loadDemoData() {
         this.nodeService.getFilesystem().then((files) => (this.files = files));

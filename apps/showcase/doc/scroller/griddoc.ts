@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 
 @Component({
     selector: 'grid-doc',
@@ -24,9 +24,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridDoc implements OnInit {
-    items!: string[][];
+    private cd = inject(ChangeDetectorRef);
 
-    constructor(private cd: ChangeDetectorRef) {}
+    items!: string[][];
 
     ngOnInit() {
         this.items = Array.from({ length: 1000 }).map((_, i) => Array.from({ length: 1000 }).map((_j, j) => `Item #${i}_${j}`));

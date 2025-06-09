@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MessageService, TreeNode } from 'primeng/api';
 
 interface Column {
@@ -64,16 +64,14 @@ interface NodeEvent {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectionEventsDoc {
+    private nodeService = inject(NodeService);
+    private messageService = inject(MessageService);
+
     files!: TreeNode[];
 
     selectedNode!: TreeNode;
 
     cols!: Column[];
-
-    constructor(
-        private nodeService: NodeService,
-        private messageService: MessageService
-    ) {}
 
     loadDemoData() {
         this.nodeService.getFilesystem().then((files) => (this.files = files));

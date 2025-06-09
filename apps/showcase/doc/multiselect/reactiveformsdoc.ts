@@ -30,6 +30,8 @@ interface City {
     `
 })
 export class ReactiveFormsDoc {
+    private fb = inject(FormBuilder);
+
     messageService = inject(MessageService);
 
     cities: City[] = [
@@ -44,7 +46,7 @@ export class ReactiveFormsDoc {
 
     formSubmitted = false;
 
-    constructor(private fb: FormBuilder) {
+    constructor() {
         this.exampleForm = this.fb.group({
             city: ['', Validators.required]
         });

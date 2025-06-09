@@ -13,7 +13,6 @@ import {
     ElementRef,
     EventEmitter,
     HostListener,
-    Inject,
     inject,
     Input,
     KeyValueDiffers,
@@ -89,6 +88,10 @@ import { GalleriaStyle } from './style/galleriastyle';
     providers: [GalleriaStyle]
 })
 export class Galleria extends BaseComponent implements OnChanges, OnDestroy {
+    platformId = inject(PLATFORM_ID);
+    element = inject(ElementRef);
+    cd = inject(ChangeDetectorRef);
+
     /**
      * Index of the first item.
      * @group Props
@@ -299,14 +302,6 @@ export class Galleria extends BaseComponent implements OnChanges, OnDestroy {
 
     _componentStyle = inject(GalleriaStyle);
 
-    constructor(
-        @Inject(PLATFORM_ID) public platformId: any,
-        public element: ElementRef,
-        public cd: ChangeDetectorRef
-    ) {
-        super();
-    }
-
     @ContentChildren(PrimeTemplate) templates: QueryList<PrimeTemplate> | undefined;
 
     ngAfterContentInit() {
@@ -500,6 +495,11 @@ export class Galleria extends BaseComponent implements OnChanges, OnDestroy {
     providers: [GalleriaStyle]
 })
 export class GalleriaContent extends BaseComponent implements DoCheck {
+    galleria = inject(Galleria);
+    cd = inject(ChangeDetectorRef);
+    private differs = inject(KeyValueDiffers);
+    private elementRef = inject(ElementRef);
+
     @Input() get activeIndex(): number {
         return this._activeIndex;
     }
@@ -533,12 +533,7 @@ export class GalleriaContent extends BaseComponent implements DoCheck {
 
     private differ: any;
 
-    constructor(
-        public galleria: Galleria,
-        public cd: ChangeDetectorRef,
-        private differs: KeyValueDiffers,
-        private elementRef: ElementRef
-    ) {
+    constructor() {
         super();
         this.id = this.galleria.id || uuid('pn_id_');
         this.differ = this.differs.find(this.galleria).create();
@@ -807,6 +802,8 @@ export class GalleriaItemSlot {
     providers: [GalleriaStyle]
 })
 export class GalleriaItem extends BaseComponent implements OnChanges {
+    galleria = inject(Galleria);
+
     @Input() id: string | undefined;
 
     @Input({ transform: booleanAttribute }) circular: boolean = false;
@@ -854,10 +851,6 @@ export class GalleriaItem extends BaseComponent implements OnChanges {
     leftButtonFocused: boolean = false;
 
     rightButtonFocused: boolean = false;
-
-    constructor(public galleria: Galleria) {
-        super();
-    }
 
     ngOnChanges({ autoPlay }: SimpleChanges): void {
         super.ngOnChanges({ autoPlay });
@@ -1039,6 +1032,8 @@ export class GalleriaItem extends BaseComponent implements OnChanges {
     providers: [GalleriaStyle]
 })
 export class GalleriaThumbnails extends BaseComponent implements OnInit, AfterContentChecked, AfterViewInit, OnDestroy {
+    galleria = inject(Galleria);
+
     @Input() containerId: string | undefined;
 
     @Input() value: any[] | undefined;
@@ -1107,10 +1102,6 @@ export class GalleriaThumbnails extends BaseComponent implements OnInit, AfterCo
     _oldactiveIndex: number = 0;
 
     _componentStyle = inject(GalleriaStyle);
-
-    constructor(public galleria: Galleria) {
-        super();
-    }
 
     ngOnInit() {
         super.ngOnInit();

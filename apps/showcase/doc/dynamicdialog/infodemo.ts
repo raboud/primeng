@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { DialogService, DynamicDialogComponent, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
@@ -15,14 +15,14 @@ import { DialogService, DynamicDialogComponent, DynamicDialogRef } from 'primeng
     `
 })
 export class InfoDemo implements OnInit {
+    ref = inject(DynamicDialogRef);
+    private dialogService = inject(DialogService);
+
     totalProducts: number = 0;
 
     instance: DynamicDialogComponent | undefined;
 
-    constructor(
-        public ref: DynamicDialogRef,
-        private dialogService: DialogService
-    ) {
+    constructor() {
         this.instance = this.dialogService.getInstance(this.ref);
     }
 

@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'radio-button-selection-doc',
@@ -39,14 +39,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RadioButtonSelectionDoc {
+    private productService = inject(ProductService);
+    private cd = inject(ChangeDetectorRef);
+
     products!: Product[];
 
     selectedProduct!: Product;
-
-    constructor(
-        private productService: ProductService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     loadDemoData() {
         this.productService.getProductsMini().then((data) => {

@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Customer } from '@/domain/customer';
 import { CustomerService } from '@/service/customerservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'horizontal-scroll-doc',
@@ -58,12 +58,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HorizontalScrollDoc {
-    customers!: Customer[];
+    private customerService = inject(CustomerService);
+    private cd = inject(ChangeDetectorRef);
 
-    constructor(
-        private customerService: CustomerService,
-        private cd: ChangeDetectorRef
-    ) {}
+    customers!: Customer[];
 
     loadDemoData() {
         this.customerService.getCustomersMedium().then((data) => {

@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'single-column-sort-doc',
@@ -54,12 +54,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SingleColumnSortDoc {
-    products!: Product[];
+    private productService = inject(ProductService);
+    private cd = inject(ChangeDetectorRef);
 
-    constructor(
-        private productService: ProductService,
-        private cd: ChangeDetectorRef
-    ) {}
+    products!: Product[];
 
     loadDemoData() {
         this.productService.getProductsMini().then((data) => {

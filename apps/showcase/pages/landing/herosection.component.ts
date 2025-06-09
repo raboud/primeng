@@ -1,6 +1,6 @@
 import { AppConfigService } from '@/service/appconfigservice';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MenuItem, SelectItem } from 'primeng/api';
@@ -426,6 +426,10 @@ import { OverviewApp } from './samples/overviewapp.component';
     `
 })
 export class HeroSectionComponent implements OnInit, OnDestroy {
+    private configService = inject(AppConfigService);
+    private platformId = inject(PLATFORM_ID);
+    private cd = inject(ChangeDetectorRef);
+
     selectedSampleOption;
 
     sampleOptions;
@@ -493,12 +497,6 @@ export class HeroSectionComponent implements OnInit, OnDestroy {
     get isDarkMode(): boolean {
         return this.configService.appState().darkTheme;
     }
-
-    constructor(
-        private configService: AppConfigService,
-        @Inject(PLATFORM_ID) private platformId: any,
-        private cd: ChangeDetectorRef
-    ) {}
 
     ngOnInit() {
         this.sampleOptions = [

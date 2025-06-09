@@ -17,6 +17,8 @@ import { ChangeDetectorRef, Component, effect, inject, OnInit, PLATFORM_ID } fro
     `
 })
 export class VerticalBarDoc implements OnInit {
+    private cd = inject(ChangeDetectorRef);
+
     data: any;
 
     options: any;
@@ -26,8 +28,6 @@ export class VerticalBarDoc implements OnInit {
     configService = inject(AppConfigService);
 
     designerService = inject(DesignerService);
-
-    constructor(private cd: ChangeDetectorRef) {}
 
     themeEffect = effect(() => {
         if (this.configService.transitionComplete()) {

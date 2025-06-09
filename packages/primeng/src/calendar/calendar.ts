@@ -595,6 +595,9 @@ export const CALENDAR_VALUE_ACCESSOR: any = {
     encapsulation: ViewEncapsulation.None
 })
 export class Calendar extends BaseComponent implements OnInit, AfterContentInit, OnDestroy, ControlValueAccessor {
+    private zone = inject(NgZone);
+    overlayService = inject(OverlayService);
+
     @Input() iconDisplay: 'input' | 'button' = 'button';
     /**
      * Inline style of the component.
@@ -1375,13 +1378,6 @@ export class Calendar extends BaseComponent implements OnInit, AfterContentInit,
         const nativeElement = this.el.nativeElement;
         const fluidComponent = nativeElement.closest('p-fluid');
         return this.fluid || !!fluidComponent;
-    }
-
-    constructor(
-        private zone: NgZone,
-        public overlayService: OverlayService
-    ) {
-        super();
     }
 
     ngOnInit() {

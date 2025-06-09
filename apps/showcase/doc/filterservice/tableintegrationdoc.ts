@@ -1,7 +1,7 @@
 import { Car } from '@/domain/car';
 import { Code } from '@/domain/code';
 import { CarService } from '@/service/carservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FilterMatchMode, FilterService, SelectItem } from 'primeng/api';
 
 @Component({
@@ -41,16 +41,14 @@ import { FilterMatchMode, FilterService, SelectItem } from 'primeng/api';
     providers: [FilterService]
 })
 export class TableIntegrationDoc implements OnInit {
+    private carService = inject(CarService);
+    private filterService = inject(FilterService);
+
     cars: Car[];
 
     cols: any[];
 
     matchModeOptions: SelectItem[];
-
-    constructor(
-        private carService: CarService,
-        private filterService: FilterService
-    ) {}
 
     ngOnInit() {
         const customFilterName = 'custom-equals';

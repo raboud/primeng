@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Customer, Representative } from '@/domain/customer';
 import { CustomerService } from '@/service/customerservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Table } from 'primeng/table';
 
 @Component({
@@ -171,6 +171,9 @@ import { Table } from 'primeng/table';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomersDoc {
+    private customerService = inject(CustomerService);
+    private cd = inject(ChangeDetectorRef);
+
     customers!: Customer[];
 
     selectedCustomers!: Customer[];
@@ -184,11 +187,6 @@ export class CustomersDoc {
     activityValues: number[] = [0, 100];
 
     searchValue: string | undefined;
-
-    constructor(
-        private customerService: CustomerService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     loadDemoData() {
         this.customerService.getCustomersLarge().then((customers) => {

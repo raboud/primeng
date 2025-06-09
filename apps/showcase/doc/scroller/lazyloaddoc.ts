@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 interface LazyEvent {
     first: number;
@@ -31,13 +31,13 @@ interface LazyEvent {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LazyLoadDoc {
+    private cd = inject(ChangeDetectorRef);
+
     items!: string[];
 
     lazyLoading: boolean = true;
 
     loadLazyTimeout: any;
-
-    constructor(private cd: ChangeDetectorRef) {}
 
     ngOnInit() {
         this.items = Array.from({ length: 1000 });

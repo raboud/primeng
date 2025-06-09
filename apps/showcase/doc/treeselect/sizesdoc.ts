@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 @Component({
     selector: 'sizes-doc',
@@ -18,6 +18,8 @@ import { Component } from '@angular/core';
     `
 })
 export class SizesDoc {
+    private nodeService = inject(NodeService);
+
     nodes!: any[];
 
     value1: any;
@@ -26,7 +28,7 @@ export class SizesDoc {
 
     value3: any;
 
-    constructor(private nodeService: NodeService) {
+    constructor() {
         this.nodeService.getFiles().then((files) => (this.nodes = files));
     }
 

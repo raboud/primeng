@@ -76,6 +76,9 @@ const hideOverlayContentAnimation = animation([animate('{{hideTransitionParams}}
     providers: [OverlayStyle]
 })
 export class Overlay extends BaseComponent implements AfterContentInit, OnDestroy {
+    overlayService = inject(OverlayService);
+    private zone = inject(NgZone);
+
     /**
      * The visible property is an input that determines the visibility of the component.
      * @defaultValue false
@@ -403,13 +406,6 @@ export class Overlay extends BaseComponent implements AfterContentInit, OnDestro
 
     get targetEl() {
         return <any>getTargetElement(this.target, this.el?.nativeElement);
-    }
-
-    constructor(
-        public overlayService: OverlayService,
-        private zone: NgZone
-    ) {
-        super();
     }
 
     ngAfterContentInit() {

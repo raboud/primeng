@@ -1,6 +1,6 @@
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InfoDemo } from './infodemo';
 @Component({
@@ -38,13 +38,11 @@ import { InfoDemo } from './infodemo';
         </p-table>`
 })
 export class ProductListDemo implements OnInit {
-    products: Product[];
+    private productService = inject(ProductService);
+    private dialogService = inject(DialogService);
+    private ref = inject(DynamicDialogRef);
 
-    constructor(
-        private productService: ProductService,
-        private dialogService: DialogService,
-        private ref: DynamicDialogRef
-    ) {}
+    products: Product[];
 
     ngOnInit() {
         this.productService.getProductsSmall().then((products) => (this.products = products.slice(0, 5)));

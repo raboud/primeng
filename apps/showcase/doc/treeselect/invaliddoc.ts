@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 @Component({
     selector: 'invalid-doc',
@@ -17,13 +17,15 @@ import { Component } from '@angular/core';
     `
 })
 export class InvalidDoc {
+    private nodeService = inject(NodeService);
+
     nodes!: any[];
 
     selectedValue1: any;
 
     selectedValue2: any;
 
-    constructor(private nodeService: NodeService) {
+    constructor() {
         this.nodeService.getFiles().then((files) => (this.nodes = files));
     }
 

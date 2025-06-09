@@ -1,6 +1,6 @@
 import { animate, animation, AnimationEvent, style, transition, trigger, useAnimation } from '@angular/animations';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentRef, ElementRef, inject, NgModule, NgZone, OnDestroy, Optional, Renderer2, SkipSelf, Type, ViewChild, ViewEncapsulation, ViewRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ComponentRef, ElementRef, inject, NgModule, NgZone, OnDestroy, Renderer2, Type, ViewChild, ViewEncapsulation, ViewRef } from '@angular/core';
 import { addClass, getOuterHeight, getOuterWidth, getViewport, hasClass, removeClass, setAttribute, uuid } from '@primeuix/utils';
 import { SharedModule, TranslationKeys } from 'primeng/api';
 import { BaseComponent } from 'primeng/basecomponent';
@@ -116,6 +116,12 @@ const hideAnimation = animation([animate('{{transition}}', style({ transform: '{
     providers: [DynamicDialogStyle]
 })
 export class DynamicDialogComponent extends BaseComponent implements AfterViewInit, OnDestroy {
+    renderer = inject(Renderer2);
+    ddconfig = inject(DynamicDialogConfig);
+    private dialogRef = inject(DynamicDialogRef);
+    zone = inject(NgZone);
+    private parentDialog = inject(DynamicDialogComponent, { skipSelf: true, optional: true });
+
     visible: boolean = true;
 
     componentRef: Nullable<ComponentRef<any>>;
@@ -281,16 +287,6 @@ export class DynamicDialogComponent extends BaseComponent implements AfterViewIn
     }
 
     private zIndexForLayering?: number;
-
-    constructor(
-        public renderer: Renderer2,
-        public ddconfig: DynamicDialogConfig,
-        private dialogRef: DynamicDialogRef,
-        public zone: NgZone,
-        @SkipSelf() @Optional() private parentDialog: DynamicDialogComponent
-    ) {
-        super();
-    }
 
     ngOnInit() {
         super.ngOnInit();

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Directive, Input, NgModule, TemplateRef } from '@angular/core';
+import { Component, Directive, Input, NgModule, TemplateRef, inject } from '@angular/core';
 
 @Component({
     selector: 'p-header',
@@ -20,11 +20,11 @@ export class Footer {}
     standalone: true
 })
 export class PrimeTemplate {
+    template = inject<TemplateRef<any>>(TemplateRef);
+
     @Input() type: string | undefined;
 
     @Input('pTemplate') name: string | undefined;
-
-    constructor(public template: TemplateRef<any>) {}
 
     getType(): string {
         return this.name!;

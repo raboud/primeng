@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -42,15 +42,13 @@ import { MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class ColumnSelectionDoc {
+    private productService = inject(ProductService);
+    private messageService = inject(MessageService);
+    private cd = inject(ChangeDetectorRef);
+
     products!: Product[];
 
     selectedProduct!: Product;
-
-    constructor(
-        private productService: ProductService,
-        private messageService: MessageService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     loadDemoData() {
         this.productService.getProductsMini().then((data) => {

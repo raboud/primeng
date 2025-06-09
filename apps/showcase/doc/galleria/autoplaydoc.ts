@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { PhotoService } from '@/service/photoservice';
-import { Component, model, OnInit } from '@angular/core';
+import { Component, model, OnInit, inject } from '@angular/core';
 
 @Component({
     selector: 'galleria-autoplay-demo',
@@ -23,6 +23,8 @@ import { Component, model, OnInit } from '@angular/core';
     `
 })
 export class AutoPlayDoc implements OnInit {
+    private photoService = inject(PhotoService);
+
     images = model([]);
 
     responsiveOptions: any[] = [
@@ -35,8 +37,6 @@ export class AutoPlayDoc implements OnInit {
             numVisible: 1
         }
     ];
-
-    constructor(private photoService: PhotoService) {}
 
     ngOnInit() {
         this.photoService.getImages().then((images) => this.images.set(images));

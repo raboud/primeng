@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 
@@ -132,15 +132,13 @@ import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
     providers: [MessageService]
 })
 export class RowExpansionDoc {
+    private productService = inject(ProductService);
+    private cd = inject(ChangeDetectorRef);
+    private messageService = inject(MessageService);
+
     products!: Product[];
 
     expandedRows = {};
-
-    constructor(
-        private productService: ProductService,
-        private cd: ChangeDetectorRef,
-        private messageService: MessageService
-    ) {}
 
     loadDemoData() {
         this.productService.getProductsWithOrdersSmall().then((data) => {

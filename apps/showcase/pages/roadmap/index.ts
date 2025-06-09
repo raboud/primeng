@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -148,10 +148,10 @@ import { Meta, Title } from '@angular/platform-browser';
     `
 })
 export class RoadmapDemo {
-    constructor(
-        private titleService: Title,
-        private metaService: Meta
-    ) {
+    private titleService = inject(Title);
+    private metaService = inject(Meta);
+
+    constructor() {
         this.titleService.setTitle('Roadmap - PrimeNG');
         this.metaService.updateTag({ name: 'description', content: 'PrimeNG Roadmap' });
     }

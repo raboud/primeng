@@ -2,7 +2,7 @@ import { AppNewsComponent } from '@/components/layout/news/app.news.component';
 import { AppTopBarComponent } from '@/components/layout/topbar/app.topbar.component';
 import { AppConfigService } from '@/service/appconfigservice';
 import { CommonModule } from '@angular/common';
-import { Component, computed, OnInit } from '@angular/core';
+import { Component, computed, OnInit, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { BlockSectionComponent } from './blocksection.component';
@@ -35,6 +35,10 @@ import { AppDesigner } from '@/components/layout/designer/app.designer';
     ]
 })
 export class LandingComponent implements OnInit {
+    private configService = inject(AppConfigService);
+    private metaService = inject(Meta);
+    private titleService = inject(Title);
+
     subscription!: Subscription;
 
     isNewsActive = computed(() => this.configService.newsActive());
@@ -48,12 +52,6 @@ export class LandingComponent implements OnInit {
             'layout-news-active': this.isNewsActive()
         };
     });
-
-    constructor(
-        private configService: AppConfigService,
-        private metaService: Meta,
-        private titleService: Title
-    ) {}
 
     ngOnInit() {
         this.titleService.setTitle('PrimeNG - Angular UI Component Library');

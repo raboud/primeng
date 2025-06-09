@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, booleanAttribute, ChangeDetectionStrategy, Component, ContentChildren, EventEmitter, inject, Input, NgModule, OnDestroy, Optional, Output, QueryList, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { AfterContentInit, booleanAttribute, ChangeDetectionStrategy, Component, ContentChildren, EventEmitter, inject, Input, NgModule, OnDestroy, Output, QueryList, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { MessageService, PrimeTemplate, SharedModule, ToastMessageOptions } from 'primeng/api';
 import { BaseComponent } from 'primeng/basecomponent';
 import { ButtonModule } from 'primeng/button';
@@ -117,6 +117,8 @@ import { MessagesStyle } from './style/messagesstyle';
     providers: [MessagesStyle]
 })
 export class Messages extends BaseComponent implements AfterContentInit, OnDestroy {
+    messageService = inject(MessageService, { optional: true });
+
     /**
      * An array of messages to display.
      * @group Props
@@ -195,7 +197,7 @@ export class Messages extends BaseComponent implements AfterContentInit, OnDestr
 
     _componentStyle = inject(MessagesStyle);
 
-    constructor(@Optional() public messageService: MessageService) {
+    constructor() {
         super();
         console.log('Messages component is deprecated as of v18. Use Message component instead.');
     }

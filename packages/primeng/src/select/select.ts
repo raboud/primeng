@@ -400,6 +400,9 @@ export class SelectItem extends BaseComponent {
     encapsulation: ViewEncapsulation.None
 })
 export class Select extends BaseInput implements OnInit, AfterViewInit, AfterContentInit, AfterViewChecked, ControlValueAccessor {
+    zone = inject(NgZone);
+    filterService = inject(FilterService);
+
     /**
      * Unique identifier of the component
      * @group Props
@@ -1094,10 +1097,7 @@ export class Select extends BaseInput implements OnInit, AfterViewInit, AfterCon
 
     selectedOption: any;
 
-    constructor(
-        public zone: NgZone,
-        public filterService: FilterService
-    ) {
+    constructor() {
         super();
         effect(() => {
             const modelValue = this.modelValue();

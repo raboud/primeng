@@ -34,13 +34,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     `
 })
 export class ReactiveFormsDoc {
+    private fb = inject(FormBuilder);
+
     messageService = inject(MessageService);
 
     exampleForm: FormGroup;
 
     formSubmitted = false;
 
-    constructor(private fb: FormBuilder) {
+    constructor() {
         this.exampleForm = this.fb.group({
             username: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]]

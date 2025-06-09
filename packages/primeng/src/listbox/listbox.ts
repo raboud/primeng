@@ -323,6 +323,8 @@ export const LISTBOX_VALUE_ACCESSOR: any = {
     }
 })
 export class Listbox extends BaseInput implements AfterContentInit, OnInit, ControlValueAccessor, OnDestroy {
+    filterService = inject(FilterService);
+
     /**
      * Unique identifier of the component.
      * @group Props
@@ -841,10 +843,6 @@ export class Listbox extends BaseInput implements AfterContentInit, OnInit, Cont
         const options = this.group ? this.flatOptions(this._options()) : this._options() || [];
         return this._filterValue() ? this.filterService.filter(options, this.searchFields, this._filterValue(), this.filterMatchMode, this.filterLocale) : options;
     });
-
-    constructor(public filterService: FilterService) {
-        super();
-    }
 
     ngOnInit() {
         super.ngOnInit();

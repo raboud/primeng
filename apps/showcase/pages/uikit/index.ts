@@ -1,6 +1,6 @@
 import { AppConfigService } from '@/service/appconfigservice';
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { RippleModule } from 'primeng/ripple';
@@ -376,13 +376,13 @@ import { Subscription } from 'rxjs';
     `
 })
 export class UIKitDemo {
+    private configService = inject(AppConfigService);
+    private titleService = inject(Title);
+    private metaService = inject(Meta);
+
     subscription: Subscription;
 
-    constructor(
-        private configService: AppConfigService,
-        private titleService: Title,
-        private metaService: Meta
-    ) {
+    constructor() {
         this.titleService.setTitle('UI Kit - PrimeNG');
         this.metaService.updateTag({ name: 'description', content: 'PrimeNG Angular UI Kit' });
     }

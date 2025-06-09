@@ -141,6 +141,9 @@ const hideAnimation = animation([animate('{{transition}}', style({ transform: '{
     providers: [ConfirmDialogStyle]
 })
 export class ConfirmDialog extends BaseComponent implements OnInit, OnDestroy {
+    private confirmationService = inject(ConfirmationService);
+    zone = inject(NgZone);
+
     /**
      * Title text of the dialog.
      * @group Props
@@ -422,10 +425,7 @@ export class ConfirmDialog extends BaseComponent implements OnInit, OnDestroy {
 
     translationSubscription: Subscription | undefined;
 
-    constructor(
-        private confirmationService: ConfirmationService,
-        public zone: NgZone
-    ) {
+    constructor() {
         super();
         this.subscription = this.confirmationService.requireConfirmation$.subscribe((confirmation) => {
             if (!confirmation) {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, PLATFORM_ID, ViewEncapsulation, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -150,6 +150,9 @@ import { TooltipModule } from 'primeng/tooltip';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomersApp {
+    private platformId = inject(PLATFORM_ID);
+    private sanitizer = inject(DomSanitizer);
+
     search: string = '';
 
     tableData: any = [];
@@ -169,11 +172,6 @@ export class CustomersApp {
             background: 'transparent'
         }
     };
-
-    constructor(
-        @Inject(PLATFORM_ID) private platformId: any,
-        private sanitizer: DomSanitizer
-    ) {}
 
     ngOnInit() {
         this.tableData = [

@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { PhotoService } from '@/service/photoservice';
 import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, PLATFORM_ID, ViewChild, inject } from '@angular/core';
 import { Galleria } from 'primeng/galleria';
 
 @Component({
@@ -53,6 +53,10 @@ import { Galleria } from 'primeng/galleria';
     `
 })
 export class AdvancedDoc implements OnInit, OnDestroy {
+    private platformId = inject(PLATFORM_ID);
+    private photoService = inject(PhotoService);
+    private cd = inject(ChangeDetectorRef);
+
     images: any[] | undefined;
 
     showThumbnails: boolean | undefined;
@@ -64,12 +68,6 @@ export class AdvancedDoc implements OnInit, OnDestroy {
     onFullScreenListener: any;
 
     @ViewChild('galleria') galleria: Galleria | undefined;
-
-    constructor(
-        @Inject(PLATFORM_ID) private platformId: any,
-        private photoService: PhotoService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     responsiveOptions: any[] = [
         {

@@ -157,6 +157,10 @@ export const CHIPS_VALUE_ACCESSOR: any = {
     encapsulation: ViewEncapsulation.None
 })
 export class Chips extends BaseComponent implements AfterContentInit, ControlValueAccessor {
+    el = inject(ElementRef);
+    cd = inject(ChangeDetectorRef);
+    config = inject(PrimeNG);
+
     /**
      * Inline style of the element.
      * @group Props
@@ -347,11 +351,7 @@ export class Chips extends BaseComponent implements AfterContentInit, ControlVal
         return this.max && this.value && this.max === this.value.length;
     }
 
-    constructor(
-        public el: ElementRef,
-        public cd: ChangeDetectorRef,
-        public config: PrimeNG
-    ) {
+    constructor() {
         super();
         console.log('Deprecated since v18. Use AutoComplete component instead with its typeahead property.');
     }

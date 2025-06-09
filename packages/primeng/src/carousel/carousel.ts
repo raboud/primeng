@@ -138,6 +138,9 @@ import { CarouselStyle } from './style/carouselstyle';
     }
 })
 export class Carousel extends BaseComponent implements AfterContentInit {
+    el = inject(ElementRef);
+    zone = inject(NgZone);
+
     /**
      * Index of the first item.
      * @defaultValue 0
@@ -399,10 +402,7 @@ export class Carousel extends BaseComponent implements AfterContentInit {
 
     _componentStyle = inject(CarouselStyle);
 
-    constructor(
-        public el: ElementRef,
-        public zone: NgZone
-    ) {
+    constructor() {
         super();
         this.totalShiftedItems = this.page * this.numScroll * -1;
         this.window = this.document.defaultView as Window;

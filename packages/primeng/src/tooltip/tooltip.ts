@@ -18,6 +18,9 @@ import { TooltipStyle } from './style/tooltipstyle';
     providers: [TooltipStyle]
 })
 export class Tooltip extends BaseComponent implements AfterViewInit, OnDestroy {
+    zone = inject(NgZone);
+    private viewContainer = inject(ViewContainerRef);
+
     /**
      * Position of the tooltip.
      * @group Props
@@ -171,13 +174,6 @@ export class Tooltip extends BaseComponent implements AfterViewInit, OnDestroy {
     _componentStyle = inject(TooltipStyle);
 
     interactionInProgress = false;
-
-    constructor(
-        public zone: NgZone,
-        private viewContainer: ViewContainerRef
-    ) {
-        super();
-    }
 
     ngAfterViewInit() {
         super.ngAfterViewInit();

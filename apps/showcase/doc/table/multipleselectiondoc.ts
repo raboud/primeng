@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'multiple-selection-doc',
@@ -43,16 +43,14 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MultipleSelectionDoc {
+    private productService = inject(ProductService);
+    private cd = inject(ChangeDetectorRef);
+
     products!: Product[];
 
     selectedProducts!: Product;
 
     metaKey: boolean = true;
-
-    constructor(
-        private productService: ProductService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     loadDemoData() {
         this.productService.getProductsMini().then((data) => {

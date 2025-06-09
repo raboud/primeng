@@ -1,6 +1,6 @@
 import { Code, ExtFile, RouteFile } from '@/domain/code';
 import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Component, ElementRef, Inject, Input, NgModule, PLATFORM_ID, ViewChild, booleanAttribute } from '@angular/core';
+import { Component, ElementRef, Input, NgModule, PLATFORM_ID, ViewChild, booleanAttribute, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { useCodeSandbox, useStackBlitz } from './codeeditor';
@@ -100,6 +100,9 @@ import { useCodeSandbox, useStackBlitz } from './codeeditor';
     `
 })
 export class AppCodeComponent {
+    platformId = inject(PLATFORM_ID);
+    document = inject<Document>(DOCUMENT);
+
     @Input() code!: Code;
 
     @Input() service!: any;
@@ -123,11 +126,6 @@ export class AppCodeComponent {
     fullCodeVisible: boolean = false;
 
     lang!: string;
-
-    constructor(
-        @Inject(PLATFORM_ID) public platformId: any,
-        @Inject(DOCUMENT) public document: Document
-    ) {}
 
     ngAfterViewChecked() {
         if (isPlatformBrowser(this.platformId)) {

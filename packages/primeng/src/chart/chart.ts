@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, booleanAttribute, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Inject, Input, NgModule, NgZone, OnDestroy, Output, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, booleanAttribute, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, NgModule, NgZone, OnDestroy, Output, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { SharedModule } from 'primeng/api';
 import { BaseComponent } from 'primeng/basecomponent';
@@ -25,6 +25,9 @@ import { ChartStyle } from './public_api';
     providers: [ChartStyle]
 })
 export class UIChart extends BaseComponent implements AfterViewInit, OnDestroy {
+    el = inject(ElementRef);
+    private zone = inject(NgZone);
+
     /**
      * Type of the chart.
      * @group Props
@@ -99,13 +102,6 @@ export class UIChart extends BaseComponent implements AfterViewInit, OnDestroy {
     chart: any;
 
     _componentStyle = inject(ChartStyle);
-
-    constructor(
-        public el: ElementRef,
-        private zone: NgZone
-    ) {
-        super();
-    }
 
     ngAfterViewInit() {
         super.ngAfterViewInit();

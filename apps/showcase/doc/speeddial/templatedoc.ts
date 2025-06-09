@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 
@@ -66,6 +66,9 @@ import { MenuItem, MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class TemplateDoc implements OnInit {
+    private messageService = inject(MessageService);
+    private router = inject(Router);
+
     items: MenuItem[] | undefined;
     code: Code = {
         basic: `<p-speeddial [model]="items" direction="up" [transitionDelay]="80" style="position: 'absolute'">
@@ -253,11 +256,6 @@ export class SpeedDialTemplateDemo implements OnInit {
     }
 }`
     };
-
-    constructor(
-        private messageService: MessageService,
-        private router: Router
-    ) {}
 
     ngOnInit() {
         this.items = [

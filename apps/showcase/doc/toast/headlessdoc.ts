@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -45,16 +45,14 @@ import { MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class HeadlessDoc {
+    private messageService = inject(MessageService);
+    private cdr = inject(ChangeDetectorRef);
+
     visible: boolean = false;
 
     progress: number = 0;
 
     interval = null;
-
-    constructor(
-        private messageService: MessageService,
-        private cdr: ChangeDetectorRef
-    ) {}
 
     showConfirm() {
         if (!this.visible) {

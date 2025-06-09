@@ -98,6 +98,9 @@ import { $dt } from '@primeuix/styled';
     providers: [PopoverStyle]
 })
 export class OverlayPanel extends BaseComponent implements AfterContentInit, OnDestroy {
+    private zone = inject(NgZone);
+    overlayService = inject(OverlayService);
+
     /**
      * Defines a string that labels the input for accessibility.
      * @group Props
@@ -210,10 +213,7 @@ export class OverlayPanel extends BaseComponent implements AfterContentInit, OnD
 
     _componentStyle = inject(PopoverStyle);
 
-    constructor(
-        private zone: NgZone,
-        public overlayService: OverlayService
-    ) {
+    constructor() {
         super();
         console.log('OverlayPanel is deprecated. Use Popover instead.');
     }

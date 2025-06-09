@@ -1,7 +1,7 @@
 import { Car } from '@/domain/car';
 import { Code } from '@/domain/code';
 import { CarService } from '@/service/carservice';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -43,12 +43,10 @@ import { MessageService } from 'primeng/api';
     providers: [MessageService, CarService]
 })
 export class DataTableDoc {
-    cars: Car[] | undefined;
+    private carService = inject(CarService);
+    private messageService = inject(MessageService);
 
-    constructor(
-        private carService: CarService,
-        private messageService: MessageService
-    ) {}
+    cars: Car[] | undefined;
 
     initData() {
         this.messageService.add({ severity: 'success', summary: 'Data Initialized', detail: 'Render Completed' });

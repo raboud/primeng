@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 
 @Component({
     selector: 'basic-doc',
@@ -30,12 +30,10 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
     ]
 })
 export class BasicDoc implements OnInit {
-    products!: Product[];
+    private productService = inject(ProductService);
+    private cdr = inject(ChangeDetectorRef);
 
-    constructor(
-        private productService: ProductService,
-        private cdr: ChangeDetectorRef
-    ) {}
+    products!: Product[];
 
     ngOnInit() {
         this.productService.getProductsSmall().then((cars) => {

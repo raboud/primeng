@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Popover } from 'primeng/popover';
 
@@ -84,10 +84,8 @@ import { Popover } from 'primeng/popover';
     providers: [MessageService]
 })
 export class DataTableDoc implements OnInit {
-    constructor(
-        private productService: ProductService,
-        private cdr: ChangeDetectorRef
-    ) {}
+    private productService = inject(ProductService);
+    private cdr = inject(ChangeDetectorRef);
 
     @ViewChild('op') op!: Popover;
 

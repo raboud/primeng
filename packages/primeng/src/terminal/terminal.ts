@@ -41,6 +41,8 @@ import { TerminalService } from './terminalservice';
     }
 })
 export class Terminal extends BaseComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
+    terminalService = inject(TerminalService);
+
     /**
      * Initial text to display on terminal.
      * @group Props
@@ -77,8 +79,10 @@ export class Terminal extends BaseComponent implements AfterViewInit, AfterViewC
         this.focus(this.inputRef?.nativeElement);
     }
 
-    constructor(public terminalService: TerminalService) {
+    constructor() {
         super();
+        const terminalService = this.terminalService;
+
         this.subscription = terminalService.responseHandler.subscribe((response) => {
             this.commands[this.commands.length - 1].response = response;
             this.commandProcessed = true;

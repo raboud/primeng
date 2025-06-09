@@ -114,6 +114,8 @@ export const CASCADESELECT_VALUE_ACCESSOR: any = {
     providers: [CascadeSelectStyle]
 })
 export class CascadeSelectSub extends BaseComponent implements OnInit {
+    cascadeselect = inject(CascadeSelect);
+
     @Input() role: string | undefined;
 
     @Input() selectId: string | undefined;
@@ -154,10 +156,6 @@ export class CascadeSelectSub extends BaseComponent implements OnInit {
 
     get listLabel(): string {
         return this.config.getTranslation(TranslationKeys.ARIA)['listLabel'];
-    }
-
-    constructor(public cascadeselect: CascadeSelect) {
-        super();
     }
 
     ngOnInit() {
@@ -374,6 +372,8 @@ export class CascadeSelectSub extends BaseComponent implements OnInit {
     }
 })
 export class CascadeSelect extends BaseInput implements OnInit, AfterContentInit {
+    overlayService = inject(OverlayService);
+
     /**
      * Unique identifier of the component
      * @group Props
@@ -1391,7 +1391,7 @@ export class CascadeSelect extends BaseInput implements OnInit, AfterContentInit
         return grouped ? this.getOptionGroupLabel(processedOption.option) : this.getOptionLabel(processedOption.option);
     }
 
-    constructor(public overlayService: OverlayService) {
+    constructor() {
         super();
         effect(() => {
             const activeOptionPath = this.activeOptionPath();

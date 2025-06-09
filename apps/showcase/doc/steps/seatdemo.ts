@@ -1,5 +1,5 @@
 import { TicketService } from '@/service/ticketservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -36,10 +36,8 @@ import { Router } from '@angular/router';
     `
 })
 export class SeatDemo implements OnInit {
-    constructor(
-        public ticketService: TicketService,
-        private router: Router
-    ) {}
+    ticketService = inject(TicketService);
+    private router = inject(Router);
 
     classes: any[];
 

@@ -397,6 +397,9 @@ export class DropdownItem extends BaseComponent {
     encapsulation: ViewEncapsulation.None
 })
 export class Dropdown extends BaseComponent implements OnInit, AfterViewInit, AfterContentInit, AfterViewChecked, ControlValueAccessor {
+    zone = inject(NgZone);
+    filterService = inject(FilterService);
+
     /**
      * Unique identifier of the component
      * @group Props
@@ -1050,10 +1053,7 @@ export class Dropdown extends BaseComponent implements OnInit, AfterViewInit, Af
 
     editableInputValue = computed(() => this.getOptionLabel(this.selectedOption) || this.modelValue() || '');
 
-    constructor(
-        public zone: NgZone,
-        public filterService: FilterService
-    ) {
+    constructor() {
         super();
         effect(() => {
             const modelValue = this.modelValue();

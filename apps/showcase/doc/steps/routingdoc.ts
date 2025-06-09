@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { TicketService } from '@/service/ticketservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 
@@ -21,14 +21,12 @@ import { Subscription } from 'rxjs';
     providers: [MessageService]
 })
 export class RoutingDoc implements OnInit {
+    messageService = inject(MessageService);
+    ticketService = inject(TicketService);
+
     items: MenuItem[];
 
     subscription: Subscription;
-
-    constructor(
-        public messageService: MessageService,
-        public ticketService: TicketService
-    ) {}
 
     ngOnInit() {
         this.items = [

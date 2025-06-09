@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 @Component({
     selector: 'iftalabel-doc',
@@ -19,6 +19,8 @@ import { Component } from '@angular/core';
     `
 })
 export class IftaLabelDoc {
+    private nodeService = inject(NodeService);
+
     nodes!: any[];
 
     selectedValue: any;
@@ -90,7 +92,7 @@ export class TreeSelectIftaLabelDemo {
 ...`
     };
 
-    constructor(private nodeService: NodeService) {
+    constructor() {
         this.nodeService.getFiles().then((files) => (this.nodes = files));
     }
 }

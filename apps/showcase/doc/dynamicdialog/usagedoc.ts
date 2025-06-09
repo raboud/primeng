@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
@@ -14,9 +14,9 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
     providers: [DialogService]
 })
 export class UsageDoc {
-    ref: DynamicDialogRef | undefined;
+    dialogService = inject(DialogService);
 
-    constructor(public dialogService: DialogService) {}
+    ref: DynamicDialogRef | undefined;
 
     code: Code = {
         typescript: `

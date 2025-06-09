@@ -10,8 +10,6 @@ import {
     effect,
     ElementRef,
     EventEmitter,
-    forwardRef,
-    Inject,
     inject,
     Input,
     NgModule,
@@ -218,6 +216,8 @@ import { ContextMenuStyle } from './style/contextmenustyle';
     providers: [ContextMenuStyle]
 })
 export class ContextMenuSub extends BaseComponent {
+    contextMenu = inject(ContextMenu);
+
     @Input({ transform: booleanAttribute }) visible: boolean = false;
 
     @Input() items: any[];
@@ -259,10 +259,6 @@ export class ContextMenuSub extends BaseComponent {
     @ViewChild('sublist') sublistViewChild: ElementRef;
 
     _componentStyle = inject(ContextMenuStyle);
-
-    constructor(@Inject(forwardRef(() => ContextMenu)) public contextMenu: ContextMenu) {
-        super();
-    }
 
     getItemProp(processedItem: any, name: string, params: any | null = null): any {
         return processedItem && processedItem.item ? resolve(processedItem.item[name], params) : undefined;
@@ -393,6 +389,8 @@ export class ContextMenuSub extends BaseComponent {
     providers: [ContextMenuStyle]
 })
 export class ContextMenu extends BaseComponent implements OnInit, AfterContentInit, OnDestroy {
+    overlayService = inject(OverlayService);
+
     /**
      * An array of menuitems.
      * @group Props
@@ -552,7 +550,7 @@ export class ContextMenu extends BaseComponent implements OnInit, AfterContentIn
         return focusedItem.item && focusedItem.item?.id ? focusedItem.item.id : focusedItem.index !== -1 ? `${this.id}${isNotEmpty(focusedItem.parentKey) ? '_' + focusedItem.parentKey : ''}_${focusedItem.index}` : null;
     }
 
-    constructor(public overlayService: OverlayService) {
+    constructor() {
         super();
         effect(() => {
             const path = this.activeItemPath();

@@ -1,7 +1,7 @@
 import { Car } from '@/domain/car';
 import { Code } from '@/domain/code';
 import { CarService } from '@/service/carservice';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 interface Column {
     field: string;
@@ -46,13 +46,13 @@ interface Column {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VirtualScrollDoc {
+    private carService = inject(CarService);
+
     cars!: Car[];
 
     virtualCars!: Car[];
 
     cols!: Column[];
-
-    constructor(private carService: CarService) {}
 
     loadDemoData() {
         this.cols = [

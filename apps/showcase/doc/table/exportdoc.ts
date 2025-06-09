@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 interface Column {
     field: string;
@@ -53,14 +53,12 @@ interface ExportColumn {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExportDoc {
+    private productService = inject(ProductService);
+    private cd = inject(ChangeDetectorRef);
+
     products!: Product[];
 
     selectedProducts!: Product[];
-
-    constructor(
-        private productService: ProductService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     cols!: Column[];
 

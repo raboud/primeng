@@ -1,6 +1,6 @@
 import { AppConfigService } from '@/service/appconfigservice';
 import { Location } from '@angular/common';
-import { booleanAttribute, ChangeDetectionStrategy, Component, Input, numberAttribute, ViewContainerRef } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, Input, numberAttribute, ViewContainerRef, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -124,6 +124,11 @@ import { Router } from '@angular/router';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppDocApiTable {
+    viewContainerRef = inject(ViewContainerRef);
+    router = inject(Router);
+    location = inject(Location);
+    private configService = inject(AppConfigService);
+
     @Input() id: string;
 
     @Input() label: string;
@@ -143,13 +148,6 @@ export class AppDocApiTable {
     @Input({ transform: numberAttribute }) level: number;
 
     @Input({ transform: booleanAttribute }) isInterface: boolean = false;
-
-    constructor(
-        public viewContainerRef: ViewContainerRef,
-        public router: Router,
-        public location: Location,
-        private configService: AppConfigService
-    ) {}
 
     get isDarkMode(): boolean {
         return this.configService.appState().darkTheme;

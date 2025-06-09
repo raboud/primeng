@@ -10,7 +10,6 @@ import {
     effect,
     ElementRef,
     EventEmitter,
-    Inject,
     inject,
     Injectable,
     Input,
@@ -422,6 +421,13 @@ export class MenubarSub extends BaseComponent implements OnInit, OnDestroy {
     }
 })
 export class Menubar extends BaseComponent implements AfterContentInit, OnDestroy, OnInit {
+    document = inject<Document>(DOCUMENT);
+    platformId = inject(PLATFORM_ID);
+    el = inject(ElementRef);
+    renderer = inject(Renderer2);
+    cd = inject(ChangeDetectorRef);
+    private menubarService = inject(MenubarService);
+
     /**
      * An array of menuitems.
      * @group Props
@@ -558,14 +564,7 @@ export class Menubar extends BaseComponent implements AfterContentInit, OnDestro
         return focusedItem.item && focusedItem.item?.id ? focusedItem.item.id : focusedItem.index !== -1 ? `${this.id}${isNotEmpty(focusedItem.parentKey) ? '_' + focusedItem.parentKey : ''}_${focusedItem.index}` : null;
     }
 
-    constructor(
-        @Inject(DOCUMENT) public document: Document,
-        @Inject(PLATFORM_ID) public platformId: any,
-        public el: ElementRef,
-        public renderer: Renderer2,
-        public cd: ChangeDetectorRef,
-        private menubarService: MenubarService
-    ) {
+    constructor() {
         super();
         effect(() => {
             const path = this.activeItemPath();

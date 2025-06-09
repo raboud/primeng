@@ -1,4 +1,4 @@
-import { AfterViewInit, booleanAttribute, Directive, EventEmitter, HostListener, inject, Input, NgModule, OnDestroy, OnInit, Optional, Output } from '@angular/core';
+import { AfterViewInit, booleanAttribute, Directive, EventEmitter, HostListener, inject, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgControl, NgModel } from '@angular/forms';
 import { BaseComponent } from 'primeng/basecomponent';
 import { Subscription } from 'rxjs';
@@ -22,6 +22,9 @@ import { TextareaStyle } from './style/textareastyle';
     providers: [TextareaStyle]
 })
 export class InputTextarea extends BaseComponent implements OnInit, AfterViewInit, OnDestroy {
+    ngModel = inject(NgModel, { optional: true });
+    control = inject(NgControl, { optional: true });
+
     /**
      * When present, textarea size changes as being typed.
      * @group Props
@@ -54,10 +57,7 @@ export class InputTextarea extends BaseComponent implements OnInit, AfterViewIni
 
     _componentStyle = inject(TextareaStyle);
 
-    constructor(
-        @Optional() public ngModel: NgModel,
-        @Optional() public control: NgControl
-    ) {
+    constructor() {
         super();
         console.log('pInputTextarea directive is deprecated in v18. Use pTextarea directive instead');
     }

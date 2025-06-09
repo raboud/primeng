@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, NgModule, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, NgModule, ViewEncapsulation, inject } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
@@ -57,12 +57,13 @@ import { Dialog } from 'primeng/dialog';
     encapsulation: ViewEncapsulation.None
 })
 export class TemplateYoutube {
+    private sanitizer = inject(DomSanitizer);
+
     @Input() imgSrc: string;
     title: string[] = ['Integration with', 'Existing Vite Applications'];
     description: string = 'Only the folders that are related to the layout needs to move in to your project. We‘ve already created a short tutorial with details for Sakai Vue. The both templates have the same implementation.';
     youtubeLink: string = 'https://www.youtube.com/embed/Y07edRJd5QM';
     youtubeVideoVisible: boolean = false;
-    constructor(private sanitizer: DomSanitizer) {}
     iframeSrc: SafeResourceUrl;
     setYoutubeVideoVisible(visible: boolean) {
         this.youtubeVideoVisible = visible;

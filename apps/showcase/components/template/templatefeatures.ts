@@ -1,6 +1,6 @@
 import { AppConfigService } from '@/service/appconfigservice';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, NgModule, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, NgModule, ViewEncapsulation, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SharedModule } from 'primeng/api';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
@@ -57,6 +57,9 @@ import { AnimateOnScrollModule } from 'primeng/animateonscroll';
     encapsulation: ViewEncapsulation.None
 })
 export class TemplateFeatures {
+    private configService = inject(AppConfigService);
+    sanitizer = inject(DomSanitizer);
+
     @Input() displayType;
 
     @Input() featuresData;
@@ -68,11 +71,6 @@ export class TemplateFeatures {
     get isDarkMode(): boolean {
         return this.configService.appState().darkTheme;
     }
-
-    constructor(
-        private configService: AppConfigService,
-        public sanitizer: DomSanitizer
-    ) {}
 
     ngOnInit() {
         if (this.featuresData) {

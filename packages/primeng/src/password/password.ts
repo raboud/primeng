@@ -59,6 +59,8 @@ type Meter = {
     providers: [PasswordStyle]
 })
 export class PasswordDirective extends BaseComponent implements OnDestroy, DoCheck {
+    zone = inject(NgZone);
+
     /**
      * Text to prompt password entry. Defaults to PrimeNG I18N API configuration.
      * @group Props
@@ -124,10 +126,6 @@ export class PasswordDirective extends BaseComponent implements OnDestroy, DoChe
         const nativeElement = this.el.nativeElement;
         const fluidComponent = nativeElement.closest('p-fluid');
         return this.fluid || !!fluidComponent;
-    }
-
-    constructor(public zone: NgZone) {
-        super();
     }
 
     ngDoCheck() {

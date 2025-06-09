@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Customer } from '@/domain/customer';
 import { CustomerService } from '@/service/customerservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'paginator-programmatic-doc',
@@ -52,16 +52,14 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaginatorProgrammaticDoc {
+    private customerService = inject(CustomerService);
+    private cd = inject(ChangeDetectorRef);
+
     customers!: Customer[];
 
     first = 0;
 
     rows = 10;
-
-    constructor(
-        private customerService: CustomerService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     loadDemoData() {
         this.customerService.getCustomersLarge().then((customers) => {

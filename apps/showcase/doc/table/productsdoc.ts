@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -191,6 +191,11 @@ interface ExportColumn {
     providers: [MessageService, ConfirmationService]
 })
 export class ProductsDoc {
+    private productService = inject(ProductService);
+    private messageService = inject(MessageService);
+    private confirmationService = inject(ConfirmationService);
+    private cd = inject(ChangeDetectorRef);
+
     code: Code = {
         basic: `<p-toolbar styleClass="mb-6">
     <ng-template #start>
@@ -792,13 +797,6 @@ export interface Product {
     cols!: Column[];
 
     exportColumns!: ExportColumn[];
-
-    constructor(
-        private productService: ProductService,
-        private messageService: MessageService,
-        private confirmationService: ConfirmationService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     exportCSV() {
         this.dt.exportCSV();

@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core';
 import { SortEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -49,6 +49,8 @@ import { Table } from 'primeng/table';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RemovableSortDoc {
+    private productService = inject(ProductService);
+
     @ViewChild('dt') dt: Table;
 
     products: Product[];
@@ -56,8 +58,6 @@ export class RemovableSortDoc {
     initialValue: Product[];
 
     isSorted: boolean = null;
-
-    constructor(private productService: ProductService) {}
 
     loadDemoData() {
         this.productService.getProductsMini().then((data) => {

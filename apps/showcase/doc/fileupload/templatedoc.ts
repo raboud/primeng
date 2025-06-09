@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { PrimeNG } from 'primeng/config';
 
@@ -83,16 +83,14 @@ import { PrimeNG } from 'primeng/config';
     providers: [MessageService]
 })
 export class TemplateDoc {
+    private config = inject(PrimeNG);
+    private messageService = inject(MessageService);
+
     files = [];
 
     totalSize: number = 0;
 
     totalSizePercent: number = 0;
-
-    constructor(
-        private config: PrimeNG,
-        private messageService: MessageService
-    ) {}
 
     choose(event, callback) {
         callback();

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { booleanAttribute, Component, Input } from '@angular/core';
+import { booleanAttribute, Component, Input, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { StyleClass } from 'primeng/styleclass';
 import { MenuItem } from './app.menu.component';
@@ -60,11 +60,11 @@ import { Tag } from 'primeng/tag';
     imports: [CommonModule, StyleClass, RouterModule, Tag]
 })
 export class AppMenuItemComponent {
+    private router = inject(Router);
+
     @Input() item: MenuItem;
 
     @Input({ transform: booleanAttribute }) root: boolean = true;
-
-    constructor(private router: Router) {}
 
     isActiveRootMenuItem(menuitem: MenuItem): boolean {
         const url = this.router.url.split('#')[0];

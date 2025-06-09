@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 
 @Component({
@@ -62,6 +62,8 @@ import { SelectItem } from 'primeng/api';
     `
 })
 export class SortingDoc {
+    private productService = inject(ProductService);
+
     sortOptions!: SelectItem[];
 
     sortOrder!: number;
@@ -69,8 +71,6 @@ export class SortingDoc {
     sortField!: string;
 
     products = signal<any>([]);
-
-    constructor(private productService: ProductService) {}
     code: Code = {
         basic: `<p-dataview [value]="products()" [sortField]="sortField" [sortOrder]="sortOrder">
     <ng-template #header>

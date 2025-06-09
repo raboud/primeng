@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { PhotoService } from '@/service/photoservice';
-import { Component, model, OnInit } from '@angular/core';
+import { Component, model, OnInit, inject } from '@angular/core';
 
 @Component({
     selector: 'itemthumbnails-doc',
@@ -24,6 +24,8 @@ import { Component, model, OnInit } from '@angular/core';
     providers: [PhotoService]
 })
 export class ItemThumbnailsDoc implements OnInit {
+    private photoService = inject(PhotoService);
+
     images = model([]);
 
     responsiveOptions: any[] = [
@@ -36,8 +38,6 @@ export class ItemThumbnailsDoc implements OnInit {
             numVisible: 1
         }
     ];
-
-    constructor(private photoService: PhotoService) {}
 
     ngOnInit() {
         this.photoService.getImages().then((images) => this.images.set(images));

@@ -11,7 +11,6 @@ import {
     ElementRef,
     EventEmitter,
     HostListener,
-    Inject,
     inject,
     Input,
     NgModule,
@@ -135,6 +134,13 @@ import { ConfirmPopupStyle } from './style/confirmpopupstyle';
     providers: [ConfirmPopupStyle]
 })
 export class ConfirmPopup extends BaseComponent implements AfterContentInit, OnDestroy {
+    el = inject(ElementRef);
+    private confirmationService = inject(ConfirmationService);
+    renderer = inject(Renderer2);
+    cd = inject(ChangeDetectorRef);
+    overlayService = inject(OverlayService);
+    document = inject<Document>(DOCUMENT);
+
     /**
      * Optional key to match the key of confirm object, necessary to use when component tree has multiple confirm dialogs.
      * @group Props
@@ -221,14 +227,7 @@ export class ConfirmPopup extends BaseComponent implements AfterContentInit, OnD
 
     _componentStyle = inject(ConfirmPopupStyle);
 
-    constructor(
-        public el: ElementRef,
-        private confirmationService: ConfirmationService,
-        public renderer: Renderer2,
-        public cd: ChangeDetectorRef,
-        public overlayService: OverlayService,
-        @Inject(DOCUMENT) public document: Document
-    ) {
+    constructor() {
         super();
         this.window = this.document.defaultView as Window;
         this.subscription = this.confirmationService.requireConfirmation$.subscribe((confirmation) => {

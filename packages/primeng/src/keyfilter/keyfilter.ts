@@ -1,5 +1,5 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { booleanAttribute, Directive, ElementRef, EventEmitter, forwardRef, HostListener, Inject, Input, NgModule, Output, PLATFORM_ID, Provider } from '@angular/core';
+import { booleanAttribute, Directive, ElementRef, EventEmitter, forwardRef, HostListener, Input, NgModule, Output, PLATFORM_ID, Provider, inject } from '@angular/core';
 import { AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 import { getBrowser, isAndroid } from '@primeuix/utils';
 import { KeyFilterPattern } from './keyfilter.interface';
@@ -71,6 +71,10 @@ const SAFARI_KEYS: SafariKeys = {
     providers: [KEYFILTER_VALIDATOR]
 })
 export class KeyFilter implements Validator {
+    private document = inject<Document>(DOCUMENT);
+    private platformId = inject(PLATFORM_ID);
+    el = inject(ElementRef);
+
     /**
      * When enabled, instead of blocking keys, input is validated internally to test against the regular expression.
      * @group Props
@@ -111,11 +115,7 @@ export class KeyFilter implements Validator {
 
     lastValue: any;
 
-    constructor(
-        @Inject(DOCUMENT) private document: Document,
-        @Inject(PLATFORM_ID) private platformId: any,
-        public el: ElementRef
-    ) {
+    constructor() {
         if (isPlatformBrowser(this.platformId)) {
             this.isAndroid = isAndroid();
         } else {

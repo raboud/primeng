@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
@@ -32,12 +32,10 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     providers: [ConfirmationService, MessageService]
 })
 export class PositionDoc {
-    position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'center';
+    private confirmationService = inject(ConfirmationService);
+    private messageService = inject(MessageService);
 
-    constructor(
-        private confirmationService: ConfirmationService,
-        private messageService: MessageService
-    ) {}
+    position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'center';
 
     confirmPosition(position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright') {
         this.position = position;

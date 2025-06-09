@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -462,6 +462,9 @@ import { TooltipModule } from 'primeng/tooltip';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardsApp {
+    private config = inject(PrimeNG);
+    private messageService = inject(MessageService);
+
     files = [];
 
     uploadedFiles: any[] = [];
@@ -513,11 +516,6 @@ export class CardsApp {
     permissions: any;
 
     items: any;
-
-    constructor(
-        private config: PrimeNG,
-        private messageService: MessageService
-    ) {}
 
     ngOnInit() {
         this.priceRangePopularSpecs = [

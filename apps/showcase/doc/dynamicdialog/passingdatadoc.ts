@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ProductListDemo } from './productlistdemo';
 
@@ -22,9 +22,9 @@ import { ProductListDemo } from './productlistdemo';
     providers: [DialogService]
 })
 export class PassingDataDoc {
-    ref: DynamicDialogRef | undefined;
+    dialogService = inject(DialogService);
 
-    constructor(public dialogService: DialogService) {}
+    ref: DynamicDialogRef | undefined;
 
     show() {
         this.ref = this.dialogService.open(ProductListDemo, {

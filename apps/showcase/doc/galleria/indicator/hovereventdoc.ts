@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { PhotoService } from '@/service/photoservice';
-import { Component, OnInit, model } from '@angular/core';
+import { Component, OnInit, model, inject } from '@angular/core';
 
 @Component({
     selector: 'hover-event-doc',
@@ -20,9 +20,9 @@ import { Component, OnInit, model } from '@angular/core';
     `
 })
 export class HoverEventDoc implements OnInit {
-    images = model([]);
+    private photoService = inject(PhotoService);
 
-    constructor(private photoService: PhotoService) {}
+    images = model([]);
 
     ngOnInit() {
         this.photoService.getImages().then((images) => this.images.set(images));

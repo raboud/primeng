@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 
 interface Column {
@@ -54,6 +54,8 @@ interface Column {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectionMultipleDoc {
+    private nodeService = inject(NodeService);
+
     metaKeySelection: boolean = true;
 
     files!: TreeNode[];
@@ -61,8 +63,6 @@ export class SelectionMultipleDoc {
     selectedNodes!: TreeNode[];
 
     cols!: Column[];
-
-    constructor(private nodeService: NodeService) {}
 
     loadDemoData() {
         this.nodeService.getFilesystem().then((files) => (this.files = files));

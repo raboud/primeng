@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -25,13 +25,13 @@ import { TreeNode } from 'primeng/api';
     `
 })
 export class MultipleDoc implements OnInit {
+    private nodeService = inject(NodeService);
+
     metaKeySelection: boolean = false;
 
     files!: TreeNode[];
 
     selectedFiles!: TreeNode[];
-
-    constructor(private nodeService: NodeService) {}
 
     ngOnInit() {
         this.nodeService.getFiles().then((data) => (this.files = data));

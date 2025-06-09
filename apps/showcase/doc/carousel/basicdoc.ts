@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 
 @Component({
     selector: 'carousel-basic-demo',
@@ -36,6 +36,9 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
     `
 })
 export class BasicDoc implements OnInit {
+    private productService = inject(ProductService);
+    private cdr = inject(ChangeDetectorRef);
+
     products: Product[] | undefined;
 
     responsiveOptions: any[] | undefined;
@@ -161,11 +164,6 @@ export class CarouselBasicDemo implements OnInit {
 ...`,
         service: ['ProductService']
     };
-
-    constructor(
-        private productService: ProductService,
-        private cdr: ChangeDetectorRef
-    ) {}
 
     ngOnInit() {
         this.productService.getProductsSmall().then((products) => {

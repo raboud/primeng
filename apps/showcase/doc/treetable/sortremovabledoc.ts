@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core';
 import { SortEvent, TreeNode } from 'primeng/api';
 import { TreeTable } from 'primeng/treetable';
 
@@ -61,6 +61,8 @@ interface Column {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SortRemovableDoc {
+    private nodeService = inject(NodeService);
+
     @ViewChild('tt') tt: TreeTable;
 
     metaKeySelection: boolean = true;
@@ -74,8 +76,6 @@ export class SortRemovableDoc {
     cols!: Column[];
 
     isSorted: boolean = null;
-
-    constructor(private nodeService: NodeService) {}
 
     loadDemoData() {
         this.nodeService.getFilesystem().then((files) => {

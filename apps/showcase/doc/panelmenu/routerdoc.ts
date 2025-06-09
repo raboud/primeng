@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 
@@ -42,9 +42,9 @@ import { MenuItem, MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class RouterDoc implements OnInit {
-    items: MenuItem[];
+    private router = inject(Router);
 
-    constructor(private router: Router) {}
+    items: MenuItem[];
 
     ngOnInit() {
         this.items = [

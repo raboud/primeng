@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 
 @Component({
     selector: 'data-view-loading-demo',
@@ -75,13 +75,13 @@ import { Component, signal } from '@angular/core';
     `
 })
 export class LoadingDoc {
+    private productService = inject(ProductService);
+
     layout: 'grid' | 'list' = 'grid';
 
     products = signal<any>([]);
 
     options: string[] = ['list', 'grid'];
-
-    constructor(private productService: ProductService) {}
     code: Code = {
         basic: `<p-dataview #dv [value]="products()" [layout]="layout">
     <ng-template #header>

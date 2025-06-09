@@ -88,6 +88,8 @@ import { ScrollerStyle } from './style/scrollerstyle';
     providers: [ScrollerStyle]
 })
 export class Scroller extends BaseComponent implements OnInit, AfterContentInit, AfterViewChecked, OnDestroy {
+    private zone = inject(NgZone);
+
     /**
      * Unique identifier of the element.
      * @group Props
@@ -538,10 +540,6 @@ export class Scroller extends BaseComponent implements OnInit, AfterContentInit,
     }
 
     _componentStyle = inject(ScrollerStyle);
-
-    constructor(private zone: NgZone) {
-        super();
-    }
 
     ngOnInit() {
         super.ngOnInit();

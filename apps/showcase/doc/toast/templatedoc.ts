@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -29,7 +29,7 @@ import { MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class TemplateDoc {
-    constructor(private messageService: MessageService) {}
+    private messageService = inject(MessageService);
 
     visible: boolean = false;
 

@@ -81,6 +81,8 @@ export const COLORPICKER_VALUE_ACCESSOR: any = {
     }
 })
 export class ColorPicker extends BaseInput implements ControlValueAccessor, OnDestroy, AfterViewInit {
+    overlayService = inject(OverlayService);
+
     /**
      * Style class of the component.
      * @deprecated since v20.0.0, use `class` instead.
@@ -199,10 +201,6 @@ export class ColorPicker extends BaseInput implements ControlValueAccessor, OnDe
     hueHandleViewChild: Nullable<ElementRef>;
 
     _componentStyle = inject(ColorPickerStyle);
-
-    constructor(public overlayService: OverlayService) {
-        super();
-    }
 
     @ViewChild('colorSelector') set colorSelector(element: ElementRef) {
         this.colorSelectorViewChild = element;

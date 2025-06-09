@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 
 @Component({
     selector: 'carousel-vertical-demo',
@@ -36,12 +36,10 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
     `
 })
 export class VerticalDoc implements OnInit {
-    products: Product[] | undefined;
+    private productService = inject(ProductService);
+    private cdr = inject(ChangeDetectorRef);
 
-    constructor(
-        private productService: ProductService,
-        private cdr: ChangeDetectorRef
-    ) {}
+    products: Product[] | undefined;
 
     ngOnInit() {
         this.productService.getProductsSmall().then((products) => {

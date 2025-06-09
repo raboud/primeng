@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
@@ -18,6 +18,8 @@ import { MenuItem, MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class IconsDoc {
+    private messageService = inject(MessageService);
+
     items: MenuItem[];
     code: Code = {
         basic: `<p-splitbutton label="Save" icon="pi pi-check" dropdownIcon="pi pi-cog" [model]="items" />`,
@@ -71,7 +73,7 @@ export class SplitButtonIconsDemo {
 }`
     };
 
-    constructor(private messageService: MessageService) {
+    constructor() {
         this.items = [
             {
                 label: 'Update',

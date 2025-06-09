@@ -1,4 +1,4 @@
-import { AfterViewInit, booleanAttribute, Directive, EventEmitter, HostListener, inject, Input, NgModule, OnDestroy, OnInit, Optional, Output } from '@angular/core';
+import { AfterViewInit, booleanAttribute, Directive, EventEmitter, HostListener, inject, Input, NgModule, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgControl, NgModel } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TextareaStyle } from './style/textareastyle';
@@ -17,6 +17,9 @@ import { BaseInput } from 'primeng/baseinput';
     providers: [TextareaStyle]
 })
 export class Textarea extends BaseInput implements OnInit, AfterViewInit, OnDestroy {
+    ngModel = inject(NgModel, { optional: true });
+    control = inject(NgControl, { optional: true });
+
     /**
      * When present, textarea size changes as being typed.
      * @group Props
@@ -43,13 +46,6 @@ export class Textarea extends BaseInput implements OnInit, AfterViewInit, OnDest
     ngControlSubscription: Subscription | undefined;
 
     _componentStyle = inject(TextareaStyle);
-
-    constructor(
-        @Optional() public ngModel: NgModel,
-        @Optional() public control: NgControl
-    ) {
-        super();
-    }
 
     ngOnInit() {
         super.ngOnInit();

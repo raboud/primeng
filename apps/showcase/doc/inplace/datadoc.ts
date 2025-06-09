@@ -1,7 +1,7 @@
 import { Car } from '@/domain/car';
 import { Code } from '@/domain/code';
 import { CarService } from '@/service/carservice';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 @Component({
     selector: 'data-doc',
@@ -41,9 +41,9 @@ import { Component } from '@angular/core';
     `
 })
 export class DataDoc {
-    cars: Car[] | undefined;
+    private carService = inject(CarService);
 
-    constructor(private carService: CarService) {}
+    cars: Car[] | undefined;
 
     ngOnInit() {
         this.carService.getCarsSmall().then((cars) => (this.cars = cars));

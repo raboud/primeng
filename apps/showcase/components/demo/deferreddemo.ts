@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, PLATFORM_ID, inject } from '@angular/core';
 
 @Component({
     selector: 'p-deferred-demo',
@@ -17,6 +17,9 @@ import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, PLA
     styleUrl: './deferreddemo.scss'
 })
 export class DeferredDemo implements OnInit {
+    el = inject(ElementRef);
+    private platformId = inject(PLATFORM_ID);
+
     visible: boolean = false;
 
     observer = null;
@@ -26,11 +29,6 @@ export class DeferredDemo implements OnInit {
     @Input() options: any;
 
     @Output() load: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-    constructor(
-        public el: ElementRef,
-        @Inject(PLATFORM_ID) private platformId: any
-    ) {}
 
     ngOnInit() {
         if (isPlatformBrowser(this.platformId)) {

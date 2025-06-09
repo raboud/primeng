@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { CountryService } from '@/service/countryservice';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 
 interface AutoCompleteCompleteEvent {
     originalEvent: Event;
@@ -19,6 +19,8 @@ interface AutoCompleteCompleteEvent {
         <app-code [code]="code" selector="autocomplete-force-selection-demo"></app-code>`
 })
 export class ForceSelectionDoc implements OnInit {
+    private countryService = inject(CountryService);
+
     @Input() id: string;
 
     @Input() title: string;
@@ -28,8 +30,6 @@ export class ForceSelectionDoc implements OnInit {
     selectedCountry: any;
 
     filteredCountries: any[] | undefined;
-
-    constructor(private countryService: CountryService) {}
 
     ngOnInit() {
         this.countryService.getCountries().then((countries) => {

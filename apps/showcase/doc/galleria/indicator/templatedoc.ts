@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { PhotoService } from '@/service/photoservice';
-import { Component, OnInit, model } from '@angular/core';
+import { Component, OnInit, model, inject } from '@angular/core';
 
 @Component({
     selector: 'template-doc',
@@ -25,6 +25,8 @@ import { Component, OnInit, model } from '@angular/core';
     `
 })
 export class TemplateDoc implements OnInit {
+    private photoService = inject(PhotoService);
+
     images = model([]);
 
     responsiveOptions: any[] = [
@@ -37,8 +39,6 @@ export class TemplateDoc implements OnInit {
             numVisible: 1
         }
     ];
-
-    constructor(private photoService: PhotoService) {}
 
     ngOnInit() {
         this.photoService.getImages().then((images) => this.images.set(images));

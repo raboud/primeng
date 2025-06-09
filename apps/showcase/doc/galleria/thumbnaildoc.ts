@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { PhotoService } from '@/service/photoservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 @Component({
     selector: 'galleria-thumbnail-demo',
@@ -33,6 +33,8 @@ import { Component, OnInit } from '@angular/core';
     `
 })
 export class ThumbnailDoc implements OnInit {
+    private photoService = inject(PhotoService);
+
     images: any[] | undefined;
 
     position: 'left' | 'right' | 'top' | 'bottom' = 'bottom';
@@ -66,8 +68,6 @@ export class ThumbnailDoc implements OnInit {
             numVisible: 1
         }
     ];
-
-    constructor(private photoService: PhotoService) {}
 
     ngOnInit() {
         this.photoService.getImages().then((images) => (this.images = images));

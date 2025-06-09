@@ -12,7 +12,6 @@ import {
     ElementRef,
     EventEmitter,
     HostListener,
-    Inject,
     inject,
     Injectable,
     Input,
@@ -2366,6 +2365,10 @@ export class TreeTable extends BaseComponent implements AfterContentInit, OnInit
     encapsulation: ViewEncapsulation.None
 })
 export class TTBody {
+    tt = inject(TreeTable);
+    treeTableService = inject(TreeTableService);
+    cd = inject(ChangeDetectorRef);
+
     @Input('pTreeTableBody') columns: any[] | undefined;
 
     @Input('pTreeTableBodyTemplate') template: Nullable<TemplateRef<any>>;
@@ -2378,11 +2381,7 @@ export class TTBody {
 
     subscription: Subscription;
 
-    constructor(
-        public tt: TreeTable,
-        public treeTableService: TreeTableService,
-        public cd: ChangeDetectorRef
-    ) {
+    constructor() {
         this.subscription = this.tt.tableService.uiUpdateSource$.subscribe(() => {
             if (this.tt.virtualScroll) {
                 this.cd.detectChanges();
@@ -2505,6 +2504,10 @@ export class TTBody {
     providers: [TreeTableStyle]
 })
 export class TTScrollableView extends BaseComponent implements AfterViewInit, OnDestroy {
+    tt = inject(TreeTable);
+    el = inject(ElementRef);
+    zone = inject(NgZone);
+
     @Input('ttScrollableView') columns: any[] | undefined;
 
     @Input({ transform: booleanAttribute }) frozen: boolean | undefined;
@@ -2551,14 +2554,6 @@ export class TTScrollableView extends BaseComponent implements AfterViewInit, On
         if (val != null && (val.includes('%') || val.includes('calc'))) {
             console.log('Percentage scroll height calculation is removed in favor of the more performant CSS based flex mode, use scrollHeight="flex" instead.');
         }
-    }
-
-    constructor(
-        public tt: TreeTable,
-        public el: ElementRef,
-        public zone: NgZone
-    ) {
-        super();
     }
 
     ngAfterViewInit() {
@@ -2728,6 +2723,8 @@ export class TTScrollableView extends BaseComponent implements AfterViewInit, On
     providers: [TreeTableStyle]
 })
 export class TTSortableColumn extends BaseComponent implements OnInit, OnDestroy {
+    tt = inject(TreeTable);
+
     @Input('ttSortableColumn') field: string | undefined;
 
     @Input({ transform: booleanAttribute }) ttSortableColumnDisabled: boolean | undefined;
@@ -2744,7 +2741,7 @@ export class TTSortableColumn extends BaseComponent implements OnInit, OnDestroy
         else return 'none';
     }
 
-    constructor(public tt: TreeTable) {
+    constructor() {
         super();
         if (this.isEnabled()) {
             this.subscription = this.tt.tableService.sortSource$.subscribe((sortMeta) => {
@@ -2818,6 +2815,9 @@ export class TTSortableColumn extends BaseComponent implements OnInit, OnDestroy
     providers: [TreeTableStyle]
 })
 export class TTSortIcon extends BaseComponent implements OnInit, OnDestroy {
+    tt = inject(TreeTable);
+    cd = inject(ChangeDetectorRef);
+
     @Input() field: string | undefined;
 
     @Input() ariaLabelDesc: string | undefined;
@@ -2830,10 +2830,7 @@ export class TTSortIcon extends BaseComponent implements OnInit, OnDestroy {
 
     _componentStyle = inject(TreeTableStyle);
 
-    constructor(
-        public tt: TreeTable,
-        public cd: ChangeDetectorRef
-    ) {
+    constructor() {
         super();
         this.subscription = this.tt.tableService.sortSource$.subscribe((sortMeta) => {
             this.updateSortState();
@@ -2872,6 +2869,13 @@ export class TTSortIcon extends BaseComponent implements OnInit, OnDestroy {
     standalone: false
 })
 export class TTResizableColumn implements AfterViewInit, OnDestroy {
+    private document = inject<Document>(DOCUMENT);
+    private platformId = inject(PLATFORM_ID);
+    private renderer = inject(Renderer2);
+    tt = inject(TreeTable);
+    el = inject(ElementRef);
+    zone = inject(NgZone);
+
     @Input({ transform: booleanAttribute }) ttResizableColumnDisabled: boolean | undefined;
 
     resizer: HTMLSpanElement | undefined;
@@ -2881,15 +2885,6 @@ export class TTResizableColumn implements AfterViewInit, OnDestroy {
     documentMouseMoveListener: VoidListener;
 
     documentMouseUpListener: VoidListener;
-
-    constructor(
-        @Inject(DOCUMENT) private document: Document,
-        @Inject(PLATFORM_ID) private platformId: any,
-        private renderer: Renderer2,
-        public tt: TreeTable,
-        public el: ElementRef,
-        public zone: NgZone
-    ) {}
 
     ngAfterViewInit() {
         if (isPlatformBrowser(this.platformId)) {
@@ -2958,6 +2953,13 @@ export class TTResizableColumn implements AfterViewInit, OnDestroy {
     standalone: false
 })
 export class TTReorderableColumn implements AfterViewInit, OnDestroy {
+    private document = inject<Document>(DOCUMENT);
+    private platformId = inject(PLATFORM_ID);
+    private renderer = inject(Renderer2);
+    tt = inject(TreeTable);
+    el = inject(ElementRef);
+    zone = inject(NgZone);
+
     @Input({ transform: booleanAttribute }) ttReorderableColumnDisabled: boolean | undefined;
 
     dragStartListener: VoidListener;
@@ -2969,15 +2971,6 @@ export class TTReorderableColumn implements AfterViewInit, OnDestroy {
     dragLeaveListener: VoidListener;
 
     mouseDownListener: VoidListener;
-
-    constructor(
-        @Inject(DOCUMENT) private document: Document,
-        @Inject(PLATFORM_ID) private platformId: any,
-        private renderer: Renderer2,
-        public tt: TreeTable,
-        public el: ElementRef,
-        public zone: NgZone
-    ) {}
 
     ngAfterViewInit() {
         if (this.isEnabled()) {
@@ -3068,6 +3061,9 @@ export class TTReorderableColumn implements AfterViewInit, OnDestroy {
     providers: [TreeTableStyle]
 })
 export class TTSelectableRow extends BaseComponent implements OnInit, OnDestroy {
+    tt = inject(TreeTable);
+    tableService = inject(TreeTableService);
+
     @Input('ttSelectableRow') rowNode: any;
 
     @Input({ transform: booleanAttribute }) ttSelectableRowDisabled: boolean | undefined;
@@ -3078,10 +3074,7 @@ export class TTSelectableRow extends BaseComponent implements OnInit, OnDestroy 
 
     _componentStyle = inject(TreeTableStyle);
 
-    constructor(
-        public tt: TreeTable,
-        public tableService: TreeTableService
-    ) {
+    constructor() {
         super();
         if (this.isEnabled()) {
             this.subscription = this.tt.tableService.selectionSource$.subscribe(() => {
@@ -3160,6 +3153,9 @@ export class TTSelectableRow extends BaseComponent implements OnInit, OnDestroy 
     providers: [TreeTableStyle]
 })
 export class TTSelectableRowDblClick extends BaseComponent implements OnInit, OnDestroy {
+    tt = inject(TreeTable);
+    tableService = inject(TreeTableService);
+
     @Input('ttSelectableRowDblClick') rowNode: any;
 
     @Input({ transform: booleanAttribute }) ttSelectableRowDisabled: boolean | undefined;
@@ -3170,10 +3166,7 @@ export class TTSelectableRowDblClick extends BaseComponent implements OnInit, On
 
     _componentStyle = inject(TreeTableStyle);
 
-    constructor(
-        public tt: TreeTable,
-        public tableService: TreeTableService
-    ) {
+    constructor() {
         super();
         if (this.isEnabled()) {
             this.subscription = this.tt.tableService.selectionSource$.subscribe(() => {
@@ -3221,6 +3214,9 @@ export class TTSelectableRowDblClick extends BaseComponent implements OnInit, On
     providers: [TreeTableStyle]
 })
 export class TTContextMenuRow extends BaseComponent {
+    tt = inject(TreeTable);
+    tableService = inject(TreeTableService);
+
     @Input('ttContextMenuRow') rowNode: any | undefined;
 
     @Input({ transform: booleanAttribute }) ttContextMenuRowDisabled: boolean | undefined;
@@ -3231,10 +3227,7 @@ export class TTContextMenuRow extends BaseComponent {
 
     _componentStyle = inject(TreeTableStyle);
 
-    constructor(
-        public tt: TreeTable,
-        public tableService: TreeTableService
-    ) {
+    constructor() {
         super();
         if (this.isEnabled()) {
             this.subscription = this.tt.tableService.contextMenuSource$.subscribe((node) => {
@@ -3286,6 +3279,10 @@ export class TTContextMenuRow extends BaseComponent {
     providers: [TreeTableStyle]
 })
 export class TTCheckbox extends BaseComponent {
+    tt = inject(TreeTable);
+    tableService = inject(TreeTableService);
+    cd = inject(ChangeDetectorRef);
+
     @Input({ transform: booleanAttribute }) disabled: boolean | undefined;
 
     @Input('value') rowNode: any;
@@ -3300,11 +3297,7 @@ export class TTCheckbox extends BaseComponent {
 
     _componentStyle = inject(TreeTableStyle);
 
-    constructor(
-        public tt: TreeTable,
-        public tableService: TreeTableService,
-        public cd: ChangeDetectorRef
-    ) {
+    constructor() {
         super();
         this.subscription = this.tt.tableService.selectionSource$.subscribe(() => {
             if (this.tt.selectionKeys) {
@@ -3381,6 +3374,10 @@ export class TTCheckbox extends BaseComponent {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TTHeaderCheckbox {
+    tt = inject(TreeTable);
+    tableService = inject(TreeTableService);
+    private cd = inject(ChangeDetectorRef);
+
     checked: boolean | undefined;
 
     disabled: boolean | undefined;
@@ -3389,11 +3386,7 @@ export class TTHeaderCheckbox {
 
     valueChangeSubscription: Subscription;
 
-    constructor(
-        public tt: TreeTable,
-        public tableService: TreeTableService,
-        private cd: ChangeDetectorRef
-    ) {
+    constructor() {
         this.valueChangeSubscription = this.tt.tableService.uiUpdateSource$.subscribe(() => {
             this.checked = this.updateCheckedState();
         });
@@ -3465,17 +3458,15 @@ export class TTHeaderCheckbox {
     standalone: false
 })
 export class TTEditableColumn implements AfterViewInit {
+    tt = inject(TreeTable);
+    el = inject(ElementRef);
+    zone = inject(NgZone);
+
     @Input('ttEditableColumn') data: any;
 
     @Input('ttEditableColumnField') field: any;
 
     @Input({ transform: booleanAttribute }) ttEditableColumnDisabled: boolean | undefined;
-
-    constructor(
-        public tt: TreeTable,
-        public el: ElementRef,
-        public zone: NgZone
-    ) {}
 
     ngAfterViewInit() {
         if (this.isEnabled()) {
@@ -3651,18 +3642,14 @@ export class TTEditableColumn implements AfterViewInit {
     encapsulation: ViewEncapsulation.None
 })
 export class TreeTableCellEditor extends BaseComponent implements AfterContentInit {
+    tt = inject(TreeTable);
+    editableColumn = inject(TTEditableColumn);
+
     @ContentChildren(PrimeTemplate) templates: Nullable<QueryList<PrimeTemplate>>;
 
     inputTemplate: Nullable<TemplateRef<any>>;
 
     outputTemplate: Nullable<TemplateRef<any>>;
-
-    constructor(
-        public tt: TreeTable,
-        public editableColumn: TTEditableColumn
-    ) {
-        super();
-    }
 
     ngAfterContentInit() {
         (this.templates as QueryList<PrimeTemplate>).forEach((item) => {
@@ -3693,6 +3680,10 @@ export class TreeTableCellEditor extends BaseComponent implements AfterContentIn
     providers: [TreeTableStyle]
 })
 export class TTRow extends BaseComponent {
+    tt = inject(TreeTable);
+    el = inject(ElementRef);
+    zone = inject(NgZone);
+
     get level() {
         return this.rowNode?.['level'] + 1;
     }
@@ -3708,14 +3699,6 @@ export class TTRow extends BaseComponent {
     @Input('ttRow') rowNode: any;
 
     _componentStyle = inject(TreeTableStyle);
-
-    constructor(
-        public tt: TreeTable,
-        public el: ElementRef,
-        public zone: NgZone
-    ) {
-        super();
-    }
 
     @HostListener('keydown', ['$event'])
     onKeyDown(event: KeyboardEvent) {
@@ -3915,13 +3898,11 @@ export class TTRow extends BaseComponent {
     providers: [TreeTableStyle]
 })
 export class TreeTableToggler extends BaseComponent {
+    tt = inject(TreeTable);
+
     @Input() rowNode: any;
 
     _componentStyle = inject(TreeTableStyle);
-
-    constructor(public tt: TreeTable) {
-        super();
-    }
 
     get toggleButtonAriaLabel() {
         return this.config.translation ? (this.rowNode.expanded ? this.config.translation.aria.collapseRow : this.config.translation.aria.expandRow) : undefined;

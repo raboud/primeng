@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
@@ -18,11 +18,11 @@ import { MenuItem, MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class InteractiveDoc implements OnInit {
+    messageService = inject(MessageService);
+
     items: MenuItem[] | undefined;
 
     activeIndex: number = 0;
-
-    constructor(public messageService: MessageService) {}
 
     onActiveIndexChange(event: number) {
         this.activeIndex = event;

@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 interface UploadEvent {
@@ -36,9 +36,9 @@ interface UploadEvent {
     providers: [MessageService]
 })
 export class AdvancedDoc {
-    uploadedFiles: any[] = [];
+    private messageService = inject(MessageService);
 
-    constructor(private messageService: MessageService) {}
+    uploadedFiles: any[] = [];
 
     onUpload(event: UploadEvent) {
         for (let file of event.files) {

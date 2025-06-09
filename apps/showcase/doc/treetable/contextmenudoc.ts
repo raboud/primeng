@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 
 interface Column {
@@ -50,6 +50,9 @@ interface Column {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContextMenuDoc {
+    private nodeService = inject(NodeService);
+    private messageService = inject(MessageService);
+
     files!: TreeNode[];
 
     selectedNode!: TreeNode;
@@ -57,11 +60,6 @@ export class ContextMenuDoc {
     cols!: Column[];
 
     items!: MenuItem[];
-
-    constructor(
-        private nodeService: NodeService,
-        private messageService: MessageService
-    ) {}
 
     loadDemoData() {
         this.nodeService.getFilesystem().then((files) => (this.files = files));

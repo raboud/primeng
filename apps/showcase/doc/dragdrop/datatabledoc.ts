@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 @Component({
     selector: 'drag-drop-data-table-demo',
@@ -56,13 +56,13 @@ import { Component, OnInit } from '@angular/core';
     `
 })
 export class DataTableDoc implements OnInit {
+    private productService = inject(ProductService);
+
     availableProducts: Product[] | undefined;
 
     selectedProducts: Product[] | undefined;
 
     draggedProduct: Product | undefined | null;
-
-    constructor(private productService: ProductService) {}
 
     ngOnInit() {
         this.selectedProducts = [];

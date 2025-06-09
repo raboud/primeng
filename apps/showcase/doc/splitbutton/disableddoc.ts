@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
@@ -21,7 +21,9 @@ import { MenuItem, MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class DisabledDoc {
-    constructor(private messageService: MessageService) {
+    private messageService = inject(MessageService);
+
+    constructor() {
         this.items = [
             {
                 label: 'Update',

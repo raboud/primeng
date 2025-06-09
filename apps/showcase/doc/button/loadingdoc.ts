@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'button-loading-demo',
@@ -15,9 +15,9 @@ import { ChangeDetectorRef, Component } from '@angular/core';
     `
 })
 export class LoadingDoc {
-    loading: boolean = false;
+    private readonly cdr = inject(ChangeDetectorRef);
 
-    constructor(private readonly cdr: ChangeDetectorRef) {}
+    loading: boolean = false;
 
     load() {
         this.loading = true;

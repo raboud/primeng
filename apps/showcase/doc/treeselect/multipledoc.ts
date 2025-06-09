@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 @Component({
     selector: 'multiple-doc',
@@ -21,11 +21,13 @@ import { Component } from '@angular/core';
     `
 })
 export class MultipleDoc {
+    private nodeService = inject(NodeService);
+
     nodes!: any[];
 
     selectedNodes: any;
 
-    constructor(private nodeService: NodeService) {
+    constructor() {
         this.nodeService.getFiles().then((files) => (this.nodes = files));
     }
 

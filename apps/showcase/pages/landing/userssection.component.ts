@@ -1,6 +1,6 @@
 import { AppConfigService } from '@/service/appconfigservice';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 @Component({
     selector: 'users-section',
@@ -37,7 +37,7 @@ import { Component } from '@angular/core';
     `
 })
 export class UsersSectionComponent {
-    constructor(private configService: AppConfigService) {}
+    private configService = inject(AppConfigService);
 
     usersData = ['fox', 'airbus', 'mercedes', 'ebay', 'ford', 'vw', 'intel', 'unicredit', 'lufthansa', 'nvidia', 'verizon', 'amex'];
     users = null;

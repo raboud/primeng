@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -17,14 +17,12 @@ import { TreeNode } from 'primeng/api';
     `
 })
 export class VirtualScrollDoc implements OnInit {
+    private nodeService = inject(NodeService);
+    private cd = inject(ChangeDetectorRef);
+
     loading: boolean = false;
 
     files!: TreeNode[];
-
-    constructor(
-        private nodeService: NodeService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     ngOnInit() {
         this.nodeService.getFiles().then((data) => {

@@ -568,6 +568,9 @@ export const DATEPICKER_VALUE_ACCESSOR: any = {
     }
 })
 export class DatePicker extends BaseInput implements OnInit, AfterContentInit, AfterViewInit, OnDestroy, ControlValueAccessor {
+    private zone = inject(NgZone);
+    overlayService = inject(OverlayService);
+
     @Input() iconDisplay: 'input' | 'button' = 'button';
     /**
      * Style class of the component.
@@ -1327,10 +1330,7 @@ export class DatePicker extends BaseInput implements OnInit, AfterContentInit, A
         return this.currentView === 'year' ? this.getTranslation('nextDecade') : this.currentView === 'month' ? this.getTranslation('nextYear') : this.getTranslation('nextMonth');
     }
 
-    constructor(
-        private zone: NgZone,
-        public overlayService: OverlayService
-    ) {
+    constructor() {
         super();
         this.window = this.document.defaultView as Window;
     }

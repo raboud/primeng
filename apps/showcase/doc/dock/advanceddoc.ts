@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
 import { PhotoService } from '@/service/photoservice';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { TerminalService } from 'primeng/terminal';
 import { Subscription } from 'rxjs';
@@ -91,6 +91,11 @@ import { Subscription } from 'rxjs';
     providers: [MessageService, TerminalService, PhotoService, NodeService]
 })
 export class AdvancedDoc implements OnInit, OnDestroy {
+    private galleriaService = inject(PhotoService);
+    private nodeService = inject(NodeService);
+    private messageService = inject(MessageService);
+    private terminalService = inject(TerminalService);
+
     displayTerminal: boolean | undefined;
 
     displayFinder: boolean | undefined;
@@ -108,13 +113,6 @@ export class AdvancedDoc implements OnInit, OnDestroy {
     nodes: any[] | undefined;
 
     subscription: Subscription | undefined;
-
-    constructor(
-        private galleriaService: PhotoService,
-        private nodeService: NodeService,
-        private messageService: MessageService,
-        private terminalService: TerminalService
-    ) {}
 
     ngOnInit() {
         this.dockItems = [

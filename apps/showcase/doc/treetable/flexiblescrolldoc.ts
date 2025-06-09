@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -47,14 +47,12 @@ import { TreeNode } from 'primeng/api';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ScrollFlexibleDoc {
+    private nodeService = inject(NodeService);
+    private cd = inject(ChangeDetectorRef);
+
     files!: TreeNode[];
 
     dialogVisible: boolean = false;
-
-    constructor(
-        private nodeService: NodeService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     loadDemoData() {
         this.nodeService.getFilesystem().then((files) => {

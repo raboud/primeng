@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
@@ -18,9 +18,9 @@ import { MenuItem, MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class CommandDoc implements OnInit {
-    items: MenuItem[];
+    private messageService = inject(MessageService);
 
-    constructor(private messageService: MessageService) {}
+    items: MenuItem[];
 
     ngOnInit() {
         this.items = [

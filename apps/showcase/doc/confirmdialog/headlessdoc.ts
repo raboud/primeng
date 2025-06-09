@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
@@ -33,10 +33,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     providers: [ConfirmationService, MessageService]
 })
 export class HeadlessDoc {
-    constructor(
-        private confirmationService: ConfirmationService,
-        private messageService: MessageService
-    ) {}
+    private confirmationService = inject(ConfirmationService);
+    private messageService = inject(MessageService);
 
     confirm() {
         this.confirmationService.confirm({

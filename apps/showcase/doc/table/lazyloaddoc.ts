@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Customer, Representative } from '@/domain/customer';
 import { CustomerService } from '@/service/customerservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
 
 @Component({
@@ -87,6 +87,9 @@ import { TableLazyLoadEvent } from 'primeng/table';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LazyLoadDoc implements OnInit {
+    private customerService = inject(CustomerService);
+    private cd = inject(ChangeDetectorRef);
+
     customers!: Customer[];
 
     totalRecords!: number;
@@ -98,11 +101,6 @@ export class LazyLoadDoc implements OnInit {
     selectAll: boolean = false;
 
     selectedCustomers!: Customer[];
-
-    constructor(
-        private customerService: CustomerService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     ngOnInit() {
         this.loading = true;

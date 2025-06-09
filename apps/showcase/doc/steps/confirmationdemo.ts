@@ -1,5 +1,5 @@
 import { TicketService } from '@/service/ticketservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -58,12 +58,10 @@ import { Router } from '@angular/router';
     `
 })
 export class ConfirmationDemo implements OnInit {
-    ticketInformation: any;
+    ticketService = inject(TicketService);
+    private router = inject(Router);
 
-    constructor(
-        public ticketService: TicketService,
-        private router: Router
-    ) {}
+    ticketInformation: any;
 
     ngOnInit() {
         this.ticketInformation = this.ticketService.ticketInformation;

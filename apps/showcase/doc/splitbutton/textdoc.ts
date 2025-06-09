@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
@@ -25,9 +25,11 @@ import { MenuItem, MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class TextDoc {
+    private messageService = inject(MessageService);
+
     items: MenuItem[];
 
-    constructor(private messageService: MessageService) {
+    constructor() {
         this.items = [
             {
                 label: 'Update',

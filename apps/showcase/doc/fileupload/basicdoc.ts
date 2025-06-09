@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 interface UploadEvent {
@@ -24,7 +24,7 @@ interface UploadEvent {
     providers: [MessageService]
 })
 export class BasicDoc {
-    constructor(private messageService: MessageService) {}
+    private messageService = inject(MessageService);
 
     onUpload(event: UploadEvent) {
         this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });

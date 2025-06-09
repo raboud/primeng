@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -17,7 +17,7 @@ import { MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class LifeDoc {
-    constructor(private messageService: MessageService) {}
+    private messageService = inject(MessageService);
 
     showLife() {
         this.messageService.add({ severity: 'info', summary: 'Life', detail: 'I show for 10000ms' });

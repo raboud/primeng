@@ -185,6 +185,8 @@ import { TooltipModule } from 'primeng/tooltip';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OverviewApp {
+    private cd = inject(ChangeDetectorRef);
+
     chartData: any;
 
     chartOptions: any;
@@ -220,8 +222,6 @@ export class OverviewApp {
     appState = this.configService.appState();
 
     designerService = inject(DesignerService);
-
-    constructor(private cd: ChangeDetectorRef) {}
 
     themeEffect = effect(() => {
         if (this.configService.transitionComplete()) {

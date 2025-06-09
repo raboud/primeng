@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 
 interface Column {
@@ -65,6 +65,9 @@ interface Column {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LazyLoadDoc implements OnInit {
+    private nodeService = inject(NodeService);
+    private cd = inject(ChangeDetectorRef);
+
     files!: TreeNode[];
 
     cols!: Column[];
@@ -72,11 +75,6 @@ export class LazyLoadDoc implements OnInit {
     totalRecords!: number;
 
     loading: boolean = false;
-
-    constructor(
-        private nodeService: NodeService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     ngOnInit() {
         this.cols = [

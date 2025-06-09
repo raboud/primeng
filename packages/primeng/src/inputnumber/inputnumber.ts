@@ -211,6 +211,8 @@ export const INPUTNUMBER_VALUE_ACCESSOR: any = {
     }
 })
 export class InputNumber extends BaseInput implements OnInit, AfterContentInit, OnChanges, ControlValueAccessor {
+    readonly injector = inject(Injector);
+
     /**
      * Displays spinner buttons.
      * @group Props
@@ -495,10 +497,6 @@ export class InputNumber extends BaseInput implements OnInit, AfterContentInit, 
     _componentStyle = inject(InputNumberStyle);
 
     private ngControl: NgControl | null = null;
-
-    constructor(public readonly injector: Injector) {
-        super();
-    }
 
     ngOnChanges(simpleChange: SimpleChanges) {
         super.ngOnChanges(simpleChange);

@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -26,13 +26,13 @@ import { TreeNode } from 'primeng/api';
     `
 })
 export class LazyDoc implements OnInit {
+    private cd = inject(ChangeDetectorRef);
+
     loading: boolean = false;
 
     nodes!: TreeNode[];
 
     nodes2!: TreeNode[];
-
-    constructor(private cd: ChangeDetectorRef) {}
 
     ngOnInit() {
         this.loading = true;

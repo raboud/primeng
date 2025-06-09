@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 
 @Component({
@@ -20,16 +20,14 @@ import { MenuItem, MessageService, TreeNode } from 'primeng/api';
     providers: [MessageService]
 })
 export class ContextMenuDoc implements OnInit {
+    private nodeService = inject(NodeService);
+    private messageService = inject(MessageService);
+
     files!: TreeNode[];
 
     selectedFile!: TreeNode | null;
 
     items!: MenuItem[];
-
-    constructor(
-        private nodeService: NodeService,
-        private messageService: MessageService
-    ) {}
 
     ngOnInit() {
         this.nodeService.getFiles().then((files) => (this.files = files));

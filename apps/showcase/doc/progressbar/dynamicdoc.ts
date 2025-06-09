@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -18,15 +18,13 @@ import { MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class DynamicDoc implements OnInit, OnDestroy {
+    private messageService = inject(MessageService);
+    private cd = inject(ChangeDetectorRef);
+    private ngZone = inject(NgZone);
+
     value: number = 0;
 
     interval: any;
-
-    constructor(
-        private messageService: MessageService,
-        private cd: ChangeDetectorRef,
-        private ngZone: NgZone
-    ) {}
 
     ngOnInit() {
         this.ngZone.runOutsideAngular(() => {

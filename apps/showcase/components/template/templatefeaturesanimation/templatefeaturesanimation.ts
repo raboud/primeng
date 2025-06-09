@@ -1,5 +1,5 @@
 import { CommonModule, NgOptimizedImage, isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, Input, NgModule, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, NgModule, PLATFORM_ID, ViewEncapsulation, inject } from '@angular/core';
 import { SharedModule } from 'primeng/api';
 import { TemplateFeaturesAnimationInlineModule } from './templatefeaturesanimationinline';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
@@ -67,6 +67,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     encapsulation: ViewEncapsulation.None
 })
 export class TemplateFeaturesAnimation {
+    private cd = inject(ChangeDetectorRef);
+    el = inject(ElementRef);
+    private platformId = inject(PLATFORM_ID);
+    private sanitizer = inject(DomSanitizer);
+
     @Input() featuresData;
 
     @Input() title;
@@ -84,13 +89,6 @@ export class TemplateFeaturesAnimation {
     timeout = null;
 
     options;
-
-    constructor(
-        private cd: ChangeDetectorRef,
-        public el: ElementRef,
-        @Inject(PLATFORM_ID) private platformId: any,
-        private sanitizer: DomSanitizer
-    ) {}
 
     getSanitizedDescription(description: string): SafeHtml {
         return this.sanitizer.bypassSecurityTrustHtml(description);

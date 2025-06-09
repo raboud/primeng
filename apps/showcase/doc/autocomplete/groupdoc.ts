@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FilterService, SelectItemGroup } from 'primeng/api';
 
 interface AutoCompleteCompleteEvent {
@@ -26,13 +26,13 @@ interface AutoCompleteCompleteEvent {
         <app-code [code]="code" selector="autocomplete-grouped-demo"></app-code>`
 })
 export class GroupDoc implements OnInit {
+    private filterService = inject(FilterService);
+
     selectedCity: any;
 
     filteredGroups: any[] | undefined;
 
     groupedCities: SelectItemGroup[] | undefined;
-
-    constructor(private filterService: FilterService) {}
 
     ngOnInit() {
         this.groupedCities = [

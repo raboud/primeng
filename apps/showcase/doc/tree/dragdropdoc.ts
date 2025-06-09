@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TreeDragDropService, TreeNode } from 'primeng/api';
 
 @Component({
@@ -18,9 +18,9 @@ import { TreeDragDropService, TreeNode } from 'primeng/api';
     providers: [TreeDragDropService]
 })
 export class DragDropDoc implements OnInit {
-    files!: TreeNode[];
+    private nodeService = inject(NodeService);
 
-    constructor(private nodeService: NodeService) {}
+    files!: TreeNode[];
 
     ngOnInit() {
         this.nodeService.getFiles().then((data) => (this.files = data));

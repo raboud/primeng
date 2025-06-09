@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 @Component({
     selector: 'templates',
@@ -7,16 +7,14 @@ import { ActivatedRoute, Router } from '@angular/router';
     styleUrl: './learnmore.scss'
 })
 export class LearnMoreComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+
     id: string;
 
     selectedTemplate: any;
 
     templateName: string;
-
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router
-    ) {}
 
     ngOnInit() {
         // this.id = this.route.snapshot.paramMap.get('id');

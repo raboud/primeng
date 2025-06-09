@@ -9,8 +9,6 @@ import {
     effect,
     ElementRef,
     EventEmitter,
-    forwardRef,
-    Inject,
     inject,
     Input,
     input,
@@ -192,6 +190,10 @@ import { TieredMenuStyle } from './style/tieredmenustyle';
     encapsulation: ViewEncapsulation.None
 })
 export class TieredMenuSub extends BaseComponent {
+    el = inject(ElementRef);
+    renderer = inject(Renderer2);
+    tieredMenu = inject(TieredMenu);
+
     @Input() items: any[];
 
     @Input() itemTemplate: TemplateRef<any> | undefined;
@@ -235,14 +237,6 @@ export class TieredMenuSub extends BaseComponent {
     @ViewChild('sublist', { static: true }) sublistViewChild: ElementRef;
 
     _componentStyle = inject(TieredMenuStyle);
-
-    constructor(
-        public el: ElementRef,
-        public renderer: Renderer2,
-        @Inject(forwardRef(() => TieredMenu)) public tieredMenu: TieredMenu
-    ) {
-        super();
-    }
 
     positionSubmenu() {
         if (isPlatformBrowser(this.tieredMenu.platformId)) {
@@ -393,6 +387,8 @@ export class TieredMenuSub extends BaseComponent {
     providers: [TieredMenuStyle]
 })
 export class TieredMenu extends BaseComponent implements OnInit, OnDestroy {
+    overlayService = inject(OverlayService);
+
     /**
      * An array of menuitems.
      * @group Props
@@ -570,7 +566,7 @@ export class TieredMenu extends BaseComponent implements OnInit, OnDestroy {
         return focusedItemInfo.item?.id ? focusedItemInfo.item.id : focusedItemInfo.index !== -1 ? `${this.id}${isNotEmpty(focusedItemInfo.parentKey) ? '_' + focusedItemInfo.parentKey : ''}_${focusedItemInfo.index}` : null;
     }
 
-    constructor(public overlayService: OverlayService) {
+    constructor() {
         super();
         effect(() => {
             const path = this.activeItemPath();

@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -31,13 +31,13 @@ import { TreeNode } from 'primeng/api';
     `
 })
 export class LazyDoc {
+    private cd = inject(ChangeDetectorRef);
+
     selectedNodes: TreeNode[] = [];
 
     nodes!: TreeNode[];
 
     loading: boolean = false;
-
-    constructor(private cd: ChangeDetectorRef) {}
 
     ngOnInit() {
         this.loading = true;

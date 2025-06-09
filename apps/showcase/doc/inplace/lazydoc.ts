@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 @Component({
     selector: 'lazy-doc',
@@ -41,9 +41,9 @@ import { Component } from '@angular/core';
     `
 })
 export class LazyDoc {
-    products: Product[] | undefined;
+    private productService = inject(ProductService);
 
-    constructor(private productService: ProductService) {}
+    products: Product[] | undefined;
 
     code: Code = {
         basic: `<p-inplace (onActivate)="loadData()">

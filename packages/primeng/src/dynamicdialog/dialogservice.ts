@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { ApplicationRef, ComponentRef, EmbeddedViewRef, Inject, Injectable, Injector, Type, createComponent } from '@angular/core';
+import { ApplicationRef, ComponentRef, EmbeddedViewRef, Injectable, Injector, Type, createComponent, inject } from '@angular/core';
 import { appendChild } from '@primeuix/utils';
 import { DynamicDialogComponent } from './dynamicdialog';
 import { DynamicDialogConfig } from './dynamicdialog-config';
@@ -12,13 +12,11 @@ import { DynamicDialogRef } from './dynamicdialog-ref';
  */
 @Injectable()
 export class DialogService {
-    dialogComponentRefMap: Map<DynamicDialogRef<any>, ComponentRef<DynamicDialogComponent>> = new Map();
+    private appRef = inject(ApplicationRef);
+    private injector = inject(Injector);
+    private document = inject<Document>(DOCUMENT);
 
-    constructor(
-        private appRef: ApplicationRef,
-        private injector: Injector,
-        @Inject(DOCUMENT) private document: Document
-    ) {}
+    dialogComponentRefMap: Map<DynamicDialogRef<any>, ComponentRef<DynamicDialogComponent>> = new Map();
     /**
      * Displays the dialog using the dynamic dialog object options.
      * @param {*} componentType - Dynamic component for content template.

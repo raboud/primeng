@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { PhotoService } from '@/service/photoservice';
-import { Component, OnInit, model } from '@angular/core';
+import { Component, OnInit, model, inject } from '@angular/core';
 
 @Component({
     selector: 'positioned-doc',
@@ -35,6 +35,8 @@ import { Component, OnInit, model } from '@angular/core';
     `
 })
 export class PositionedDoc implements OnInit {
+    private photoService = inject(PhotoService);
+
     images = model([]);
 
     position: 'left' | 'right' | 'top' | 'bottom' = 'bottom';
@@ -59,8 +61,6 @@ export class PositionedDoc implements OnInit {
             value: 'right'
         }
     ];
-
-    constructor(private photoService: PhotoService) {}
 
     ngOnInit() {
         this.photoService.getImages().then((images) => this.images.set(images));

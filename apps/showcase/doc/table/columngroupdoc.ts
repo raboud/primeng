@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'column-group-doc',
@@ -49,13 +49,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ColumnGroupDoc {
+    private cd = inject(ChangeDetectorRef);
+
     sales!: any[];
 
     lastYearTotal!: number;
 
     thisYearTotal!: number;
-
-    constructor(private cd: ChangeDetectorRef) {}
 
     code: Code = {
         basic: `<p-table [value]="sales" [tableStyle]="{'min-width': '50rem'}">

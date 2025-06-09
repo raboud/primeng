@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 @Component({
     selector: 'virtual-scroll-doc',
@@ -29,11 +29,13 @@ import { Component } from '@angular/core';
         <app-code [code]="code" selector="tree-select-virtual-scroll-demo"></app-code>`
 })
 export class VirtualScrollDoc {
+    private nodeService = inject(NodeService);
+
     nodes!: any[];
 
     selectedNodes: any;
 
-    constructor(private nodeService: NodeService) {
+    constructor() {
         this.nodeService.getLargeTreeNodes().then((files) => (this.nodes = files));
     }
 

@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
@@ -43,17 +43,15 @@ import { MenuItem, MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class ContextMenuDoc {
+    private productService = inject(ProductService);
+    private messageService = inject(MessageService);
+    private cd = inject(ChangeDetectorRef);
+
     products!: Product[];
 
     selectedProduct!: Product;
 
     items!: MenuItem[];
-
-    constructor(
-        private productService: ProductService,
-        private messageService: MessageService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     loadDemoData() {
         this.productService.getProductsMini().then((data) => {

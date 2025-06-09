@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { MessageService, SelectItem } from 'primeng/api';
 
 @Component({
@@ -100,17 +100,15 @@ import { MessageService, SelectItem } from 'primeng/api';
     providers: [MessageService]
 })
 export class RowEditDoc {
+    private productService = inject(ProductService);
+    private messageService = inject(MessageService);
+    private cd = inject(ChangeDetectorRef);
+
     products!: Product[];
 
     statuses!: SelectItem[];
 
     clonedProducts: { [s: string]: Product } = {};
-
-    constructor(
-        private productService: ProductService,
-        private messageService: MessageService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     loadDemoData() {
         this.productService.getProductsMini().then((data) => {

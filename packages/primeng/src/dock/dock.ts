@@ -127,6 +127,8 @@ import { DockStyle } from './style/dockstyle';
     }
 })
 export class Dock extends BaseComponent implements AfterContentInit {
+    cd = inject(ChangeDetectorRef);
+
     /**
      * Current id state as a string.
      * @group Props
@@ -205,7 +207,7 @@ export class Dock extends BaseComponent implements AfterContentInit {
         return this.focusedOptionIndex !== -1 ? this.focusedOptionIndex : null;
     }
 
-    constructor(public cd: ChangeDetectorRef) {
+    constructor() {
         super();
         this.currentIndex = -3;
     }

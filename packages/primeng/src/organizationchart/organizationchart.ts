@@ -10,8 +10,6 @@ import {
     ContentChildren,
     ElementRef,
     EventEmitter,
-    forwardRef,
-    Inject,
     inject,
     Input,
     NgModule,
@@ -104,6 +102,8 @@ import { OrganizationChartStyle } from './style/organizationchartstyle';
     providers: [OrganizationChartStyle]
 })
 export class OrganizationChartNode extends BaseComponent implements OnDestroy {
+    cd = inject(ChangeDetectorRef);
+
     @Input() node: TreeNode<any> | undefined;
 
     @Input({ transform: booleanAttribute }) root: boolean | undefined;
@@ -120,10 +120,9 @@ export class OrganizationChartNode extends BaseComponent implements OnDestroy {
 
     _componentStyle = inject(OrganizationChartStyle);
 
-    constructor(
-        @Inject(forwardRef(() => OrganizationChart)) chart: OrganizationChart,
-        public cd: ChangeDetectorRef
-    ) {
+    constructor() {
+        const chart = inject(OrganizationChart);
+
         super();
         this.chart = chart as OrganizationChart;
         this.subscription = this.chart.selectionSource$.subscribe(() => {
@@ -191,6 +190,9 @@ export class OrganizationChartNode extends BaseComponent implements OnDestroy {
     }
 })
 export class OrganizationChart extends BaseComponent implements AfterContentInit {
+    el = inject(ElementRef);
+    cd = inject(ChangeDetectorRef);
+
     /**
      * An array of nested TreeNodes.
      * @group Props
@@ -277,13 +279,6 @@ export class OrganizationChart extends BaseComponent implements AfterContentInit
     selectionSource$ = this.selectionSource.asObservable();
 
     _componentStyle = inject(OrganizationChartStyle);
-
-    constructor(
-        public el: ElementRef,
-        public cd: ChangeDetectorRef
-    ) {
-        super();
-    }
 
     get root(): TreeNode<any> | null {
         return this.value && this.value.length ? this.value[0] : null;

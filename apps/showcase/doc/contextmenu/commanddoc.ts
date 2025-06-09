@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
 
@@ -43,6 +43,8 @@ interface Users {
     providers: [MessageService]
 })
 export class CommandDoc implements OnInit {
+    private messageService = inject(MessageService);
+
     items: MenuItem[] | undefined;
 
     @ViewChild('cm') cm: ContextMenu;
@@ -50,8 +52,6 @@ export class CommandDoc implements OnInit {
     selectedUser: Users;
 
     users: Users[];
-
-    constructor(private messageService: MessageService) {}
 
     ngOnInit() {
         this.users = [

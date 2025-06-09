@@ -24,7 +24,6 @@ import {
     OnChanges,
     OnDestroy,
     OnInit,
-    Optional,
     Output,
     QueryList,
     Renderer2,
@@ -3409,6 +3408,11 @@ export class Table<RowData = any> extends BaseComponent implements OnInit, After
     encapsulation: ViewEncapsulation.None
 })
 export class TableBody implements AfterViewInit, OnDestroy {
+    dt = inject(Table);
+    tableService = inject(TableService);
+    cd = inject(ChangeDetectorRef);
+    el = inject(ElementRef);
+
     @Input('pTableBody') columns: any[] | undefined;
 
     @Input('pTableBodyTemplate') template: Nullable<TemplateRef<any>>;
@@ -3447,12 +3451,7 @@ export class TableBody implements AfterViewInit, OnDestroy {
         }
     }
 
-    constructor(
-        public dt: Table,
-        public tableService: TableService,
-        public cd: ChangeDetectorRef,
-        public el: ElementRef
-    ) {
+    constructor() {
         this.subscription = this.dt.tableService.valueSource$.subscribe(() => {
             if (this.dt.virtualScroll) {
                 this.cd.detectChanges();
@@ -3553,7 +3552,7 @@ export class TableBody implements AfterViewInit, OnDestroy {
     }
 })
 export class RowGroupHeader {
-    constructor(public dt: Table) {}
+    dt = inject(Table);
 
     get getFrozenRowGroupHeaderStickyPosition() {
         return this.dt.rowGroupHeaderStyleObject ? this.dt.rowGroupHeaderStyleObject.top : '';
@@ -3569,6 +3568,9 @@ export class RowGroupHeader {
     }
 })
 export class FrozenColumn implements AfterViewInit {
+    private el = inject(ElementRef);
+    private zone = inject(NgZone);
+
     @Input() get frozen(): boolean {
         return this._frozen;
     }
@@ -3579,11 +3581,6 @@ export class FrozenColumn implements AfterViewInit {
     }
 
     @Input() alignFrozen: string = 'left';
-
-    constructor(
-        private el: ElementRef,
-        private zone: NgZone
-    ) {}
 
     ngAfterViewInit() {
         this.zone.runOutsideAngular(() => {
@@ -3649,6 +3646,8 @@ export class FrozenColumn implements AfterViewInit {
     providers: [TableStyle]
 })
 export class SortableColumn extends BaseComponent implements OnInit, OnDestroy {
+    dt = inject(Table);
+
     readonly #elementRef = inject(ElementRef);
 
     @Input('pSortableColumn') field: string | undefined;
@@ -3665,7 +3664,7 @@ export class SortableColumn extends BaseComponent implements OnInit, OnDestroy {
 
     _componentStyle = inject(TableStyle);
 
-    constructor(public dt: Table) {
+    constructor() {
         super();
         if (this.isEnabled()) {
             this.subscription = this.dt.tableService.sortSource$.subscribe((sortMeta) => {
@@ -3767,6 +3766,9 @@ export class SortableColumn extends BaseComponent implements OnInit, OnDestroy {
     providers: [TableStyle]
 })
 export class SortIcon extends BaseComponent implements OnInit, OnDestroy {
+    dt = inject(Table);
+    cd = inject(ChangeDetectorRef);
+
     @Input() field: string | undefined;
 
     subscription: Subscription | undefined;
@@ -3775,10 +3777,7 @@ export class SortIcon extends BaseComponent implements OnInit, OnDestroy {
 
     _componentStyle = inject(TableStyle);
 
-    constructor(
-        public dt: Table,
-        public cd: ChangeDetectorRef
-    ) {
+    constructor() {
         super();
         this.subscription = this.dt.tableService.sortSource$.subscribe((sortMeta) => {
             this.updateSortState();
@@ -3851,6 +3850,9 @@ export class SortIcon extends BaseComponent implements OnInit, OnDestroy {
     providers: [TableStyle]
 })
 export class SelectableRow extends BaseComponent implements OnInit, OnDestroy {
+    dt = inject(Table);
+    tableService = inject(TableService);
+
     @Input('pSelectableRow') data: any;
 
     @Input('pSelectableRowIndex') index: number | undefined;
@@ -3863,10 +3865,7 @@ export class SelectableRow extends BaseComponent implements OnInit, OnDestroy {
 
     _componentStyle = inject(TableStyle);
 
-    constructor(
-        public dt: Table,
-        public tableService: TableService
-    ) {
+    constructor() {
         super();
         if (this.isEnabled()) {
             this.subscription = this.dt.tableService.selectionSource$.subscribe(() => {
@@ -4107,6 +4106,9 @@ export class SelectableRow extends BaseComponent implements OnInit, OnDestroy {
     }
 })
 export class SelectableRowDblClick implements OnInit, OnDestroy {
+    dt = inject(Table);
+    tableService = inject(TableService);
+
     @Input('pSelectableRowDblClick') data: any;
 
     @Input('pSelectableRowIndex') index: number | undefined;
@@ -4117,10 +4119,7 @@ export class SelectableRowDblClick implements OnInit, OnDestroy {
 
     subscription: Subscription | undefined;
 
-    constructor(
-        public dt: Table,
-        public tableService: TableService
-    ) {
+    constructor() {
         if (this.isEnabled()) {
             this.subscription = this.dt.tableService.selectionSource$.subscribe(() => {
                 this.selected = this.dt.isSelected(this.data);
@@ -4165,6 +4164,10 @@ export class SelectableRowDblClick implements OnInit, OnDestroy {
     }
 })
 export class ContextMenuRow {
+    dt = inject(Table);
+    tableService = inject(TableService);
+    private el = inject(ElementRef);
+
     @Input('pContextMenuRow') data: any;
 
     @Input('pContextMenuRowIndex') index: number | undefined;
@@ -4175,11 +4178,7 @@ export class ContextMenuRow {
 
     subscription: Subscription | undefined;
 
-    constructor(
-        public dt: Table,
-        public tableService: TableService,
-        private el: ElementRef
-    ) {
+    constructor() {
         if (this.isEnabled()) {
             this.subscription = this.dt.tableService.contextMenuSource$.subscribe((data) => {
                 this.selected = this.dt.equals(this.data, data);
@@ -4217,11 +4216,11 @@ export class ContextMenuRow {
     standalone: false
 })
 export class RowToggler {
+    dt = inject(Table);
+
     @Input('pRowToggler') data: any;
 
     @Input({ transform: booleanAttribute }) pRowTogglerDisabled: boolean | undefined;
-
-    constructor(public dt: Table) {}
 
     @HostListener('click', ['$event'])
     onClick(event: Event) {
@@ -4245,6 +4244,10 @@ export class RowToggler {
     providers: [TableStyle]
 })
 export class ResizableColumn extends BaseComponent implements AfterViewInit, OnDestroy {
+    dt = inject(Table);
+    el = inject(ElementRef);
+    zone = inject(NgZone);
+
     @Input({ transform: booleanAttribute }) pResizableColumnDisabled: boolean | undefined;
 
     resizer: HTMLSpanElement | undefined;
@@ -4262,14 +4265,6 @@ export class ResizableColumn extends BaseComponent implements AfterViewInit, OnD
     documentMouseUpListener: VoidListener;
 
     _componentStyle = inject(TableStyle);
-
-    constructor(
-        public dt: Table,
-        public el: ElementRef,
-        public zone: NgZone
-    ) {
-        super();
-    }
 
     ngAfterViewInit() {
         super.ngAfterViewInit();
@@ -4369,6 +4364,10 @@ export class ResizableColumn extends BaseComponent implements AfterViewInit, OnD
     providers: [TableStyle]
 })
 export class ReorderableColumn extends BaseComponent implements AfterViewInit, OnDestroy {
+    dt = inject(Table);
+    el = inject(ElementRef);
+    zone = inject(NgZone);
+
     @Input({ transform: booleanAttribute }) pReorderableColumnDisabled: boolean | undefined;
 
     dragStartListener: VoidListener;
@@ -4382,14 +4381,6 @@ export class ReorderableColumn extends BaseComponent implements AfterViewInit, O
     mouseDownListener: VoidListener;
 
     _componentStyle = inject(TableStyle);
-
-    constructor(
-        public dt: Table,
-        public el: ElementRef,
-        public zone: NgZone
-    ) {
-        super();
-    }
 
     ngAfterViewInit() {
         super.ngAfterViewInit();
@@ -4484,6 +4475,10 @@ export class ReorderableColumn extends BaseComponent implements AfterViewInit, O
     standalone: false
 })
 export class EditableColumn implements OnChanges, AfterViewInit, OnDestroy {
+    dt = inject(Table);
+    el = inject(ElementRef);
+    zone = inject(NgZone);
+
     @Input('pEditableColumn') data: any;
 
     @Input('pEditableColumnField') field: any;
@@ -4495,12 +4490,6 @@ export class EditableColumn implements OnChanges, AfterViewInit, OnDestroy {
     @Input() pFocusCellSelector: string | undefined;
 
     overlayEventListener: any;
-
-    constructor(
-        public dt: Table,
-        public el: ElementRef,
-        public zone: NgZone
-    ) {}
 
     public ngOnChanges(changes: SimpleChanges): void {
         if (this.el.nativeElement && !changes.data?.firstChange) {
@@ -4830,11 +4819,11 @@ export class EditableColumn implements OnChanges, AfterViewInit, OnDestroy {
     standalone: false
 })
 export class EditableRow {
+    el = inject(ElementRef);
+
     @Input('pEditableRow') data: any;
 
     @Input({ transform: booleanAttribute }) pEditableRowDisabled: boolean | undefined;
-
-    constructor(public el: ElementRef) {}
 
     isEnabled() {
         return this.pEditableRowDisabled !== true;
@@ -4849,10 +4838,8 @@ export class EditableRow {
     }
 })
 export class InitEditableRow {
-    constructor(
-        public dt: Table,
-        public editableRow: EditableRow
-    ) {}
+    dt = inject(Table);
+    editableRow = inject(EditableRow);
 
     @HostListener('click', ['$event'])
     onClick(event: Event) {
@@ -4869,10 +4856,8 @@ export class InitEditableRow {
     }
 })
 export class SaveEditableRow {
-    constructor(
-        public dt: Table,
-        public editableRow: EditableRow
-    ) {}
+    dt = inject(Table);
+    editableRow = inject(EditableRow);
 
     @HostListener('click', ['$event'])
     onClick(event: Event) {
@@ -4890,12 +4875,9 @@ export class SaveEditableRow {
     providers: [TableStyle]
 })
 export class CancelEditableRow extends BaseComponent {
-    constructor(
-        public dt: Table,
-        public editableRow: EditableRow
-    ) {
-        super();
-    }
+    dt = inject(Table);
+    editableRow = inject(EditableRow);
+
     _componentStyle = inject(TableStyle);
     @HostListener('click', ['$event'])
     onClick(event: Event) {
@@ -4918,6 +4900,10 @@ export class CancelEditableRow extends BaseComponent {
     encapsulation: ViewEncapsulation.None
 })
 export class CellEditor implements AfterContentInit {
+    dt = inject(Table);
+    editableColumn = inject(EditableColumn, { optional: true });
+    editableRow = inject(EditableRow, { optional: true });
+
     @ContentChildren(PrimeTemplate) _templates: Nullable<QueryList<PrimeTemplate>>;
 
     @ContentChild('input') _inputTemplate: TemplateRef<any>;
@@ -4927,12 +4913,6 @@ export class CellEditor implements AfterContentInit {
     inputTemplate: Nullable<TemplateRef<any>>;
 
     outputTemplate: Nullable<TemplateRef<any>>;
-
-    constructor(
-        public dt: Table,
-        @Optional() public editableColumn: EditableColumn,
-        @Optional() public editableRow: EditableRow
-    ) {}
 
     ngAfterContentInit() {
         (this._templates as QueryList<PrimeTemplate>).forEach((item) => {
@@ -4961,6 +4941,9 @@ export class CellEditor implements AfterContentInit {
     encapsulation: ViewEncapsulation.None
 })
 export class TableRadioButton implements OnInit, OnDestroy {
+    dt = inject(Table);
+    cd = inject(ChangeDetectorRef);
+
     @Input() value: any;
 
     readonly disabled = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
@@ -4976,10 +4959,7 @@ export class TableRadioButton implements OnInit, OnDestroy {
 
     subscription: Subscription;
 
-    constructor(
-        public dt: Table,
-        public cd: ChangeDetectorRef
-    ) {
+    constructor() {
         this.subscription = this.dt.tableService.selectionSource$.subscribe(() => {
             this.checked = this.dt.isSelected(this.value);
 
@@ -5030,6 +5010,10 @@ export class TableRadioButton implements OnInit, OnDestroy {
     encapsulation: ViewEncapsulation.None
 })
 export class TableCheckbox implements OnInit, OnDestroy {
+    dt = inject(Table);
+    tableService = inject(TableService);
+    cd = inject(ChangeDetectorRef);
+
     @Input() value: any;
 
     readonly disabled = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
@@ -5044,11 +5028,7 @@ export class TableCheckbox implements OnInit, OnDestroy {
 
     subscription: Subscription;
 
-    constructor(
-        public dt: Table,
-        public tableService: TableService,
-        public cd: ChangeDetectorRef
-    ) {
+    constructor() {
         this.subscription = this.dt.tableService.selectionSource$.subscribe(() => {
             this.checked = this.dt.isSelected(this.value) && !this.disabled();
             this.ariaLabel = this.ariaLabel || this.dt.config.translation.aria ? (this.checked ? this.dt.config.translation.aria.selectRow : this.dt.config.translation.aria.unselectRow) : undefined;
@@ -5096,6 +5076,10 @@ export class TableCheckbox implements OnInit, OnDestroy {
     encapsulation: ViewEncapsulation.None
 })
 export class TableHeaderCheckbox implements OnInit, OnDestroy {
+    dt = inject(Table);
+    tableService = inject(TableService);
+    cd = inject(ChangeDetectorRef);
+
     readonly disabled = input<boolean | undefined, unknown>(undefined, { transform: booleanAttribute });
     readonly inputId = input<string | undefined>();
     readonly name = input<string | undefined>();
@@ -5108,11 +5092,7 @@ export class TableHeaderCheckbox implements OnInit, OnDestroy {
 
     valueChangeSubscription: Subscription;
 
-    constructor(
-        public dt: Table,
-        public tableService: TableService,
-        public cd: ChangeDetectorRef
-    ) {
+    constructor() {
         this.valueChangeSubscription = this.dt.tableService.valueSource$.subscribe(() => {
             this.checked = this.updateCheckedState();
             this.ariaLabel = this.ariaLabel || this.dt.config.translation.aria ? (this.checked ? this.dt.config.translation.aria.selectAll : this.dt.config.translation.aria.unselectAll) : undefined;
@@ -5175,11 +5155,9 @@ export class TableHeaderCheckbox implements OnInit, OnDestroy {
     providers: [TableStyle]
 })
 export class ReorderableRowHandle extends BaseComponent implements AfterViewInit {
-    _componentStyle = inject(TableStyle);
+    el = inject(ElementRef);
 
-    constructor(public el: ElementRef) {
-        super();
-    }
+    _componentStyle = inject(TableStyle);
 
     ngAfterViewInit() {
         // DomHandler.addClass(this.el.nativeElement, 'p-datatable-reorderable-row-handle');
@@ -5191,6 +5169,11 @@ export class ReorderableRowHandle extends BaseComponent implements AfterViewInit
     standalone: false
 })
 export class ReorderableRow implements AfterViewInit {
+    private renderer = inject(Renderer2);
+    dt = inject(Table);
+    el = inject(ElementRef);
+    zone = inject(NgZone);
+
     @Input('pReorderableRow') index: number | undefined;
 
     @Input({ transform: booleanAttribute }) pReorderableRowDisabled: boolean | undefined;
@@ -5206,13 +5189,6 @@ export class ReorderableRow implements AfterViewInit {
     dragLeaveListener: VoidListener;
 
     dropListener: VoidListener;
-
-    constructor(
-        private renderer: Renderer2,
-        public dt: Table,
-        public el: ElementRef,
-        public zone: NgZone
-    ) {}
 
     ngAfterViewInit() {
         if (this.isEnabled()) {
@@ -6285,6 +6261,9 @@ export class ColumnFilter extends BaseComponent implements AfterContentInit {
     encapsulation: ViewEncapsulation.None
 })
 export class ColumnFilterFormElement implements OnInit {
+    dt = inject(Table);
+    private colFilter = inject(ColumnFilter);
+
     @Input() field: string | undefined;
 
     @Input() type: string | undefined;
@@ -6322,11 +6301,6 @@ export class ColumnFilterFormElement implements OnInit {
     }
 
     filterCallback: any;
-
-    constructor(
-        public dt: Table,
-        private colFilter: ColumnFilter
-    ) {}
 
     ngOnInit() {
         this.filterCallback = (value: any) => {

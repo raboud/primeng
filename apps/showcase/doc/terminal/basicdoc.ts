@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { TerminalService } from 'primeng/terminal';
 import { Subscription } from 'rxjs';
 
@@ -19,9 +19,11 @@ import { Subscription } from 'rxjs';
     providers: [TerminalService]
 })
 export class BasicDoc implements OnDestroy {
+    private terminalService = inject(TerminalService);
+
     subscription: Subscription;
 
-    constructor(private terminalService: TerminalService) {
+    constructor() {
         this.subscription = this.terminalService.commandHandler.subscribe((text) => {
             let response;
             let argsIndex = text.indexOf(' ');

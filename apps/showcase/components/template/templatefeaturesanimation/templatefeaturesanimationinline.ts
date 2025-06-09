@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, Input, NgModule, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, NgModule, PLATFORM_ID, ViewEncapsulation, inject } from '@angular/core';
 import { SharedModule } from 'primeng/api';
 
 @Component({
@@ -32,6 +32,10 @@ import { SharedModule } from 'primeng/api';
     encapsulation: ViewEncapsulation.None
 })
 export class TemplateFeaturesAnimationInline {
+    private cd = inject(ChangeDetectorRef);
+    el = inject(ElementRef);
+    private platformId = inject(PLATFORM_ID);
+
     @Input() inlineFeaturesData;
 
     @Input() parentHandleClick;
@@ -53,12 +57,6 @@ export class TemplateFeaturesAnimationInline {
     timeout = null;
 
     options;
-
-    constructor(
-        private cd: ChangeDetectorRef,
-        public el: ElementRef,
-        @Inject(PLATFORM_ID) private platformId: any
-    ) {}
 
     ngOnInit() {
         if (isPlatformBrowser(this.platformId)) {

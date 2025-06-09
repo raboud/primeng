@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'basic-doc',
@@ -24,14 +24,12 @@ import { ChangeDetectorRef, Component } from '@angular/core';
     `
 })
 export class BasicDoc {
+    private carService = inject(ProductService);
+    private cdr = inject(ChangeDetectorRef);
+
     sourceProducts!: Product[];
 
     targetProducts!: Product[];
-
-    constructor(
-        private carService: ProductService,
-        private cdr: ChangeDetectorRef
-    ) {}
 
     ngOnInit() {
         this.carService.getProductsSmall().then((products) => {

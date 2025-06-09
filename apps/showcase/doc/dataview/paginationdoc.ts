@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Product } from '@/domain/product';
 import { ProductService } from '@/service/productservice';
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 
 @Component({
     selector: 'data-view-pagination-demo',
@@ -56,9 +56,9 @@ import { Component, signal } from '@angular/core';
     `
 })
 export class PaginationDoc {
-    products = signal<any>([]);
+    private productService = inject(ProductService);
 
-    constructor(private productService: ProductService) {}
+    products = signal<any>([]);
     code: Code = {
         basic: `<p-dataview [value]="products()" [rows]="5" [paginator]="true">
     <ng-template #list let-items>

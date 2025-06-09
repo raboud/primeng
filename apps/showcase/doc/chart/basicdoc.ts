@@ -21,6 +21,8 @@ import { ChangeDetectorRef, Component, effect, inject, OnInit, PLATFORM_ID } fro
     `
 })
 export class BasicDoc implements OnInit {
+    private cd = inject(ChangeDetectorRef);
+
     basicData: any;
 
     basicOptions: any;
@@ -30,8 +32,6 @@ export class BasicDoc implements OnInit {
     configService = inject(AppConfigService);
 
     designerService = inject(DesignerService);
-
-    constructor(private cd: ChangeDetectorRef) {}
 
     themeEffect = effect(() => {
         if (this.configService.transitionComplete()) {

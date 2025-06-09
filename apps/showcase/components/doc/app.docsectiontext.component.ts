@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, ElementRef, Input, numberAttribute } from '@angular/core';
+import { Component, ElementRef, Input, numberAttribute, inject } from '@angular/core';
 
 @Component({
     selector: 'app-docsectiontext',
@@ -28,6 +28,9 @@ import { Component, ElementRef, Input, numberAttribute } from '@angular/core';
     `
 })
 export class AppDocSectionTextComponent {
+    location = inject(Location);
+    el = inject(ElementRef);
+
     @Input() title!: string;
 
     @Input() id!: string;
@@ -37,11 +40,6 @@ export class AppDocSectionTextComponent {
     @Input() label!: string;
 
     @Input() description: string;
-
-    constructor(
-        public location: Location,
-        public el: ElementRef
-    ) {}
 
     navigate(event) {
         if (typeof window !== undefined) {

@@ -167,6 +167,8 @@ import { BreadCrumbStyle } from './style/breadcrumbstyle';
     providers: [BreadCrumbStyle]
 })
 export class Breadcrumb extends BaseComponent implements AfterContentInit {
+    private router = inject(Router);
+
     /**
      * An array of menuitems.
      * @group Props
@@ -200,10 +202,6 @@ export class Breadcrumb extends BaseComponent implements AfterContentInit {
     @Output() onItemClick: EventEmitter<BreadcrumbItemClickEvent> = new EventEmitter<BreadcrumbItemClickEvent>();
 
     _componentStyle = inject(BreadCrumbStyle);
-
-    constructor(private router: Router) {
-        super();
-    }
 
     onClick(event: MouseEvent, item: MenuItem) {
         if (item.disabled) {

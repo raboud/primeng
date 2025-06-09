@@ -17,7 +17,6 @@ import {
     OnChanges,
     OnDestroy,
     OnInit,
-    Optional,
     Output,
     QueryList,
     SimpleChanges,
@@ -841,6 +840,8 @@ export class UITreeNode extends BaseComponent implements OnInit {
     }
 })
 export class Tree extends BaseComponent implements OnInit, AfterContentInit, OnChanges, OnDestroy, BlockableUI {
+    dragDropService = inject(TreeDragDropService, { optional: true });
+
     /**
      * An array of treenodes.
      * @group Props
@@ -1279,10 +1280,6 @@ export class Tree extends BaseComponent implements OnInit, AfterContentInit, OnC
     @HostListener('dragleave', ['$event'])
     handleDragLeaveEvent(event: DragEvent) {
         this.onDragLeave(event);
-    }
-
-    constructor(@Optional() public dragDropService: TreeDragDropService) {
-        super();
     }
 
     ngOnInit() {

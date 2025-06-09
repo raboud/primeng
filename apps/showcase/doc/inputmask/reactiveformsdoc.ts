@@ -26,6 +26,8 @@ import { MessageService } from 'primeng/api';
     `
 })
 export class ReactiveFormsDoc {
+    private fb = inject(FormBuilder);
+
     messageService = inject(MessageService);
 
     items: any[] | undefined;
@@ -34,7 +36,7 @@ export class ReactiveFormsDoc {
 
     formSubmitted: boolean = false;
 
-    constructor(private fb: FormBuilder) {
+    constructor() {
         this.exampleForm = this.fb.group({
             value: ['', Validators.required]
         });

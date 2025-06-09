@@ -1,14 +1,14 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class PlatformService {
+    private platformId = inject(PLATFORM_ID);
+    private document = inject<Document>(DOCUMENT);
+
     private window: Window;
 
-    constructor(
-        @Inject(PLATFORM_ID) private platformId: any,
-        @Inject(DOCUMENT) private document: Document
-    ) {
+    constructor() {
         this.window = this.document.defaultView as Window;
     }
 

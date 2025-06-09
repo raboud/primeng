@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
@@ -57,9 +57,9 @@ import { MenuItem } from 'primeng/api';
     `
 })
 export class RouterDoc implements OnInit {
-    items: MenuItem[] | undefined;
+    private router = inject(Router);
 
-    constructor(private router: Router) {}
+    items: MenuItem[] | undefined;
 
     code: Code = {
         basic: `<span #span class="inline-flex items-center justify-center border-2 border-primary rounded w-16 h-16" aria-haspopup="true">

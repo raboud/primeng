@@ -1,7 +1,7 @@
 import { Code } from '@/domain/code';
 import { Customer } from '@/domain/customer';
 import { CustomerService } from '@/service/customerservice';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'frozen-rows-doc',
@@ -50,14 +50,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FrozenRowsDoc {
+    private customerService = inject(CustomerService);
+    private cd = inject(ChangeDetectorRef);
+
     unlockedCustomers!: Customer[];
 
     lockedCustomers!: Customer[];
-
-    constructor(
-        private customerService: CustomerService,
-        private cd: ChangeDetectorRef
-    ) {}
 
     loadDemoData() {
         this.customerService.getCustomersMedium().then((data) => {

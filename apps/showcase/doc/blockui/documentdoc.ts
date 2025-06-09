@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'block-ui-document-demo',
@@ -16,9 +16,9 @@ import { ChangeDetectorRef, Component } from '@angular/core';
     `
 })
 export class DocumentDoc {
-    blockedDocument: boolean = false;
+    private cd = inject(ChangeDetectorRef);
 
-    constructor(private cd: ChangeDetectorRef) {}
+    blockedDocument: boolean = false;
 
     blockDocument() {
         this.blockedDocument = true;

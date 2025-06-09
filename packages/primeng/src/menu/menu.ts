@@ -10,8 +10,6 @@ import {
     ContentChildren,
     ElementRef,
     EventEmitter,
-    forwardRef,
-    Inject,
     inject,
     Input,
     NgModule,
@@ -46,10 +44,8 @@ import { MenuStyle } from './style/menustyle';
     standalone: true
 })
 export class SafeHtmlPipe implements PipeTransform {
-    constructor(
-        @Inject(PLATFORM_ID) private readonly platformId: any,
-        private readonly sanitizer: DomSanitizer
-    ) {}
+    private readonly platformId = inject(PLATFORM_ID);
+    private readonly sanitizer = inject(DomSanitizer);
 
     public transform(value: string): SafeHtml {
         if (!value || !isPlatformBrowser(this.platformId)) {
@@ -133,7 +129,9 @@ export class MenuItemContent extends BaseComponent {
 
     _componentStyle = inject(MenuStyle);
 
-    constructor(@Inject(forwardRef(() => Menu)) menu: Menu) {
+    constructor() {
+        const menu = inject(Menu);
+
         super();
         this.menu = menu as Menu;
     }
@@ -272,6 +270,8 @@ export class MenuItemContent extends BaseComponent {
     providers: [MenuStyle]
 })
 export class Menu extends BaseComponent implements AfterContentInit, OnDestroy {
+    overlayService = inject(OverlayService);
+
     /**
      * An array of menuitems.
      * @group Props
@@ -394,7 +394,7 @@ export class Menu extends BaseComponent implements AfterContentInit, OnDestroy {
 
     _componentStyle = inject(MenuStyle);
 
-    constructor(public overlayService: OverlayService) {
+    constructor() {
         super();
         this.id = this.id || uuid('pn_id_');
     }

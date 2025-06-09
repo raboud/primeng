@@ -317,6 +317,9 @@ export const AUTOCOMPLETE_VALUE_ACCESSOR: any = {
     }
 })
 export class AutoComplete extends BaseInput implements AfterViewChecked, AfterContentInit, OnDestroy, ControlValueAccessor {
+    overlayService = inject(OverlayService);
+    private zone = inject(NgZone);
+
     /**
      * Minimum number of characters to initiate a search.
      * @group Props
@@ -913,13 +916,6 @@ export class AutoComplete extends BaseInput implements AfterViewChecked, AfterCo
 
     chipItemClass(index) {
         return this._componentStyle.classes.chipItem({ instance: this, i: index });
-    }
-
-    constructor(
-        public overlayService: OverlayService,
-        private zone: NgZone
-    ) {
-        super();
     }
 
     ngOnInit() {

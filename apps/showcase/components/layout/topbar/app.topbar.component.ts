@@ -2,7 +2,7 @@ import Versions from '@/assets/data/versions.json';
 import { AppConfiguratorComponent } from '@/components/layout/configurator/app.configurator.component';
 import { AppConfigService } from '@/service/appconfigservice';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { afterNextRender, booleanAttribute, Component, computed, ElementRef, Inject, Input, OnDestroy, Renderer2 } from '@angular/core';
+import { afterNextRender, booleanAttribute, Component, computed, ElementRef, Input, OnDestroy, Renderer2, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import docsearch from '@docsearch/js';
@@ -163,6 +163,11 @@ import { StyleClass } from 'primeng/styleclass';
     </div>`
 })
 export class AppTopBarComponent implements OnDestroy {
+    private document = inject<Document>(DOCUMENT);
+    private el = inject(ElementRef);
+    private renderer = inject(Renderer2);
+    private configService = inject(AppConfigService);
+
     @Input({ transform: booleanAttribute }) showConfigurator = true;
 
     @Input({ transform: booleanAttribute }) showMenuButton = true;
@@ -173,12 +178,7 @@ export class AppTopBarComponent implements OnDestroy {
 
     private window: Window;
 
-    constructor(
-        @Inject(DOCUMENT) private document: Document,
-        private el: ElementRef,
-        private renderer: Renderer2,
-        private configService: AppConfigService
-    ) {
+    constructor() {
         this.window = this.document.defaultView as Window;
 
         afterNextRender(() => {

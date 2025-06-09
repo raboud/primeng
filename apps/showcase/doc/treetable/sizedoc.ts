@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -41,13 +41,13 @@ import { TreeNode } from 'primeng/api';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SizeDoc {
+    private nodeService = inject(NodeService);
+
     files!: TreeNode[];
 
     sizes!: any[];
 
     selectedSize: any = '';
-
-    constructor(private nodeService: NodeService) {}
 
     loadDemoData() {
         this.nodeService.getFilesystem().then((files) => (this.files = files));

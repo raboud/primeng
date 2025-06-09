@@ -142,6 +142,8 @@ import { ToastCloseEvent, ToastItemCloseEvent, ToastPositionType } from './toast
     providers: [ToastStyle]
 })
 export class ToastItem extends BaseComponent implements AfterViewInit, OnDestroy {
+    private zone = inject(NgZone);
+
     @Input() message: ToastMessageOptions | null | undefined;
 
     @Input({ transform: numberAttribute }) index: number | null | undefined;
@@ -165,10 +167,6 @@ export class ToastItem extends BaseComponent implements AfterViewInit, OnDestroy
     _componentStyle = inject(ToastStyle);
 
     timeout: any;
-
-    constructor(private zone: NgZone) {
-        super();
-    }
 
     ngAfterViewInit() {
         super.ngAfterViewInit();

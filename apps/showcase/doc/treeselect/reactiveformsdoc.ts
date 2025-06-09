@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { NodeService } from '@/service/nodeservice';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -19,11 +19,13 @@ import { FormControl, FormGroup } from '@angular/forms';
     `
 })
 export class ReactiveFormsDoc implements OnInit {
+    private nodeService = inject(NodeService);
+
     nodes!: any[];
 
     formGroup!: FormGroup;
 
-    constructor(private nodeService: NodeService) {
+    constructor() {
         this.nodeService.getFiles().then((files) => (this.nodes = files));
     }
 

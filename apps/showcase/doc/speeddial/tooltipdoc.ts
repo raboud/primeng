@@ -1,5 +1,5 @@
 import { Code } from '@/domain/code';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 
@@ -22,6 +22,9 @@ import { MenuItem, MessageService } from 'primeng/api';
     providers: [MessageService]
 })
 export class TooltipDoc implements OnInit {
+    private messageService = inject(MessageService);
+    private router = inject(Router);
+
     items: MenuItem[] | undefined;
     code: Code = {
         basic: `<p-speeddial [model]="items" direction="up" [style]="{ position: 'absolute', right: 0, bottom: 0 }" [buttonProps]="{ severity: 'help', rounded: true }" [tooltipOptions]="{ tooltipPosition: 'left' }" />
@@ -96,11 +99,6 @@ export class SpeedDialTooltipDemo implements OnInit {
     }
 }`
     };
-
-    constructor(
-        private messageService: MessageService,
-        private router: Router
-    ) {}
 
     ngOnInit() {
         this.items = [

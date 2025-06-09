@@ -1,6 +1,6 @@
 import { Code } from '@/domain/code';
 import { CountryService } from '@/service/countryservice';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 interface AutoCompleteCompleteEvent {
     originalEvent: Event;
@@ -34,13 +34,13 @@ interface AutoCompleteCompleteEvent {
         <app-code [code]="code" selector="autocomplete-template-demo"></app-code>`
 })
 export class TemplateDoc {
+    private countryService = inject(CountryService);
+
     countries: any[] | undefined;
 
     selectedCountryAdvanced: any[] | undefined;
 
     filteredCountries: any[] | undefined;
-
-    constructor(private countryService: CountryService) {}
 
     ngOnInit() {
         this.countryService.getCountries().then((countries) => {
