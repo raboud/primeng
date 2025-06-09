@@ -34,22 +34,30 @@ interface Column {
                     </ng-template>
                     <ng-template #header let-columns>
                         <tr>
-                            <th *ngFor="let col of cols">
-                                {{ col.header }}
-                            </th>
+                            @for (col of cols; track col) {
+                                <th>
+                                    {{ col.header }}
+                                </th>
+                            }
                         </tr>
                         <tr>
-                            <th *ngFor="let col of cols">
-                                <input pInputText [placeholder]="'Filter by ' + col.field" type="text" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)" />
-                            </th>
+                            @for (col of cols; track col) {
+                                <th>
+                                    <input pInputText [placeholder]="'Filter by ' + col.field" type="text" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)" />
+                                </th>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #body let-rowNode let-rowData="rowData">
                         <tr [ttRow]="rowNode">
-                            <td *ngFor="let col of cols; let i = index">
-                                <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
-                                {{ rowData[col.field] }}
-                            </td>
+                            @for (col of cols; track col; let i = $index) {
+                                <td>
+                                    @if (i === 0) {
+                                        <p-treetable-toggler [rowNode]="rowNode" />
+                                    }
+                                    {{ rowData[col.field] }}
+                                </td>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #emptymessage>
@@ -91,39 +99,47 @@ export class FilterDoc {
         basic: `<p-selectbutton [options]="filterModes" [(ngModel)]="filterMode" optionLabel="label" optionValue="value" />
 
 <p-treetable #tt [value]="files" [columns]="cols" [filterMode]="filterMode" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template #caption>
-        <div class="flex justify-end items-center">
-            <p-iconfield>
-                <p-inputicon class="pi pi-search" />
-                <input type="text" pInputText placeholder="Global Search" (input)="tt.filterGlobal($event.target.value, 'contains')" />
-            </p-iconfield>
-        </div>
-    </ng-template>
-    <ng-template #header let-columns>
-        <tr>
-            <th *ngFor="let col of cols">
-                {{ col.header }}
-            </th>
-        </tr>
-        <tr>
-            <th *ngFor="let col of cols">
-                <input pInputText [placeholder]="'Filter by ' + col.field" type="text" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)" />
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template #body let-rowNode let-rowData="rowData">
-        <tr [ttRow]="rowNode">
-            <td *ngFor="let col of cols; let i = index">
-                <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
-                {{ rowData[col.field] }}
-            </td>
-        </tr>
-    </ng-template>
-    <ng-template #emptymessage>
-        <tr>
-            <td [attr.colspan]="cols?.length">No data found.</td>
-        </tr>
-    </ng-template>
+              <ng-template #caption>
+                <div class="flex justify-end items-center">
+                  <p-iconfield>
+                    <p-inputicon class="pi pi-search" />
+                    <input type="text" pInputText placeholder="Global Search" (input)="tt.filterGlobal($event.target.value, 'contains')" />
+                  </p-iconfield>
+                </div>
+              </ng-template>
+              <ng-template #header let-columns>
+                <tr>
+                  @for (col of cols; track col) {
+                    <th>
+                      {{ col.header }}
+                    </th>
+                  }
+                </tr>
+                <tr>
+                  @for (col of cols; track col) {
+                    <th>
+                      <input pInputText [placeholder]="'Filter by ' + col.field" type="text" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)" />
+                    </th>
+                  }
+                </tr>
+              </ng-template>
+              <ng-template #body let-rowNode let-rowData="rowData">
+                <tr [ttRow]="rowNode">
+                  @for (col of cols; track col; let i = $index) {
+                    <td>
+                      @if (i === 0) {
+                        <p-treetable-toggler [rowNode]="rowNode" />
+                      }
+                      {{ rowData[col.field] }}
+                    </td>
+                  }
+                </tr>
+              </ng-template>
+              <ng-template #emptymessage>
+                <tr>
+                  <td [attr.colspan]="cols?.length">No data found.</td>
+                </tr>
+              </ng-template>
 </p-treetable>`,
 
         html: `<div class="card">
@@ -131,39 +147,47 @@ export class FilterDoc {
         <p-selectbutton [options]="filterModes" [(ngModel)]="filterMode" optionLabel="label" optionValue="value" />
     </div>
      <p-treetable #tt [value]="files" [columns]="cols" [filterMode]="filterMode" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template #caption>
-            <div class="flex justify-end items-center">
-                <p-iconfield>
+              <ng-template #caption>
+                <div class="flex justify-end items-center">
+                  <p-iconfield>
                     <p-inputicon class="pi pi-search" />
                     <input type="text" pInputText placeholder="Global Search" (input)="tt.filterGlobal($event.target.value, 'contains')" />
-                </p-iconfield>
-            </div>
-        </ng-template>
-        <ng-template #header let-columns>
-            <tr>
-                <th *ngFor="let col of cols">
-                    {{ col.header }}
-                </th>
-            </tr>
-            <tr>
-                <th *ngFor="let col of cols">
-                    <input pInputText [placeholder]="'Filter by ' + col.field" type="text" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)" />
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-rowNode let-rowData="rowData">
-            <tr [ttRow]="rowNode">
-                <td *ngFor="let col of cols; let i = index">
-                    <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
-                    {{ rowData[col.field] }}
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template #emptymessage>
-            <tr>
-                <td [attr.colspan]="cols?.length">No data found.</td>
-            </tr>
-        </ng-template>
+                  </p-iconfield>
+                </div>
+              </ng-template>
+              <ng-template #header let-columns>
+                <tr>
+                  @for (col of cols; track col) {
+                    <th>
+                      {{ col.header }}
+                    </th>
+                  }
+                </tr>
+                <tr>
+                  @for (col of cols; track col) {
+                    <th>
+                      <input pInputText [placeholder]="'Filter by ' + col.field" type="text" (input)="tt.filter($event.target.value, col.field, col.filterMatchMode)" />
+                    </th>
+                  }
+                </tr>
+              </ng-template>
+              <ng-template #body let-rowNode let-rowData="rowData">
+                <tr [ttRow]="rowNode">
+                  @for (col of cols; track col; let i = $index) {
+                    <td>
+                      @if (i === 0) {
+                        <p-treetable-toggler [rowNode]="rowNode" />
+                      }
+                      {{ rowData[col.field] }}
+                    </td>
+                  }
+                </tr>
+              </ng-template>
+              <ng-template #emptymessage>
+                <tr>
+                  <td [attr.colspan]="cols?.length">No data found.</td>
+                </tr>
+              </ng-template>
     </p-treetable>
 </div>`,
 

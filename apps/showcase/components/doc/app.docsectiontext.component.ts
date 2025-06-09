@@ -5,17 +5,23 @@ import { Component, ElementRef, Input, numberAttribute } from '@angular/core';
     selector: 'app-docsectiontext',
     standalone: false,
     template: `
-        <h2 class="doc-section-label" *ngIf="level === 2">
-            {{ title }}
-            <a (click)="navigate($event)" class="cursor-pointer" [id]="id">#</a>
-        </h2>
-        <div class="doc-section-description" *ngIf="description">
-            <p class="mt-4">{{ description || null }}</p>
-        </div>
-        <h3 class="doc-section-label !mt-6" *ngIf="level === 3">
-            {{ title }}
-            <a (click)="navigate($event)" class="cursor-pointer" [id]="id">#</a>
-        </h3>
+        @if (level === 2) {
+            <h2 class="doc-section-label">
+                {{ title }}
+                <a (click)="navigate($event)" class="cursor-pointer" [id]="id">#</a>
+            </h2>
+        }
+        @if (description) {
+            <div class="doc-section-description">
+                <p class="mt-4">{{ description || null }}</p>
+            </div>
+        }
+        @if (level === 3) {
+            <h3 class="doc-section-label !mt-6">
+                {{ title }}
+                <a (click)="navigate($event)" class="cursor-pointer" [id]="id">#</a>
+            </h3>
+        }
         <div class="doc-section-description">
             <ng-content></ng-content>
         </div>

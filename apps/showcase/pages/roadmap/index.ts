@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     template: `
         <div>
             <div class="doc-intro">

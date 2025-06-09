@@ -21,52 +21,54 @@ const hideOverlayContentAnimation = animation([animate('{{hideTransitionParams}}
     standalone: true,
     imports: [CommonModule, SharedModule],
     template: `
-        <div
-            *ngIf="modalVisible"
-            #overlay
-            [ngStyle]="style"
-            [class]="styleClass"
-            [ngClass]="{
-                'p-overlay p-component': true,
-                'p-overlay-modal p-overlay-mask p-overlay-mask-enter': modal,
-                'p-overlay-center': modal && overlayResponsiveDirection === 'center',
-                'p-overlay-top': modal && overlayResponsiveDirection === 'top',
-                'p-overlay-top-start': modal && overlayResponsiveDirection === 'top-start',
-                'p-overlay-top-end': modal && overlayResponsiveDirection === 'top-end',
-                'p-overlay-bottom': modal && overlayResponsiveDirection === 'bottom',
-                'p-overlay-bottom-start': modal && overlayResponsiveDirection === 'bottom-start',
-                'p-overlay-bottom-end': modal && overlayResponsiveDirection === 'bottom-end',
-                'p-overlay-left': modal && overlayResponsiveDirection === 'left',
-                'p-overlay-left-start': modal && overlayResponsiveDirection === 'left-start',
-                'p-overlay-left-end': modal && overlayResponsiveDirection === 'left-end',
-                'p-overlay-right': modal && overlayResponsiveDirection === 'right',
-                'p-overlay-right-start': modal && overlayResponsiveDirection === 'right-start',
-                'p-overlay-right-end': modal && overlayResponsiveDirection === 'right-end'
-            }"
-            (click)="onOverlayClick()"
-        >
+        @if (modalVisible) {
             <div
-                *ngIf="visible"
-                #content
-                [ngStyle]="contentStyle"
-                [class]="contentStyleClass"
-                [ngClass]="'p-overlay-content'"
-                (click)="onOverlayContentClick($event)"
-                [@overlayContentAnimation]="{
-                    value: 'visible',
-                    params: {
-                        showTransitionParams: showTransitionOptions,
-                        hideTransitionParams: hideTransitionOptions,
-                        transform: transformOptions[modal ? overlayResponsiveDirection : 'default']
-                    }
+                #overlay
+                [ngStyle]="style"
+                [class]="styleClass"
+                [ngClass]="{
+                    'p-overlay p-component': true,
+                    'p-overlay-modal p-overlay-mask p-overlay-mask-enter': modal,
+                    'p-overlay-center': modal && overlayResponsiveDirection === 'center',
+                    'p-overlay-top': modal && overlayResponsiveDirection === 'top',
+                    'p-overlay-top-start': modal && overlayResponsiveDirection === 'top-start',
+                    'p-overlay-top-end': modal && overlayResponsiveDirection === 'top-end',
+                    'p-overlay-bottom': modal && overlayResponsiveDirection === 'bottom',
+                    'p-overlay-bottom-start': modal && overlayResponsiveDirection === 'bottom-start',
+                    'p-overlay-bottom-end': modal && overlayResponsiveDirection === 'bottom-end',
+                    'p-overlay-left': modal && overlayResponsiveDirection === 'left',
+                    'p-overlay-left-start': modal && overlayResponsiveDirection === 'left-start',
+                    'p-overlay-left-end': modal && overlayResponsiveDirection === 'left-end',
+                    'p-overlay-right': modal && overlayResponsiveDirection === 'right',
+                    'p-overlay-right-start': modal && overlayResponsiveDirection === 'right-start',
+                    'p-overlay-right-end': modal && overlayResponsiveDirection === 'right-end'
                 }"
-                (@overlayContentAnimation.start)="onOverlayContentAnimationStart($event)"
-                (@overlayContentAnimation.done)="onOverlayContentAnimationDone($event)"
+                (click)="onOverlayClick()"
             >
-                <ng-content></ng-content>
-                <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { $implicit: { mode: overlayMode } }"></ng-container>
+                @if (visible) {
+                    <div
+                        #content
+                        [ngStyle]="contentStyle"
+                        [class]="contentStyleClass"
+                        [ngClass]="'p-overlay-content'"
+                        (click)="onOverlayContentClick($event)"
+                        [@overlayContentAnimation]="{
+                            value: 'visible',
+                            params: {
+                                showTransitionParams: showTransitionOptions,
+                                hideTransitionParams: hideTransitionOptions,
+                                transform: transformOptions[modal ? overlayResponsiveDirection : 'default']
+                            }
+                        }"
+                        (@overlayContentAnimation.start)="onOverlayContentAnimationStart($event)"
+                        (@overlayContentAnimation.done)="onOverlayContentAnimationDone($event)"
+                    >
+                        <ng-content></ng-content>
+                        <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { $implicit: { mode: overlayMode } }"></ng-container>
+                    </div>
+                }
             </div>
-        </div>
+        }
     `,
     animations: [trigger('overlayContentAnimation', [transition(':enter', [useAnimation(showOverlayContentAnimation)]), transition(':leave', [useAnimation(hideOverlayContentAnimation)])])],
     changeDetection: ChangeDetectionStrategy.OnPush,

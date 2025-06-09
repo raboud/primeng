@@ -3,10 +3,10 @@ import { AfterContentInit, booleanAttribute, ChangeDetectionStrategy, Component,
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PrimeTemplate, SharedModule } from 'primeng/api';
 import { AutoFocus } from 'primeng/autofocus';
-import { InputText } from 'primeng/inputtext';
-import { InputOtpStyle } from './style/inputotpstyle';
-import { Nullable } from 'primeng/ts-helpers';
 import { BaseInput } from 'primeng/baseinput';
+import { InputText } from 'primeng/inputtext';
+import { Nullable } from 'primeng/ts-helpers';
+import { InputOtpStyle } from './style/inputotpstyle';
 
 export const INPUT_OTP_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -64,8 +64,8 @@ export interface InputOtpInputTemplateContext {
     standalone: true,
     imports: [CommonModule, InputText, AutoFocus, SharedModule],
     template: `
-        <ng-container *ngFor="let i of getRange(length); trackBy: trackByFn">
-            <ng-container *ngIf="!inputTemplate && !_inputTemplate">
+        @for (i of getRange(length); track trackByFn(i)) {
+            @if (!inputTemplate && !_inputTemplate) {
                 <input
                     type="text"
                     pInputText
@@ -86,11 +86,11 @@ export interface InputOtpInputTemplateContext {
                     (keydown)="onKeyDown($event)"
                     [pAutoFocus]="getAutofocus(i)"
                 />
-            </ng-container>
-            <ng-container *ngIf="inputTemplate || _inputTemplate">
+            }
+            @if (inputTemplate || _inputTemplate) {
                 <ng-container *ngTemplateOutlet="inputTemplate || _inputTemplate; context: { $implicit: getToken(i - 1), events: getTemplateEvents(i - 1), index: i }"> </ng-container>
-            </ng-container>
-        </ng-container>
+            }
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

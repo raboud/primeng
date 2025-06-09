@@ -41,27 +41,28 @@ import { $dt } from '@primeuix/styled';
     standalone: true,
     imports: [CommonModule, SharedModule],
     template: `
-        <div
-            *ngIf="render"
-            [class]="cx('root')"
-            [ngStyle]="style"
-            (click)="onOverlayClick($event)"
-            [@animation]="{
-                value: overlayVisible ? 'open' : 'close',
-                params: { showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions }
-            }"
-            (@animation.start)="onAnimationStart($event)"
-            (@animation.done)="onAnimationEnd($event)"
-            role="dialog"
-            [attr.aria-modal]="overlayVisible"
-            [attr.aria-label]="ariaLabel"
-            [attr.aria-labelledBy]="ariaLabelledBy"
-        >
-            <div [class]="cx('content')" (click)="onContentClick($event)" (mousedown)="onContentClick($event)">
-                <ng-content></ng-content>
-                <ng-template *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { closeCallback: onCloseClick.bind(this) }"></ng-template>
+        @if (render) {
+            <div
+                [class]="cx('root')"
+                [ngStyle]="style"
+                (click)="onOverlayClick($event)"
+                [@animation]="{
+                    value: overlayVisible ? 'open' : 'close',
+                    params: { showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions }
+                }"
+                (@animation.start)="onAnimationStart($event)"
+                (@animation.done)="onAnimationEnd($event)"
+                role="dialog"
+                [attr.aria-modal]="overlayVisible"
+                [attr.aria-label]="ariaLabel"
+                [attr.aria-labelledBy]="ariaLabelledBy"
+            >
+                <div [class]="cx('content')" (click)="onContentClick($event)" (mousedown)="onContentClick($event)">
+                    <ng-content></ng-content>
+                    <ng-template *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { closeCallback: onCloseClick.bind(this) }"></ng-template>
+                </div>
             </div>
-        </div>
+        }
     `,
     animations: [
         trigger('animation', [

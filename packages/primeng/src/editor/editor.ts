@@ -22,51 +22,55 @@ export const EDITOR_VALUE_ACCESSOR: any = {
     standalone: true,
     imports: [CommonModule, SharedModule],
     template: `
-        <div [class]="cx('toolbar')" *ngIf="toolbar || headerTemplate || _headerTemplate">
-            <ng-content select="p-header"></ng-content>
-            <ng-container *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-container>
-        </div>
-        <div [class]="cx('toolbar')" *ngIf="!toolbar && !headerTemplate && !_headerTemplate">
-            <span class="ql-formats">
-                <select class="ql-header">
-                    <option value="1">Heading</option>
-                    <option value="2">Subheading</option>
-                    <option selected>Normal</option>
-                </select>
-                <select class="ql-font">
-                    <option selected>Sans Serif</option>
-                    <option value="serif">Serif</option>
-                    <option value="monospace">Monospace</option>
-                </select>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-bold" aria-label="Bold" type="button"></button>
-                <button class="ql-italic" aria-label="Italic" type="button"></button>
-                <button class="ql-underline" aria-label="Underline" type="button"></button>
-            </span>
-            <span class="ql-formats">
-                <select class="ql-color"></select>
-                <select class="ql-background"></select>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-list" value="ordered" aria-label="Ordered List" type="button"></button>
-                <button class="ql-list" value="bullet" aria-label="Unordered List" type="button"></button>
-                <select class="ql-align">
-                    <option selected></option>
-                    <option value="center">center</option>
-                    <option value="right">right</option>
-                    <option value="justify">justify</option>
-                </select>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-link" aria-label="Insert Link" type="button"></button>
-                <button class="ql-image" aria-label="Insert Image" type="button"></button>
-                <button class="ql-code-block" aria-label="Insert Code Block" type="button"></button>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-clean" aria-label="Remove Styles" type="button"></button>
-            </span>
-        </div>
+        @if (toolbar || headerTemplate || _headerTemplate) {
+            <div [class]="cx('toolbar')">
+                <ng-content select="p-header"></ng-content>
+                <ng-container *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-container>
+            </div>
+        }
+        @if (!toolbar && !headerTemplate && !_headerTemplate) {
+            <div [class]="cx('toolbar')">
+                <span class="ql-formats">
+                    <select class="ql-header">
+                        <option value="1">Heading</option>
+                        <option value="2">Subheading</option>
+                        <option selected>Normal</option>
+                    </select>
+                    <select class="ql-font">
+                        <option selected>Sans Serif</option>
+                        <option value="serif">Serif</option>
+                        <option value="monospace">Monospace</option>
+                    </select>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-bold" aria-label="Bold" type="button"></button>
+                    <button class="ql-italic" aria-label="Italic" type="button"></button>
+                    <button class="ql-underline" aria-label="Underline" type="button"></button>
+                </span>
+                <span class="ql-formats">
+                    <select class="ql-color"></select>
+                    <select class="ql-background"></select>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-list" value="ordered" aria-label="Ordered List" type="button"></button>
+                    <button class="ql-list" value="bullet" aria-label="Unordered List" type="button"></button>
+                    <select class="ql-align">
+                        <option selected></option>
+                        <option value="center">center</option>
+                        <option value="right">right</option>
+                        <option value="justify">justify</option>
+                    </select>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-link" aria-label="Insert Link" type="button"></button>
+                    <button class="ql-image" aria-label="Insert Image" type="button"></button>
+                    <button class="ql-code-block" aria-label="Insert Code Block" type="button"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-clean" aria-label="Remove Styles" type="button"></button>
+                </span>
+            </div>
+        }
         <div [class]="cx('content')" [ngStyle]="style"></div>
     `,
     providers: [EDITOR_VALUE_ACCESSOR, EditorStyle],

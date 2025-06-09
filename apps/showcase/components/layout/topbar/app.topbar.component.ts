@@ -116,12 +116,14 @@ import { StyleClass } from 'primeng/styleclass';
                         <i class="pi" [ngClass]="{ 'pi-moon': isDarkMode(), 'pi-sun': !isDarkMode() }"></i>
                     </button>
                 </li>
-                <li *ngIf="showConfigurator" class="relative">
-                    <button type="button" class="topbar-item config-item" enterActiveClass="animate-scalein" enterFromClass="hidden" leaveActiveClass="animate-fadeout" leaveToClass="hidden" pStyleClass="@next" [hideOnOutsideClick]="true">
-                        <i class="pi pi-palette"></i>
-                    </button>
-                    <app-configurator />
-                </li>
+                @if (showConfigurator) {
+                    <li class="relative">
+                        <button type="button" class="topbar-item config-item" enterActiveClass="animate-scalein" enterFromClass="hidden" leaveActiveClass="animate-fadeout" leaveToClass="hidden" pStyleClass="@next" [hideOnOutsideClick]="true">
+                            <i class="pi pi-palette"></i>
+                        </button>
+                        <app-configurator />
+                    </li>
+                }
                 <li>
                     <button type="button" class="topbar-item relative group overflow-hidden !border-transparent" (click)="toggleDesigner()">
                         <span
@@ -139,19 +141,23 @@ import { StyleClass } from 'primeng/styleclass';
                     </button>
                     <div class="versions-panel hidden">
                         <ul>
-                            <li role="none" *ngFor="let v of versions">
-                                <a [href]="v.url">
-                                    <span>{{ v.version }}</span>
-                                </a>
-                            </li>
+                            @for (v of versions; track v) {
+                                <li role="none">
+                                    <a [href]="v.url">
+                                        <span>{{ v.version }}</span>
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </li>
-                <li *ngIf="showMenuButton" class="menu-button">
-                    <button type="button" class="topbar-item menu-button" (click)="toggleMenu()" aria-label="Menu">
-                        <i class="pi pi-bars"></i>
-                    </button>
-                </li>
+                @if (showMenuButton) {
+                    <li class="menu-button">
+                        <button type="button" class="topbar-item menu-button" (click)="toggleMenu()" aria-label="Menu">
+                            <i class="pi pi-bars"></i>
+                        </button>
+                    </li>
+                }
             </ul>
         </div>
     </div>`

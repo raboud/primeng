@@ -37,78 +37,96 @@ import { CarouselStyle } from './style/carouselstyle';
     standalone: true,
     imports: [CommonModule, ChevronRightIcon, ButtonModule, ChevronLeftIcon, ChevronDownIcon, ChevronUpIcon, SharedModule],
     template: `
-        <div [class]="cx('header')" *ngIf="headerFacet || headerTemplate">
-            <ng-content select="p-header"></ng-content>
-            <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
-        </div>
+        @if (headerFacet || headerTemplate) {
+            <div [class]="cx('header')">
+                <ng-content select="p-header"></ng-content>
+                <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+            </div>
+        }
         <div [class]="contentClass" [ngClass]="cx('contentContainer')">
             <div [class]="cx('content')" [attr.aria-live]="allowAutoplay ? 'polite' : 'off'">
-                <p-button *ngIf="showNavigators" [class]="cx('pcPrevButton')" [attr.aria-label]="ariaPrevButtonLabel()" (click)="navBackward($event)" [text]="true" [buttonProps]="prevButtonProps">
-                    <ng-template #icon>
-                        <ng-container *ngIf="!previousIconTemplate && !_previousIconTemplate && !prevButtonProps?.icon">
-                            <ChevronLeftIcon *ngIf="!isVertical()" />
-                            <ChevronUpIcon *ngIf="isVertical()" />
-                        </ng-container>
-                        <span *ngIf="(previousIconTemplate || _previousIconTemplate) && !prevButtonProps?.icon">
-                            <ng-template *ngTemplateOutlet="previousIconTemplate || _previousIconTemplate"></ng-template>
-                        </span>
-                    </ng-template>
-                </p-button>
+                @if (showNavigators) {
+                    <p-button [class]="cx('pcPrevButton')" [attr.aria-label]="ariaPrevButtonLabel()" (click)="navBackward($event)" [text]="true" [buttonProps]="prevButtonProps">
+                        <ng-template #icon>
+                            @if (!previousIconTemplate && !_previousIconTemplate && !prevButtonProps?.icon) {
+                                @if (!isVertical()) {
+                                    <ChevronLeftIcon />
+                                }
+                                @if (isVertical()) {
+                                    <ChevronUpIcon />
+                                }
+                            }
+                            @if ((previousIconTemplate || _previousIconTemplate) && !prevButtonProps?.icon) {
+                                <span>
+                                    <ng-template *ngTemplateOutlet="previousIconTemplate || _previousIconTemplate"></ng-template>
+                                </span>
+                            }
+                        </ng-template>
+                    </p-button>
+                }
                 <div [class]="cx('viewport')" [ngStyle]="{ height: isVertical() ? verticalViewPortHeight : 'auto' }" (touchend)="onTouchEnd($event)" (touchstart)="onTouchStart($event)" (touchmove)="onTouchMove($event)">
                     <div #itemsContainer [class]="cx('itemList')" (transitionend)="onTransitionEnd()">
-                        <div
-                            *ngFor="let item of clonedItemsForStarting; let index = index"
-                            [class]="cx('itemClone', { index })"
-                            [attr.aria-hidden]="!(totalShiftedItems * -1 === value.length)"
-                            [attr.aria-label]="ariaSlideNumber(index)"
-                            [attr.aria-roledescription]="ariaSlideLabel()"
-                        >
-                            <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item }"></ng-container>
-                        </div>
-                        <div
-                            *ngFor="let item of value; let index = index"
-                            [class]="cx('item', { index })"
-                            [attr.aria-hidden]="!(firstIndex() <= index && lastIndex() >= index)"
-                            [attr.aria-label]="ariaSlideNumber(index)"
-                            [attr.aria-roledescription]="ariaSlideLabel()"
-                        >
-                            <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item }"></ng-container>
-                        </div>
-                        <div *ngFor="let item of clonedItemsForFinishing; let index = index" [class]="cx('itemClone', { index })">
-                            <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item }"></ng-container>
-                        </div>
+                        @for (item of clonedItemsForStarting; track item; let index = $index) {
+                            <div [class]="cx('itemClone', { index })" [attr.aria-hidden]="!(totalShiftedItems * -1 === value.length)" [attr.aria-label]="ariaSlideNumber(index)" [attr.aria-roledescription]="ariaSlideLabel()">
+                                <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item }"></ng-container>
+                            </div>
+                        }
+                        @for (item of value; track item; let index = $index) {
+                            <div [class]="cx('item', { index })" [attr.aria-hidden]="!(firstIndex() <= index && lastIndex() >= index)" [attr.aria-label]="ariaSlideNumber(index)" [attr.aria-roledescription]="ariaSlideLabel()">
+                                <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item }"></ng-container>
+                            </div>
+                        }
+                        @for (item of clonedItemsForFinishing; track item; let index = $index) {
+                            <div [class]="cx('itemClone', { index })">
+                                <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item }"></ng-container>
+                            </div>
+                        }
                     </div>
                 </div>
-                <p-button type="button" *ngIf="showNavigators" [class]="cx('pcNextButton')" (click)="navForward($event)" [attr.aria-label]="ariaNextButtonLabel()" [buttonProps]="nextButtonProps" [text]="true">
-                    <ng-template #icon>
-                        <ng-container *ngIf="!nextIconTemplate && !_nextIconTemplate && !nextButtonProps?.icon">
-                            <ChevronRightIcon *ngIf="!isVertical()" />
-                            <ChevronDownIcon *ngIf="isVertical()" />
-                        </ng-container>
-                        <span *ngIf="nextIconTemplate || (_nextIconTemplate && !nextButtonProps?.icon)">
-                            <ng-template *ngTemplateOutlet="nextIconTemplate || _nextIconTemplate"></ng-template>
-                        </span>
-                    </ng-template>
-                </p-button>
+                @if (showNavigators) {
+                    <p-button type="button" [class]="cx('pcNextButton')" (click)="navForward($event)" [attr.aria-label]="ariaNextButtonLabel()" [buttonProps]="nextButtonProps" [text]="true">
+                        <ng-template #icon>
+                            @if (!nextIconTemplate && !_nextIconTemplate && !nextButtonProps?.icon) {
+                                @if (!isVertical()) {
+                                    <ChevronRightIcon />
+                                }
+                                @if (isVertical()) {
+                                    <ChevronDownIcon />
+                                }
+                            }
+                            @if (nextIconTemplate || (_nextIconTemplate && !nextButtonProps?.icon)) {
+                                <span>
+                                    <ng-template *ngTemplateOutlet="nextIconTemplate || _nextIconTemplate"></ng-template>
+                                </span>
+                            }
+                        </ng-template>
+                    </p-button>
+                }
             </div>
-            <ul #indicatorContent [class]="cx('indicatorList')" [ngStyle]="indicatorsContentStyle" *ngIf="showIndicators" (keydown)="onIndicatorKeydown($event)">
-                <li *ngFor="let totalDot of totalDotsArray(); let i = index" [class]="cx('indicator', { index: i })" [attr.data-pc-section]="'indicator'">
-                    <button
-                        type="button"
-                        [class]="cx('indicatorButton')"
-                        (click)="onDotClick($event, i)"
-                        [ngStyle]="indicatorStyle"
-                        [attr.aria-label]="ariaPageLabel(i + 1)"
-                        [attr.aria-current]="_page === i ? 'page' : undefined"
-                        [tabindex]="_page === i ? 0 : -1"
-                    ></button>
-                </li>
-            </ul>
+            @if (showIndicators) {
+                <ul #indicatorContent [class]="cx('indicatorList')" [ngStyle]="indicatorsContentStyle" (keydown)="onIndicatorKeydown($event)">
+                    @for (totalDot of totalDotsArray(); track totalDot; let i = $index) {
+                        <li [class]="cx('indicator', { index: i })" [attr.data-pc-section]="'indicator'">
+                            <button
+                                type="button"
+                                [class]="cx('indicatorButton')"
+                                (click)="onDotClick($event, i)"
+                                [ngStyle]="indicatorStyle"
+                                [attr.aria-label]="ariaPageLabel(i + 1)"
+                                [attr.aria-current]="_page === i ? 'page' : undefined"
+                                [tabindex]="_page === i ? 0 : -1"
+                            ></button>
+                        </li>
+                    }
+                </ul>
+            }
         </div>
-        <div [class]="cx('footer')" *ngIf="footerFacet || footerTemplate || _footerTemplate">
-            <ng-content select="p-footer"></ng-content>
-            <ng-container *ngTemplateOutlet="footerTemplate || _footerTemplate"></ng-container>
-        </div>
+        @if (footerFacet || footerTemplate || _footerTemplate) {
+            <div [class]="cx('footer')">
+                <ng-content select="p-footer"></ng-content>
+                <ng-container *ngTemplateOutlet="footerTemplate || _footerTemplate"></ng-container>
+            </div>
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

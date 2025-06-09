@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { AfterContentInit, booleanAttribute, ChangeDetectionStrategy, Component, ContentChild, ContentChildren, EventEmitter, inject, Input, NgModule, Output, QueryList, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { PrimeTemplate, SharedModule } from 'primeng/api';
 import { BaseComponent } from 'primeng/basecomponent';
@@ -10,7 +9,7 @@ import { Ripple } from 'primeng/ripple';
 @Component({
     selector: 'p-inplacedisplay, p-inplaceDisplay',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     template: '<ng-content></ng-content>'
 })
 export class InplaceDisplay {}
@@ -18,7 +17,7 @@ export class InplaceDisplay {}
 @Component({
     selector: 'p-inplacecontent, p-inplaceContent',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     template: '<ng-content></ng-content>'
 })
 export class InplaceContent {}
@@ -29,24 +28,33 @@ export class InplaceContent {}
 @Component({
     selector: 'p-inplace',
     standalone: true,
-    imports: [CommonModule, ButtonModule, TimesIcon, SharedModule, Ripple],
+    imports: [ButtonModule, TimesIcon, SharedModule, Ripple],
     template: `
-        <div [class]="cx('display')" (click)="onActivateClick($event)" tabindex="0" role="button" (keydown)="onKeydown($event)" [ngClass]="{ 'p-disabled': disabled }" *ngIf="!active">
-            <ng-content select="[pInplaceDisplay]"></ng-content>
-            <ng-container *ngTemplateOutlet="displayTemplate || _displayTemplate"></ng-container>
-        </div>
-        <div [class]="cx('content')" *ngIf="active">
-            <ng-content select="[pInplaceContent]"></ng-content>
-            <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { closeCallback: onDeactivateClick.bind(this) }"></ng-container>
-
-            <ng-container *ngIf="closable">
-                <button *ngIf="closeIcon" type="button" [icon]="closeIcon" pButton pRipple (click)="onDeactivateClick($event)" [attr.aria-label]="closeAriaLabel"></button>
-                <button *ngIf="!closeIcon" type="button" pButton pRipple [ngClass]="'p-button-icon-only'" (click)="onDeactivateClick($event)" [attr.aria-label]="closeAriaLabel">
-                    <TimesIcon *ngIf="!closeIconTemplate && !_closeIconTemplate" />
-                    <ng-template *ngTemplateOutlet="closeIconTemplate || _closeIconTemplate"></ng-template>
-                </button>
-            </ng-container>
-        </div>
+        @if (!active) {
+            <div [class]="cx('display')" (click)="onActivateClick($event)" tabindex="0" role="button" (keydown)="onKeydown($event)" [ngClass]="{ 'p-disabled': disabled }">
+                <ng-content select="[pInplaceDisplay]"></ng-content>
+                <ng-container *ngTemplateOutlet="displayTemplate || _displayTemplate"></ng-container>
+            </div>
+        }
+        @if (active) {
+            <div [class]="cx('content')">
+                <ng-content select="[pInplaceContent]"></ng-content>
+                <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { closeCallback: onDeactivateClick.bind(this) }"></ng-container>
+                @if (closable) {
+                    @if (closeIcon) {
+                        <button type="button" [icon]="closeIcon" pButton pRipple (click)="onDeactivateClick($event)" [attr.aria-label]="closeAriaLabel"></button>
+                    }
+                    @if (!closeIcon) {
+                        <button type="button" pButton pRipple [ngClass]="'p-button-icon-only'" (click)="onDeactivateClick($event)" [attr.aria-label]="closeAriaLabel">
+                            @if (!closeIconTemplate && !_closeIconTemplate) {
+                                <TimesIcon />
+                            }
+                            <ng-template *ngTemplateOutlet="closeIconTemplate || _closeIconTemplate"></ng-template>
+                        </button>
+                    }
+                }
+            </div>
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

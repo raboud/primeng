@@ -59,40 +59,46 @@ import { ToastCloseEvent, ToastItemCloseEvent, ToastPositionType } from './toast
                 <ng-container *ngTemplateOutlet="headlessTemplate; context: { $implicit: message, closeFn: onCloseIconClick }"></ng-container>
             } @else {
                 <div [class]="cn(cx('messageContent'), message?.contentStyleClass)" [attr.data-pc-section]="'content'">
-                    <ng-container *ngIf="!template">
-                        <span *ngIf="message.icon" [class]="cn(cx('messageIcon'), message?.icon)"></span>
-                        <span [class]="cx('messageIcon')" *ngIf="!message.icon" [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'">
-                            @switch (message.severity) {
-                                @case ('success') {
-                                    <CheckIcon [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'" />
+                    @if (!template) {
+                        @if (message.icon) {
+                            <span [class]="cn(cx('messageIcon'), message?.icon)"></span>
+                        }
+                        @if (!message.icon) {
+                            <span [class]="cx('messageIcon')" [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'">
+                                @switch (message.severity) {
+                                    @case ('success') {
+                                        <CheckIcon [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'" />
+                                    }
+                                    @case ('info') {
+                                        <InfoCircleIcon [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'" />
+                                    }
+                                    @case ('error') {
+                                        <TimesCircleIcon [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'" />
+                                    }
+                                    @case ('warn') {
+                                        <ExclamationTriangleIcon [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'" />
+                                    }
+                                    @default {
+                                        <InfoCircleIcon [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'" />
+                                    }
                                 }
-                                @case ('info') {
-                                    <InfoCircleIcon [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'" />
-                                }
-                                @case ('error') {
-                                    <TimesCircleIcon [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'" />
-                                }
-                                @case ('warn') {
-                                    <ExclamationTriangleIcon [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'" />
-                                }
-                                @default {
-                                    <InfoCircleIcon [attr.aria-hidden]="true" [attr.data-pc-section]="'icon'" />
-                                }
-                            }
-                        </span>
+                            </span>
+                        }
                         <div [ngClass]="cx('messageText')" [attr.data-pc-section]="'text'">
                             <div [ngClass]="cx('summary')" [attr.data-pc-section]="'summary'">
                                 {{ message.summary }}
                             </div>
                             <div [ngClass]="cx('detail')" [attr.data-pc-section]="'detail'">{{ message.detail }}</div>
                         </div>
-                    </ng-container>
+                    }
                     <ng-container *ngTemplateOutlet="template; context: { $implicit: message }"></ng-container>
                     @if (message?.closable !== false) {
                         <div>
                             <button type="button" [attr.class]="cx('closeButton')" (click)="onCloseIconClick($event)" (keydown.enter)="onCloseIconClick($event)" [attr.aria-label]="closeAriaLabel" [attr.data-pc-section]="'closebutton'" autofocus>
                                 @if (message.closeIcon) {
-                                    <span *ngIf="message.closeIcon" [class]="cn(cx('closeIcon'), message?.closeIcon)"></span>
+                                    @if (message.closeIcon) {
+                                        <span [class]="cn(cx('closeIcon'), message?.closeIcon)"></span>
+                                    }
                                 } @else {
                                     <TimesIcon [class]="cx('closeIcon')" [attr.aria-hidden]="true" [attr.data-pc-section]="'closeicon'" />
                                 }
@@ -230,22 +236,23 @@ export class ToastItem extends BaseComponent implements AfterViewInit, OnDestroy
     standalone: true,
     imports: [CommonModule, ToastItem, SharedModule],
     template: `
-        <p-toastItem
-            *ngFor="let msg of messages; let i = index"
-            [message]="msg"
-            [index]="i"
-            [life]="life"
-            (onClose)="onMessageClose($event)"
-            [template]="template || _template"
-            [headlessTemplate]="headlessTemplate || _headlessTemplate"
-            @toastAnimation
-            (@toastAnimation.start)="onAnimationStart($event)"
-            (@toastAnimation.done)="onAnimationEnd($event)"
-            [showTransformOptions]="showTransformOptions"
-            [hideTransformOptions]="hideTransformOptions"
-            [showTransitionOptions]="showTransitionOptions"
-            [hideTransitionOptions]="hideTransitionOptions"
-        ></p-toastItem>
+        @for (msg of messages; track msg; let i = $index) {
+            <p-toastItem
+                [message]="msg"
+                [index]="i"
+                [life]="life"
+                (onClose)="onMessageClose($event)"
+                [template]="template || _template"
+                [headlessTemplate]="headlessTemplate || _headlessTemplate"
+                @toastAnimation
+                (@toastAnimation.start)="onAnimationStart($event)"
+                (@toastAnimation.done)="onAnimationEnd($event)"
+                [showTransformOptions]="showTransformOptions"
+                [hideTransformOptions]="hideTransformOptions"
+                [showTransitionOptions]="showTransitionOptions"
+                [hideTransitionOptions]="hideTransitionOptions"
+            ></p-toastItem>
+        }
     `,
     animations: [trigger('toastAnimation', [transition(':enter, :leave', [query('@*', animateChild())])])],
     changeDetection: ChangeDetectionStrategy.OnPush,

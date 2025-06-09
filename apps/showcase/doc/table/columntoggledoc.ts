@@ -23,17 +23,21 @@ interface Column {
                     <ng-template #header let-columns>
                         <tr>
                             <th>Code</th>
-                            <th *ngFor="let col of columns">
-                                {{ col.header }}
-                            </th>
+                            @for (col of columns; track col) {
+                                <th>
+                                    {{ col.header }}
+                                </th>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #body let-product let-columns="columns">
                         <tr>
                             <td>{{ product.code }}</td>
-                            <td *ngFor="let col of columns">
-                                {{ product[col.field] }}
-                            </td>
+                            @for (col of columns; track col) {
+                                <td>
+                                    {{ product[col.field] }}
+                                </td>
+                            }
                         </tr>
                     </ng-template>
                 </p-table>
@@ -77,17 +81,21 @@ export class ColumnToggleDoc {
     <ng-template #header let-columns>
         <tr>
             <th>Code</th>
-            <th *ngFor="let col of columns">
-                {{ col.header }}
-            </th>
-        </tr>
+            @for (col of columns; track col) {
+                <th>
+                    {{ col.header }}
+                </th>
+            }
+    </tr>
     </ng-template>
     <ng-template #body let-product let-columns="columns">
         <tr>
             <td>{{ product.code }}</td>
-            <td *ngFor="let col of columns">
-                {{ product[col.field] }}
-            </td>
+            @for (col of columns; track col) {
+                <td>
+                    {{ product[col.field] }}
+                </td>
+            }
         </tr>
     </ng-template>
 </p-table>`,
@@ -97,20 +105,24 @@ export class ColumnToggleDoc {
             <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ 'min-width': '200px' }" placeholder="Choose Columns" />
         </ng-template>
         <ng-template #header let-columns>
-            <tr>
-                <th>Code</th>
-                <th *ngFor="let col of columns">
+        <tr>
+            <th>Code</th>
+            @for (col of columns; track col) {
+                <th>
                     {{ col.header }}
                 </th>
-            </tr>
+            }
+        </tr>
         </ng-template>
         <ng-template #body let-product let-columns="columns">
-            <tr>
-                <td>{{ product.code }}</td>
-                <td *ngFor="let col of columns">
+        <tr>
+            <td>{{ product.code }}</td>
+            @for (col of columns; track col) {
+                <td>
                     {{ product[col.field] }}
                 </td>
-            </tr>
+            }
+        </tr>
         </ng-template>
     </p-table>
 </div>`,

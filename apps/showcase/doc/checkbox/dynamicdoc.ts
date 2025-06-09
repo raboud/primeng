@@ -10,10 +10,12 @@ import { Component } from '@angular/core';
         </app-docsectiontext>
         <div class="card flex justify-center">
             <div class="flex flex-col gap-4">
-                <div *ngFor="let category of categories" class="flex items-center">
-                    <p-checkbox [inputId]="category.key" name="group" [value]="category" [(ngModel)]="selectedCategories" />
-                    <label [for]="category.key" class="ml-2"> {{ category.name }} </label>
-                </div>
+                @for (category of categories; track category) {
+                    <div class="flex items-center">
+                        <p-checkbox [inputId]="category.key" name="group" [value]="category" [(ngModel)]="selectedCategories" />
+                        <label [for]="category.key" class="ml-2"> {{ category.name }} </label>
+                    </div>
+                }
             </div>
         </div>
         <app-code [code]="code" selector="checkbox-dynamic-demo"></app-code>
@@ -30,17 +32,21 @@ export class DynamicDoc {
     ];
 
     code: Code = {
-        basic: `<div *ngFor="let category of categories" class="flex items-center">
-    <p-checkbox [inputId]="category.key" name="group" [value]="category" [(ngModel)]="selectedCategories" />
-    <label [for]="category.key" class="ml-2"> {{ category.name }} </label>
-</div>`,
+        basic: `@for (category of categories; track category) {
+              <div class="flex items-center">
+                <p-checkbox [inputId]="category.key" name="group" [value]="category" [(ngModel)]="selectedCategories" />
+                <label [for]="category.key" class="ml-2"> {{ category.name }} </label>
+              </div>
+            }`,
 
         html: `<div class="card flex justify-center">
     <div class="flex flex-col gap-4">
-        <div *ngFor="let category of categories" class="flex items-center">
+        @for (category of categories; track category) {
+            <div class="flex items-center">
             <p-checkbox [inputId]="category.key" name="group" [value]="category" [(ngModel)]="selectedCategories" />
             <label [for]="category.key" class="ml-2"> {{ category.name }} </label>
-        </div>
+            </div>
+        }
     </div>
 </div>`,
 

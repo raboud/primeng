@@ -14,12 +14,16 @@ import { TagStyle } from './style/tagstyle';
     imports: [CommonModule, SharedModule],
     template: `
         <ng-content></ng-content>
-        <ng-container *ngIf="!iconTemplate && !_iconTemplate">
-            <span [class]="cx('icon')" [ngClass]="icon" *ngIf="icon"></span>
-        </ng-container>
-        <span [class]="cx('icon')" *ngIf="iconTemplate || _iconTemplate">
-            <ng-template *ngTemplateOutlet="iconTemplate || _iconTemplate"></ng-template>
-        </span>
+        @if (!iconTemplate && !_iconTemplate) {
+            @if (icon) {
+                <span [class]="cx('icon')" [ngClass]="icon"></span>
+            }
+        }
+        @if (iconTemplate || _iconTemplate) {
+            <span [class]="cx('icon')">
+                <ng-template *ngTemplateOutlet="iconTemplate || _iconTemplate"></ng-template>
+            </span>
+        }
         <span [class]="cx('label')">{{ value }}</span>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,

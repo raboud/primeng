@@ -24,6 +24,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { focus, getFirstFocusableElement, getFocusableElements, getLastFocusableElement, hasClass, isNotEmpty, uuid } from '@primeuix/utils';
 import { OverlayOptions, PrimeTemplate, ScrollerOptions, SharedModule, TreeNode } from 'primeng/api';
 import { AutoFocus } from 'primeng/autofocus';
+import { BaseInput } from 'primeng/baseinput';
 import { Chip } from 'primeng/chip';
 import { ChevronDownIcon, TimesIcon } from 'primeng/icons';
 import { Overlay } from 'primeng/overlay';
@@ -31,7 +32,6 @@ import { Tree, TreeFilterEvent, TreeNodeSelectEvent, TreeNodeUnSelectEvent } fro
 import { Nullable } from 'primeng/ts-helpers';
 import { TreeSelectStyle } from './style/treeselectstyle';
 import { TreeSelectNodeCollapseEvent, TreeSelectNodeExpandEvent } from './treeselect.interface';
-import { BaseInput } from 'primeng/baseinput';
 
 export const TREESELECT_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -69,33 +69,43 @@ export const TREESELECT_VALUE_ACCESSOR: any = {
         </div>
         <div [class]="cx('labelContainer')">
             <div [class]="cn(cx('label'), labelStyleClass)" [ngStyle]="labelStyle">
-                <ng-container *ngIf="valueTemplate || _valueTemplate; else defaultValueTemplate">
+                @if (valueTemplate || _valueTemplate) {
                     <ng-container *ngTemplateOutlet="valueTemplate || _valueTemplate; context: { $implicit: value, placeholder: placeholder }"></ng-container>
-                </ng-container>
-                <ng-template #defaultValueTemplate>
-                    <ng-container *ngIf="display === 'comma'; else chipsValueTemplate">
+                } @else {
+                    @if (display === 'comma') {
                         {{ label || 'empty' }}
-                    </ng-container>
-                    <ng-template #chipsValueTemplate>
-                        <div *ngFor="let node of value" [class]="cx('chipItem')">
-                            <p-chip [label]="node.label" [class]="cx('pcChip')" />
-                        </div>
-                        <ng-container *ngIf="emptyValue">{{ placeholder || 'empty' }}</ng-container>
-                    </ng-template>
-                </ng-template>
+                    } @else {
+                        @for (node of value; track node) {
+                            <div [class]="cx('chipItem')">
+                                <p-chip [label]="node.label" [class]="cx('pcChip')" />
+                            </div>
+                        }
+                        @if (emptyValue) {
+                            {{ placeholder || 'empty' }}
+                        }
+                    }
+                }
             </div>
         </div>
-        <ng-container *ngIf="checkValue() && !disabled() && showClear">
-            <TimesIcon *ngIf="!clearIconTemplate && !_clearIconTemplate" [class]="cx('clearIcon')" (click)="clear($event)" />
-            <span *ngIf="clearIconTemplate || clearIconTemplate" [class]="cx('clearIcon')" (click)="clear($event)">
-                <ng-template *ngTemplateOutlet="clearIconTemplate || _clearIconTemplate"></ng-template>
-            </span>
-        </ng-container>
+        @if (checkValue() && !disabled() && showClear) {
+            @if (!clearIconTemplate && !_clearIconTemplate) {
+                <TimesIcon [class]="cx('clearIcon')" (click)="clear($event)" />
+            }
+            @if (clearIconTemplate || clearIconTemplate) {
+                <span [class]="cx('clearIcon')" (click)="clear($event)">
+                    <ng-template *ngTemplateOutlet="clearIconTemplate || _clearIconTemplate"></ng-template>
+                </span>
+            }
+        }
         <div [class]="cx('dropdown')" role="button" aria-haspopup="tree" [attr.aria-expanded]="overlayVisible ?? false" [attr.aria-label]="'treeselect trigger'">
-            <ChevronDownIcon *ngIf="!triggerIconTemplate && !_triggerIconTemplate && !dropdownIconTemplate && !_dropdownIconTemplate" [styleClass]="cx('dropdownIcon')" />
-            <span *ngIf="triggerIconTemplate || _triggerIconTemplate || dropdownIconTemplate || _dropdownIconTemplate" [class]="cx('dropdownIcon')">
-                <ng-template *ngTemplateOutlet="triggerIconTemplate || _triggerIconTemplate || dropdownIconTemplate || _dropdownIconTemplate"></ng-template>
-            </span>
+            @if (!triggerIconTemplate && !_triggerIconTemplate && !dropdownIconTemplate && !_dropdownIconTemplate) {
+                <ChevronDownIcon [styleClass]="cx('dropdownIcon')" />
+            }
+            @if (triggerIconTemplate || _triggerIconTemplate || dropdownIconTemplate || _dropdownIconTemplate) {
+                <span [class]="cx('dropdownIcon')">
+                    <ng-template *ngTemplateOutlet="triggerIconTemplate || _triggerIconTemplate || dropdownIconTemplate || _dropdownIconTemplate"></ng-template>
+                </span>
+            }
         </div>
         <p-overlay
             #overlay
@@ -151,20 +161,26 @@ export const TREESELECT_VALUE_ACCESSOR: any = {
                             [loading]="loading"
                             [filterInputAutoFocus]="filterInputAutoFocus"
                         >
-                            <ng-container *ngIf="emptyTemplate || _emptyTemplate">
+                            @if (emptyTemplate || _emptyTemplate) {
                                 <ng-template #empty>
                                     <ng-container *ngTemplateOutlet="emptyTemplate || _emptyTemplate"></ng-container>
                                 </ng-template>
-                            </ng-container>
-                            <ng-template #togglericon let-expanded *ngIf="itemTogglerIconTemplate || _itemTogglerIconTemplate">
-                                <ng-container *ngTemplateOutlet="itemTogglerIconTemplate || _itemTogglerIconTemplate; context: { $implicit: expanded }"></ng-container>
-                            </ng-template>
-                            <ng-template #checkboxicon let-selected let-partialSelected="partialSelected" *ngIf="itemCheckboxIconTemplate || _itemCheckboxIconTemplate">
-                                <ng-container *ngTemplateOutlet="itemCheckboxIconTemplate || _itemCheckboxIconTemplate; context: { $implicit: selected, partialSelected: partialSelected }"></ng-container>
-                            </ng-template>
-                            <ng-template #loadingicon *ngIf="itemLoadingIconTemplate || _itemLoadingIconTemplate">
-                                <ng-container *ngTemplateOutlet="itemLoadingIconTemplate || _itemLoadingIconTemplate"></ng-container>
-                            </ng-template>
+                            }
+                            @if (itemTogglerIconTemplate || _itemTogglerIconTemplate; as expanded) {
+                                <ng-template #togglericon let-expanded>
+                                    <ng-container *ngTemplateOutlet="itemTogglerIconTemplate || _itemTogglerIconTemplate; context: { $implicit: expanded }"></ng-container>
+                                </ng-template>
+                            }
+                            @if (itemCheckboxIconTemplate || _itemCheckboxIconTemplate; as selecyed) {
+                                <ng-template #checkboxicon let-selected let-partialSelected="partialSelected">
+                                    <ng-container *ngTemplateOutlet="itemCheckboxIconTemplate || _itemCheckboxIconTemplate; context: { $implicit: selected, partialSelected: partialSelected }"></ng-container>
+                                </ng-template>
+                            }
+                            @if (itemLoadingIconTemplate || _itemLoadingIconTemplate) {
+                                <ng-template #loadingicon>
+                                    <ng-container *ngTemplateOutlet="itemLoadingIconTemplate || _itemLoadingIconTemplate"></ng-container>
+                                </ng-template>
+                            }
                         </p-tree>
                     </div>
                     <ng-container *ngTemplateOutlet="footerTemplate; context: { $implicit: value, options: options }"></ng-container>

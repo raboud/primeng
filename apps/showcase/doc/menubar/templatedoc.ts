@@ -45,9 +45,15 @@ import { MenuItem } from 'primeng/api';
                 <ng-template #item let-item let-root="root">
                     <a pRipple class="flex items-center p-menubar-item-link">
                         <span>{{ item.label }}</span>
-                        <p-badge *ngIf="item.badge" [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
-                        <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
-                        <i *ngIf="item.items" [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
+                        @if (item.badge) {
+                            <p-badge [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
+                        }
+                        @if (item.shortcut) {
+                            <span class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
+                        }
+                        @if (item.items) {
+                            <i [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
+                        }
                     </a>
                 </ng-template>
                 <ng-template #end>
@@ -108,9 +114,15 @@ export class TemplateDoc implements OnInit {
     <ng-template #item let-item let-root="root">
         <a pRipple class="flex items-center p-menubar-item-link">
             <span>{{ item.label }}</span>
-            <p-badge *ngIf="item.badge" [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
-            <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
-            <i *ngIf="item.items" [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
+            @if (item.badge) {
+                <p-badge [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
+            }
+            @if (item.shortcut) {
+                <span class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
+            }
+            @if (item.items) {
+                <i [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
+            }
         </a>
     </ng-template>
     <ng-template #end>
@@ -180,9 +192,15 @@ export class TemplateDoc implements OnInit {
         <ng-template #item let-item let-root="root">
             <a pRipple class="flex items-center p-menubar-item-link">
                 <span>{{ item.label }}</span>
-                <p-badge *ngIf="item.badge" [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
-                <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
-                <i *ngIf="item.items" [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
+                @if (item.badge) {
+                  <p-badge [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
+                }
+                @if (item.shortcut) {
+                  <span class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
+                }
+                @if (item.items) {
+                  <i [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"></i>
+                }
             </a>
         </ng-template>
         <ng-template #end>

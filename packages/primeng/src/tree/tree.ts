@@ -60,15 +60,16 @@ import { AutoFocusModule } from 'primeng/autofocus';
     imports: [CommonModule, Ripple, Checkbox, FormsModule, ChevronRightIcon, ChevronDownIcon, SpinnerIcon, SharedModule],
     template: `
         @if (node) {
-            <li
-                *ngIf="tree.droppableNodes"
-                [class]="cx('dropPoint', { param: draghoverPrev })"
-                [attr.aria-hidden]="true"
-                (drop)="onDropPoint($event, -1)"
-                (dragover)="onDropPointDragOver($event)"
-                (dragenter)="onDropPointDragEnter($event, -1)"
-                (dragleave)="onDropPointDragLeave($event)"
-            ></li>
+            @if (tree.droppableNodes) {
+                <li
+                    [class]="cx('dropPoint', { param: draghoverPrev })"
+                    [attr.aria-hidden]="true"
+                    (drop)="onDropPoint($event, -1)"
+                    (dragover)="onDropPointDragOver($event)"
+                    (dragenter)="onDropPointDragEnter($event, -1)"
+                    (dragleave)="onDropPointDragLeave($event)"
+                ></li>
+            }
             <li
                 [class]="cn(cx('node'), node.styleClass)"
                 [ngStyle]="{ height: itemSize + 'px' }"
@@ -101,80 +102,88 @@ import { AutoFocusModule } from 'primeng/autofocus';
                     (dragend)="onDragStop($event)"
                 >
                     <button type="button" [attr.data-pc-section]="'toggler'" [class]="cx('nodeToggleButton')" (click)="toggle($event)" pRipple tabindex="-1">
-                        <ng-container *ngIf="!tree.togglerIconTemplate && !tree._togglerIconTemplate">
-                            <ng-container *ngIf="!node.loading">
-                                <ChevronRightIcon *ngIf="!node.expanded" [styleClass]="cx('nodeToggleIcon')" />
-                                <ChevronDownIcon *ngIf="node.expanded" [styleClass]="cx('nodeToggleIcon')" />
-                            </ng-container>
-                            <ng-container *ngIf="loadingMode === 'icon' && node.loading">
+                        @if (!tree.togglerIconTemplate && !tree._togglerIconTemplate) {
+                            @if (!node.loading) {
+                                @if (!node.expanded) {
+                                    <ChevronRightIcon [styleClass]="cx('nodeToggleIcon')" />
+                                }
+                                @if (node.expanded) {
+                                    <ChevronDownIcon [styleClass]="cx('nodeToggleIcon')" />
+                                }
+                            }
+                            @if (loadingMode === 'icon' && node.loading) {
                                 <SpinnerIcon [styleClass]="cn(cx('nodeToggleIcon'), 'pi-spin')" />
-                            </ng-container>
-                        </ng-container>
-                        <span *ngIf="tree.togglerIconTemplate || tree._togglerIconTemplate" [styleClass]="cx('nodeToggleIcon')">
-                            <ng-template *ngTemplateOutlet="tree.togglerIconTemplate || tree._togglerIconTemplate; context: { $implicit: node.expanded, loading: node.loading }"></ng-template>
-                        </span>
+                            }
+                        }
+                        @if (tree.togglerIconTemplate || tree._togglerIconTemplate) {
+                            <span [styleClass]="cx('nodeToggleIcon')">
+                                <ng-template *ngTemplateOutlet="tree.togglerIconTemplate || tree._togglerIconTemplate; context: { $implicit: node.expanded, loading: node.loading }"></ng-template>
+                            </span>
+                        }
                     </button>
 
-                    <p-checkbox
-                        [ngModel]="isSelected()"
-                        [styleClass]="cx('nodeCheckbox')"
-                        [binary]="true"
-                        [indeterminate]="node.partialSelected"
-                        *ngIf="tree.selectionMode == 'checkbox'"
-                        [disabled]="node.selectable === false"
-                        [variant]="tree?.config.inputStyle() === 'filled' || tree?.config.inputVariant() === 'filled' ? 'filled' : 'outlined'"
-                        [attr.data-p-partialchecked]="node.partialSelected"
-                        [tabindex]="-1"
-                        (click)="$event.preventDefault()"
-                    >
-                        <ng-container *ngIf="tree.checkboxIconTemplate || tree._checkboxIconTemplate">
-                            <ng-template #icon>
-                                <ng-template
-                                    *ngTemplateOutlet="
-                                        tree.checkboxIconTemplate || tree._checkboxIconTemplate;
-                                        context: {
-                                            $implicit: isSelected(),
-                                            partialSelected: node.partialSelected,
-                                            class: cx('nodeCheckbox')
-                                        }
-                                    "
-                                ></ng-template>
-                            </ng-template>
-                        </ng-container>
-                    </p-checkbox>
+                    @if (tree.selectionMode == 'checkbox') {
+                        <p-checkbox
+                            [ngModel]="isSelected()"
+                            [styleClass]="cx('nodeCheckbox')"
+                            [binary]="true"
+                            [indeterminate]="node.partialSelected"
+                            [disabled]="node.selectable === false"
+                            [variant]="tree?.config.inputStyle() === 'filled' || tree?.config.inputVariant() === 'filled' ? 'filled' : 'outlined'"
+                            [attr.data-p-partialchecked]="node.partialSelected"
+                            [tabindex]="-1"
+                            (click)="$event.preventDefault()"
+                        >
+                            @if (tree.checkboxIconTemplate || tree._checkboxIconTemplate) {
+                                <ng-template #icon>
+                                    <ng-template
+                                        *ngTemplateOutlet="
+                                            tree.checkboxIconTemplate || tree._checkboxIconTemplate;
+                                            context: {
+                                                $implicit: isSelected(),
+                                                partialSelected: node.partialSelected,
+                                                class: cx('nodeCheckbox')
+                                            }
+                                        "
+                                    ></ng-template>
+                                </ng-template>
+                            }
+                        </p-checkbox>
+                    }
 
-                    <span [class]="getIcon()" *ngIf="node.icon || node.expandedIcon || node.collapsedIcon"></span>
+                    @if (node.icon || node.expandedIcon || node.collapsedIcon) {
+                        <span [class]="getIcon()"></span>
+                    }
                     <span [class]="cx('nodeLabel')">
-                        <span *ngIf="!tree.getTemplateForNode(node)">{{ node.label }}</span>
-                        <span *ngIf="tree.getTemplateForNode(node)">
-                            <ng-container *ngTemplateOutlet="tree.getTemplateForNode(node); context: { $implicit: node }"></ng-container>
-                        </span>
+                        @if (!tree.getTemplateForNode(node)) {
+                            <span>{{ node.label }}</span>
+                        }
+                        @if (tree.getTemplateForNode(node)) {
+                            <span>
+                                <ng-container *ngTemplateOutlet="tree.getTemplateForNode(node); context: { $implicit: node }"></ng-container>
+                            </span>
+                        }
                     </span>
                 </div>
-                <ul [class]="cx('nodeChildren')" *ngIf="!tree.virtualScroll && node.children && node.expanded" role="group">
-                    <p-treeNode
-                        *ngFor="let childNode of node.children; let firstChild = first; let lastChild = last; let index = index; trackBy: tree.trackBy.bind(this)"
-                        [node]="childNode"
-                        [parentNode]="node"
-                        [firstChild]="firstChild"
-                        [lastChild]="lastChild"
-                        [index]="index"
-                        [itemSize]="itemSize"
-                        [level]="level + 1"
-                        [loadingMode]="loadingMode"
-                    ></p-treeNode>
-                </ul>
+                @if (!tree.virtualScroll && node.children && node.expanded) {
+                    <ul [class]="cx('nodeChildren')" role="group">
+                        @for (childNode of node.children; track tree.trackBy.bind(this)(index, childNode); let firstChild = $first; let lastChild = $last; let index = $index) {
+                            <p-treeNode [node]="childNode" [parentNode]="node" [firstChild]="firstChild" [lastChild]="lastChild" [index]="index" [itemSize]="itemSize" [level]="level + 1" [loadingMode]="loadingMode"></p-treeNode>
+                        }
+                    </ul>
+                }
             </li>
 
-            <li
-                *ngIf="tree.droppableNodes && lastChild"
-                [class]="cx('dropPoint', { param: draghoverNext })"
-                (drop)="onDropPoint($event, 1)"
-                [attr.aria-hidden]="true"
-                (dragover)="onDropPointDragOver($event)"
-                (dragenter)="onDropPointDragEnter($event, 1)"
-                (dragleave)="onDropPointDragLeave($event)"
-            ></li>
+            @if (tree.droppableNodes && lastChild) {
+                <li
+                    [class]="cx('dropPoint', { param: draghoverNext })"
+                    (drop)="onDropPoint($event, 1)"
+                    [attr.aria-hidden]="true"
+                    (dragover)="onDropPointDragOver($event)"
+                    (dragenter)="onDropPointDragEnter($event, 1)"
+                    (dragleave)="onDropPointDragLeave($event)"
+                ></li>
+            }
         }
     `,
     encapsulation: ViewEncapsulation.None,
@@ -708,103 +717,120 @@ export class UITreeNode extends BaseComponent implements OnInit {
     standalone: true,
     imports: [CommonModule, Scroller, SharedModule, SearchIcon, SpinnerIcon, InputText, FormsModule, IconField, InputIcon, UITreeNode, AutoFocusModule],
     template: `
-        <div [class]="cx('mask')" *ngIf="loading && loadingMode === 'mask'">
-            <i *ngIf="loadingIcon" [class]="cn(cx('loadingIcon'), 'pi-spin' + loadingIcon)"></i>
-            <ng-container *ngIf="!loadingIcon">
-                <SpinnerIcon *ngIf="!loadingIconTemplate && !_loadingIconTemplate" [spin]="true" [styleClass]="cx('loadingIcon')" />
-                <span *ngIf="loadingIconTemplate || _loadingIconTemplate" [class]="cx('loadingIcon')">
-                    <ng-template *ngTemplateOutlet="loadingIconTemplate || _loadingIconTemplate"></ng-template>
-                </span>
-            </ng-container>
-        </div>
+        @if (loading && loadingMode === 'mask') {
+            <div [class]="cx('mask')">
+                @if (loadingIcon) {
+                    <i [class]="cn(cx('loadingIcon'), 'pi-spin' + loadingIcon)"></i>
+                }
+                @if (!loadingIcon) {
+                    @if (!loadingIconTemplate && !_loadingIconTemplate) {
+                        <SpinnerIcon [spin]="true" [styleClass]="cx('loadingIcon')" />
+                    }
+                    @if (loadingIconTemplate || _loadingIconTemplate) {
+                        <span [class]="cx('loadingIcon')">
+                            <ng-template *ngTemplateOutlet="loadingIconTemplate || _loadingIconTemplate"></ng-template>
+                        </span>
+                    }
+                }
+            </div>
+        }
         <ng-container *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-container>
         @if (filterTemplate || _filterTemplate) {
             <ng-container *ngTemplateOutlet="filterTemplate || _filterTemplate; context: { $implicit: filterOptions }"></ng-container>
         } @else {
-            <p-iconField *ngIf="filter" [class]="cx('pcFilterContainer')">
-                <input
-                    #filter
-                    [pAutoFocus]="filterInputAutoFocus"
-                    pInputText
-                    type="search"
-                    autocomplete="off"
-                    [class]="cx('pcFilterInput')"
-                    [attr.placeholder]="filterPlaceholder"
-                    (keydown.enter)="$event.preventDefault()"
-                    (input)="_filter($event.target.value)"
-                />
-                <p-inputIcon>
-                    <SearchIcon *ngIf="!filterIconTemplate && !_filterIconTemplate" [class]="cx('filterIcon')" />
-                    <span *ngIf="filterIconTemplate || _filterIconTemplate" [class]="cx('filterIcon')">
-                        <ng-template *ngTemplateOutlet="filterIconTemplate || _filterIconTemplate"></ng-template>
-                    </span>
-                </p-inputIcon>
-            </p-iconField>
+            @if (filter) {
+                <p-iconField [class]="cx('pcFilterContainer')">
+                    <input
+                        #filter
+                        [pAutoFocus]="filterInputAutoFocus"
+                        pInputText
+                        type="search"
+                        autocomplete="off"
+                        [class]="cx('pcFilterInput')"
+                        [attr.placeholder]="filterPlaceholder"
+                        (keydown.enter)="$event.preventDefault()"
+                        (input)="_filter($event.target.value)"
+                    />
+                    <p-inputIcon>
+                        @if (!filterIconTemplate && !_filterIconTemplate) {
+                            <SearchIcon [class]="cx('filterIcon')" />
+                        }
+                        @if (filterIconTemplate || _filterIconTemplate) {
+                            <span [class]="cx('filterIcon')">
+                                <ng-template *ngTemplateOutlet="filterIconTemplate || _filterIconTemplate"></ng-template>
+                            </span>
+                        }
+                    </p-inputIcon>
+                </p-iconField>
+            }
         }
 
-        <ng-container *ngIf="getRootNode()?.length">
-            <p-scroller
-                #scroller
-                *ngIf="virtualScroll"
-                [items]="serializedValue"
-                [tabindex]="-1"
-                [styleClass]="cx('wrapper')"
-                [style]="{ height: scrollHeight !== 'flex' ? scrollHeight : undefined }"
-                [scrollHeight]="scrollHeight !== 'flex' ? undefined : '100%'"
-                [itemSize]="virtualScrollItemSize || _virtualNodeHeight"
-                [lazy]="lazy"
-                (onScroll)="onScroll.emit($event)"
-                (onScrollIndexChange)="onScrollIndexChange.emit($event)"
-                (onLazyLoad)="onLazyLoad.emit($event)"
-                [options]="virtualScrollOptions"
-            >
-                <ng-template #content let-items let-scrollerOptions="options">
-                    <ul *ngIf="items" [class]="cx('rootChildren')" [ngClass]="scrollerOptions.contentStyleClass" [style]="scrollerOptions.contentStyle" role="tree" [attr.aria-label]="ariaLabel" [attr.aria-labelledby]="ariaLabelledBy">
-                        <p-treeNode
-                            #treeNode
-                            *ngFor="let rowNode of items; let firstChild = first; let lastChild = last; let index = index; trackBy: trackBy"
-                            [level]="rowNode.level"
-                            [rowNode]="rowNode"
-                            [node]="rowNode.node"
-                            [parentNode]="rowNode.parent"
-                            [firstChild]="firstChild"
-                            [lastChild]="lastChild"
-                            [index]="getIndex(scrollerOptions, index)"
-                            [itemSize]="scrollerOptions.itemSize"
-                            [indentation]="indentation"
-                            [loadingMode]="loadingMode"
-                        ></p-treeNode>
-                    </ul>
-                </ng-template>
-                <ng-container *ngIf="loaderTemplate || _loaderTemplate">
-                    <ng-template #loader let-scrollerOptions="options">
-                        <ng-container *ngTemplateOutlet="loaderTemplate || _loaderTemplate; context: { options: scrollerOptions }"></ng-container>
+        @if (getRootNode()?.length) {
+            @if (virtualScroll) {
+                <p-scroller
+                    #scroller
+                    [items]="serializedValue"
+                    [tabindex]="-1"
+                    [styleClass]="cx('wrapper')"
+                    [style]="{ height: scrollHeight !== 'flex' ? scrollHeight : undefined }"
+                    [scrollHeight]="scrollHeight !== 'flex' ? undefined : '100%'"
+                    [itemSize]="virtualScrollItemSize || _virtualNodeHeight"
+                    [lazy]="lazy"
+                    (onScroll)="onScroll.emit($event)"
+                    (onScrollIndexChange)="onScrollIndexChange.emit($event)"
+                    (onLazyLoad)="onLazyLoad.emit($event)"
+                    [options]="virtualScrollOptions"
+                >
+                    <ng-template #content let-items let-scrollerOptions="options">
+                        @if (items) {
+                            <ul [class]="cx('rootChildren')" [ngClass]="scrollerOptions.contentStyleClass" [style]="scrollerOptions.contentStyle" role="tree" [attr.aria-label]="ariaLabel" [attr.aria-labelledby]="ariaLabelledBy">
+                                @for (rowNode of items; track trackBy(index, rowNode); let firstChild = $first; let lastChild = $last; let index = $index) {
+                                    <p-treeNode
+                                        #treeNode
+                                        [level]="rowNode.level"
+                                        [rowNode]="rowNode"
+                                        [node]="rowNode.node"
+                                        [parentNode]="rowNode.parent"
+                                        [firstChild]="firstChild"
+                                        [lastChild]="lastChild"
+                                        [index]="getIndex(scrollerOptions, index)"
+                                        [itemSize]="scrollerOptions.itemSize"
+                                        [indentation]="indentation"
+                                        [loadingMode]="loadingMode"
+                                    ></p-treeNode>
+                                }
+                            </ul>
+                        }
                     </ng-template>
-                </ng-container>
-            </p-scroller>
-            <ng-container *ngIf="!virtualScroll">
+                    @if (loaderTemplate || _loaderTemplate) {
+                        <ng-template #loader let-scrollerOptions="options">
+                            <ng-container *ngTemplateOutlet="loaderTemplate || _loaderTemplate; context: { options: scrollerOptions }"></ng-container>
+                        </ng-template>
+                    }
+                </p-scroller>
+            }
+            @if (!virtualScroll) {
                 <div #wrapper [class]="cx('wrapper')" [style.max-height]="scrollHeight">
-                    <ul [class]="cx('rootChildren')" *ngIf="getRootNode()" role="tree" [attr.aria-label]="ariaLabel" [attr.aria-labelledby]="ariaLabelledBy">
-                        <p-treeNode
-                            *ngFor="let node of getRootNode(); let firstChild = first; let lastChild = last; let index = index; trackBy: trackBy.bind(this)"
-                            [node]="node"
-                            [firstChild]="firstChild"
-                            [lastChild]="lastChild"
-                            [index]="index"
-                            [level]="0"
-                            [loadingMode]="loadingMode"
-                        ></p-treeNode>
-                    </ul>
+                    @if (getRootNode()) {
+                        <ul [class]="cx('rootChildren')" role="tree" [attr.aria-label]="ariaLabel" [attr.aria-labelledby]="ariaLabelledBy">
+                            @for (node of getRootNode(); track trackBy.bind(this)(index, node); let firstChild = $first; let lastChild = $last; let index = $index) {
+                                <p-treeNode [node]="node" [firstChild]="firstChild" [lastChild]="lastChild" [index]="index" [level]="0" [loadingMode]="loadingMode"></p-treeNode>
+                            }
+                        </ul>
+                    }
                 </div>
-            </ng-container>
-        </ng-container>
+            }
+        }
 
-        <div [class]="cx('emptyMessage')" *ngIf="!loading && (getRootNode() == null || getRootNode().length === 0)">
-            <ng-container *ngIf="!emptyMessageTemplate && !_emptyMessageTemplate; else emptyFilter">
-                {{ emptyMessageLabel }}
-            </ng-container>
-            <ng-template #emptyFilter *ngTemplateOutlet="emptyMessageTemplate || _emptyMessageTemplate"></ng-template>
-        </div>
+        @if (!loading && (getRootNode() == null || getRootNode().length === 0)) {
+            <div [class]="cx('emptyMessage')">
+                @if (!emptyMessageTemplate && !_emptyMessageTemplate) {
+                    {{ emptyMessageLabel }}
+                } @else {
+                    <ng-container *ngTemplateOutlet="emptyMessageTemplate || _emptyMessageTemplate"></ng-container>
+                }
+            </div>
+        }
         <ng-container *ngTemplateOutlet="footerTemplate || _footerTemplate"></ng-container>
     `,
     changeDetection: ChangeDetectionStrategy.Default,

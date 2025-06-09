@@ -54,64 +54,74 @@ import { PickListStyle } from './style/pickliststyle';
     imports: [CommonModule, ButtonDirective, Ripple, DragDropModule, AngleDoubleDownIcon, AngleDoubleLeftIcon, AngleDoubleRightIcon, AngleDoubleUpIcon, AngleDownIcon, AngleLeftIcon, AngleRightIcon, AngleUpIcon, Listbox, FormsModule, SharedModule],
     template: `
         <div [ngStyle]="style" [class]="cx('root')" cdkDropListGroup [attr.data-pc-name]="'picklist'" [attr.data-pc-section]="'root'">
-            <div [class]="cx('sourceControls')" *ngIf="showSourceControls" [attr.data-pc-section]="'sourceControls'" [attr.data-pc-group-section]="'controls'">
-                <button
-                    type="button"
-                    [attr.aria-label]="moveUpAriaLabel"
-                    pButton
-                    pRipple
-                    severity="secondary"
-                    [disabled]="sourceMoveDisabled()"
-                    (click)="moveUp(sourcelist, source, selectedItemsSource, onSourceReorder, SOURCE_LIST)"
-                    [attr.data-pc-section]="'sourceMoveUpButton'"
-                    [buttonProps]="getButtonProps('moveup')"
-                >
-                    <AngleUpIcon *ngIf="!moveUpIconTemplate && !_moveUpIconTemplate" [attr.data-pc-section]="'moveupicon'" />
-                    <ng-template *ngTemplateOutlet="moveUpIconTemplate || _moveUpIconTemplate"></ng-template>
-                </button>
-                <button
-                    type="button"
-                    [attr.aria-label]="moveTopAriaLabel"
-                    pButton
-                    pRipple
-                    severity="secondary"
-                    [disabled]="sourceMoveDisabled()"
-                    (click)="moveTop(sourcelist, source, selectedItemsSource, onSourceReorder, SOURCE_LIST)"
-                    [attr.data-pc-section]="'sourceMoveTopButton'"
-                    [buttonProps]="getButtonProps('movetop')"
-                >
-                    <AngleDoubleUpIcon *ngIf="!moveTopIconTemplate && !_moveTopIconTemplate" [attr.data-pc-section]="'movetopicon'" />
-                    <ng-template *ngTemplateOutlet="moveTopIconTemplate || _moveTopIconTemplate"></ng-template>
-                </button>
-                <button
-                    type="button"
-                    [attr.aria-label]="moveDownAriaLabel"
-                    pButton
-                    pRipple
-                    severity="secondary"
-                    [disabled]="sourceMoveDisabled()"
-                    (click)="moveDown(sourcelist, source, selectedItemsSource, onSourceReorder, SOURCE_LIST)"
-                    [attr.data-pc-section]="'sourceMoveDownButton'"
-                    [buttonProps]="getButtonProps('movedown')"
-                >
-                    <AngleDownIcon *ngIf="!moveDownIconTemplate && !_moveDownIconTemplate" [attr.data-pc-section]="'movedownicon'" />
-                    <ng-template *ngTemplateOutlet="moveDownIconTemplate || _moveDownIconTemplate"></ng-template>
-                </button>
-                <button
-                    type="button"
-                    [attr.aria-label]="moveBottomAriaLabel"
-                    pButton
-                    pRipple
-                    severity="secondary"
-                    [disabled]="sourceMoveDisabled()"
-                    (click)="moveBottom(sourcelist, source, selectedItemsSource, onSourceReorder, SOURCE_LIST)"
-                    [attr.data-pc-section]="'sourceMoveBottomButton'"
-                    [buttonProps]="getButtonProps('movebottom')"
-                >
-                    <AngleDoubleDownIcon *ngIf="!moveBottomIconTemplate || _moveBottomIconTemplate" [attr.data-pc-section]="'movebottomicon'" />
-                    <ng-template *ngTemplateOutlet="moveBottomIconTemplate || _moveBottomIconTemplate"></ng-template>
-                </button>
-            </div>
+            @if (showSourceControls) {
+                <div [class]="cx('sourceControls')" [attr.data-pc-section]="'sourceControls'" [attr.data-pc-group-section]="'controls'">
+                    <button
+                        type="button"
+                        [attr.aria-label]="moveUpAriaLabel"
+                        pButton
+                        pRipple
+                        severity="secondary"
+                        [disabled]="sourceMoveDisabled()"
+                        (click)="moveUp(sourcelist, source, selectedItemsSource, onSourceReorder, SOURCE_LIST)"
+                        [attr.data-pc-section]="'sourceMoveUpButton'"
+                        [buttonProps]="getButtonProps('moveup')"
+                    >
+                        @if (!moveUpIconTemplate && !_moveUpIconTemplate) {
+                            <AngleUpIcon [attr.data-pc-section]="'moveupicon'" />
+                        }
+                        <ng-template *ngTemplateOutlet="moveUpIconTemplate || _moveUpIconTemplate"></ng-template>
+                    </button>
+                    <button
+                        type="button"
+                        [attr.aria-label]="moveTopAriaLabel"
+                        pButton
+                        pRipple
+                        severity="secondary"
+                        [disabled]="sourceMoveDisabled()"
+                        (click)="moveTop(sourcelist, source, selectedItemsSource, onSourceReorder, SOURCE_LIST)"
+                        [attr.data-pc-section]="'sourceMoveTopButton'"
+                        [buttonProps]="getButtonProps('movetop')"
+                    >
+                        @if (!moveTopIconTemplate && !_moveTopIconTemplate) {
+                            <AngleDoubleUpIcon [attr.data-pc-section]="'movetopicon'" />
+                        }
+                        <ng-template *ngTemplateOutlet="moveTopIconTemplate || _moveTopIconTemplate"></ng-template>
+                    </button>
+                    <button
+                        type="button"
+                        [attr.aria-label]="moveDownAriaLabel"
+                        pButton
+                        pRipple
+                        severity="secondary"
+                        [disabled]="sourceMoveDisabled()"
+                        (click)="moveDown(sourcelist, source, selectedItemsSource, onSourceReorder, SOURCE_LIST)"
+                        [attr.data-pc-section]="'sourceMoveDownButton'"
+                        [buttonProps]="getButtonProps('movedown')"
+                    >
+                        @if (!moveDownIconTemplate && !_moveDownIconTemplate) {
+                            <AngleDownIcon [attr.data-pc-section]="'movedownicon'" />
+                        }
+                        <ng-template *ngTemplateOutlet="moveDownIconTemplate || _moveDownIconTemplate"></ng-template>
+                    </button>
+                    <button
+                        type="button"
+                        [attr.aria-label]="moveBottomAriaLabel"
+                        pButton
+                        pRipple
+                        severity="secondary"
+                        [disabled]="sourceMoveDisabled()"
+                        (click)="moveBottom(sourcelist, source, selectedItemsSource, onSourceReorder, SOURCE_LIST)"
+                        [attr.data-pc-section]="'sourceMoveBottomButton'"
+                        [buttonProps]="getButtonProps('movebottom')"
+                    >
+                        @if (!moveBottomIconTemplate || _moveBottomIconTemplate) {
+                            <AngleDoubleDownIcon [attr.data-pc-section]="'movebottomicon'" />
+                        }
+                        <ng-template *ngTemplateOutlet="moveBottomIconTemplate || _moveBottomIconTemplate"></ng-template>
+                    </button>
+                </div>
+            }
             <div [class]="cx('sourceListContainer')" [attr.data-pc-section]="'sourceWrapper'" [attr.data-pc-group-section]="'listWrapper'">
                 <p-listbox
                     #sourcelist
@@ -141,35 +151,37 @@ import { PickListStyle } from './style/pickliststyle';
                     (onDrop)="onDrop($event, SOURCE_LIST)"
                     (onFilter)="onFilter($event.originalEvent, SOURCE_LIST)"
                 >
-                    <ng-container *ngIf="sourceHeaderTemplate || _sourceHeaderTemplate || sourceHeader">
+                    @if (sourceHeaderTemplate || _sourceHeaderTemplate || sourceHeader) {
                         <ng-template #header>
-                            <div *ngIf="!sourceHeaderTemplate && !_sourceHeaderTemplate">{{ sourceHeader }}</div>
+                            @if (!sourceHeaderTemplate && !_sourceHeaderTemplate) {
+                                <div>{{ sourceHeader }}</div>
+                            }
                             <ng-template *ngTemplateOutlet="sourceHeaderTemplate || _sourceHeaderTemplate"></ng-template>
                         </ng-template>
-                    </ng-container>
-                    <ng-container *ngIf="sourceFilterTemplate || _sourceFilterTemplate">
+                    }
+                    @if (sourceFilterTemplate || _sourceFilterTemplate) {
                         <ng-template #filter>
                             <ng-template *ngTemplateOutlet="sourceFilterTemplate || _sourceFilterTemplate; context: { options: sourceFilterOptions }"></ng-template>
                         </ng-template>
-                    </ng-container>
-                    <ng-container *ngIf="sourceFilterIconTemplate || _sourceFilterIconTemplate">
+                    }
+                    @if (sourceFilterIconTemplate || _sourceFilterIconTemplate) {
                         <ng-container *ngTemplateOutlet="sourceFilterIconTemplate || _sourceFilterIconTemplate"></ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="itemTemplate || _itemTemplate">
+                    }
+                    @if (itemTemplate || _itemTemplate) {
                         <ng-template #item let-item let-index="index" let-selected="selected" let-disabled="disabled">
                             <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item, index: index, selected: selected, disabled: disabled }"></ng-container>
                         </ng-template>
-                    </ng-container>
-                    <ng-container *ngIf="emptyMessageSourceTemplate || _emptyMessageSourceTemplate">
+                    }
+                    @if (emptyMessageSourceTemplate || _emptyMessageSourceTemplate) {
                         <ng-template #empty>
                             <ng-container *ngTemplateOutlet="emptyMessageSourceTemplate || _emptyMessageSourceTemplate"></ng-container>
                         </ng-template>
-                    </ng-container>
-                    <ng-container *ngIf="emptyFilterMessageSourceTemplate || _emptyFilterMessageSourceTemplate">
+                    }
+                    @if (emptyFilterMessageSourceTemplate || _emptyFilterMessageSourceTemplate) {
                         <ng-template #emptyfilter>
                             <ng-container *ngTemplateOutlet="emptyFilterMessageSourceTemplate || _emptyFilterMessageSourceTemplate"></ng-container>
                         </ng-template>
-                    </ng-container>
+                    }
                 </p-listbox>
             </div>
             <div [class]="cx('targetControls')" [attr.data-pc-section]="'buttons'" [attr.data-pc-group-section]="'controls'">
@@ -184,10 +196,14 @@ import { PickListStyle } from './style/pickliststyle';
                     [attr.data-pc-section]="'moveToTargetButton'"
                     [buttonProps]="getButtonProps('movetotarget')"
                 >
-                    <ng-container *ngIf="!moveToTargetIconTemplate && !_moveToTargetIconTemplate">
-                        <AngleRightIcon *ngIf="!viewChanged" [attr.data-pc-section]="'movetotargeticon'" />
-                        <AngleDownIcon *ngIf="viewChanged" [attr.data-pc-section]="'movetotargeticon'" />
-                    </ng-container>
+                    @if (!moveToTargetIconTemplate && !_moveToTargetIconTemplate) {
+                        @if (!viewChanged) {
+                            <AngleRightIcon [attr.data-pc-section]="'movetotargeticon'" />
+                        }
+                        @if (viewChanged) {
+                            <AngleDownIcon [attr.data-pc-section]="'movetotargeticon'" />
+                        }
+                    }
                     <ng-template *ngTemplateOutlet="moveToTargetIconTemplate || _moveToTargetIconTemplate; context: { $implicit: viewChanged }"></ng-template>
                 </button>
                 <button
@@ -201,10 +217,14 @@ import { PickListStyle } from './style/pickliststyle';
                     [attr.data-pc-section]="'moveAllToTargetButton'"
                     [buttonProps]="getButtonProps('movealltotarget')"
                 >
-                    <ng-container *ngIf="!moveAllToTargetIconTemplate && !_moveAllToTargetIconTemplate">
-                        <AngleDoubleRightIcon *ngIf="!viewChanged" [attr.data-pc-section]="'movealltotargeticon'" />
-                        <AngleDoubleDownIcon *ngIf="viewChanged" [attr.data-pc-section]="'movealltotargeticon'" />
-                    </ng-container>
+                    @if (!moveAllToTargetIconTemplate && !_moveAllToTargetIconTemplate) {
+                        @if (!viewChanged) {
+                            <AngleDoubleRightIcon [attr.data-pc-section]="'movealltotargeticon'" />
+                        }
+                        @if (viewChanged) {
+                            <AngleDoubleDownIcon [attr.data-pc-section]="'movealltotargeticon'" />
+                        }
+                    }
                     <ng-template *ngTemplateOutlet="moveAllToTargetIconTemplate || _moveAllToTargetIconTemplate; context: { $implicit: viewChanged }"></ng-template>
                 </button>
                 <button
@@ -218,10 +238,14 @@ import { PickListStyle } from './style/pickliststyle';
                     [attr.data-pc-section]="'moveToSourceButton'"
                     [buttonProps]="getButtonProps('movetosource')"
                 >
-                    <ng-container *ngIf="!moveToSourceIconTemplate && !_moveToSourceIconTemplate">
-                        <AngleLeftIcon *ngIf="!viewChanged" [attr.data-pc-section]="'movedownsourceticon'" />
-                        <AngleUpIcon *ngIf="viewChanged" [attr.data-pc-section]="'movedownsourceticon'" />
-                    </ng-container>
+                    @if (!moveToSourceIconTemplate && !_moveToSourceIconTemplate) {
+                        @if (!viewChanged) {
+                            <AngleLeftIcon [attr.data-pc-section]="'movedownsourceticon'" />
+                        }
+                        @if (viewChanged) {
+                            <AngleUpIcon [attr.data-pc-section]="'movedownsourceticon'" />
+                        }
+                    }
                     <ng-template *ngTemplateOutlet="moveToSourceIconTemplate || _moveToSourceIconTemplate; context: { $implicit: viewChanged }"></ng-template>
                 </button>
                 <button
@@ -235,10 +259,14 @@ import { PickListStyle } from './style/pickliststyle';
                     [attr.data-pc-section]="'moveAllToSourceButton'"
                     [buttonProps]="getButtonProps('movealltosource')"
                 >
-                    <ng-container *ngIf="!moveAllToSourceIconTemplate && !_moveAllToSourceIconTemplate">
-                        <AngleDoubleLeftIcon *ngIf="!viewChanged" [attr.data-pc-section]="'movealltosourceticon'" />
-                        <AngleDoubleUpIcon *ngIf="viewChanged" [attr.data-pc-section]="'movealltosourceticon'" />
-                    </ng-container>
+                    @if (!moveAllToSourceIconTemplate && !_moveAllToSourceIconTemplate) {
+                        @if (!viewChanged) {
+                            <AngleDoubleLeftIcon [attr.data-pc-section]="'movealltosourceticon'" />
+                        }
+                        @if (viewChanged) {
+                            <AngleDoubleUpIcon [attr.data-pc-section]="'movealltosourceticon'" />
+                        }
+                    }
                     <ng-template *ngTemplateOutlet="moveAllToSourceIconTemplate || _moveAllToSourceIconTemplate; context: { $implicit: viewChanged }"></ng-template>
                 </button>
             </div>
@@ -271,96 +299,108 @@ import { PickListStyle } from './style/pickliststyle';
                     (onDrop)="onDrop($event, TARGET_LIST)"
                     (onFilter)="onFilter($event.originalEvent, TARGET_LIST)"
                 >
-                    <ng-container *ngIf="targetHeaderTemplate || _targetHeaderTemplate || targetHeader">
+                    @if (targetHeaderTemplate || _targetHeaderTemplate || targetHeader) {
                         <ng-template #header>
-                            <div *ngIf="!targetHeaderTemplate && !_targetHeaderTemplate">{{ targetHeader }}</div>
+                            @if (!targetHeaderTemplate && !_targetHeaderTemplate) {
+                                <div>{{ targetHeader }}</div>
+                            }
                             <ng-template *ngTemplateOutlet="targetHeaderTemplate || _targetHeaderTemplate"></ng-template>
                         </ng-template>
-                    </ng-container>
-                    <ng-container *ngIf="targetFilterTemplate || _targetFilterTemplate">
+                    }
+                    @if (targetFilterTemplate || _targetFilterTemplate) {
                         <ng-template #filter>
                             <ng-template *ngTemplateOutlet="targetFilterTemplate || _targetFilterTemplate; context: { options: targetFilterOptions }"></ng-template>
                         </ng-template>
-                    </ng-container>
-                    <ng-container *ngIf="targetFilterIconTemplate || _targetFilterIconTemplate">
+                    }
+                    @if (targetFilterIconTemplate || _targetFilterIconTemplate) {
                         <ng-container *ngTemplateOutlet="targetFilterIconTemplate || _targetFilterIconTemplate"></ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="itemTemplate || _itemTemplate">
+                    }
+                    @if (itemTemplate || _itemTemplate) {
                         <ng-template #item let-item let-index="index" let-selected="selected" let-disabled="disabled">
                             <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item, index: index, selected: selected, disabled: disabled }"></ng-container>
                         </ng-template>
-                    </ng-container>
-                    <ng-container *ngIf="emptyMessageTargetTemplate || _emptyMessageTargetTemplate">
+                    }
+                    @if (emptyMessageTargetTemplate || _emptyMessageTargetTemplate) {
                         <ng-template #empty>
                             <ng-container *ngTemplateOutlet="emptyMessageTargetTemplate || _emptyMessageTargetTemplate"></ng-container>
                         </ng-template>
-                    </ng-container>
-                    <ng-container *ngIf="emptyFilterMessageTargetTemplate || _emptyFilterMessageTargetTemplate">
+                    }
+                    @if (emptyFilterMessageTargetTemplate || _emptyFilterMessageTargetTemplate) {
                         <ng-template #emptyfilter>
                             <ng-container *ngTemplateOutlet="emptyFilterMessageTargetTemplate || _emptyFilterMessageTargetTemplate"></ng-container>
                         </ng-template>
-                    </ng-container>
+                    }
                 </p-listbox>
             </div>
-            <div [class]="cx('targetControls')" *ngIf="showTargetControls" [attr.data-pc-section]="'targetControls'" [attr.data-pc-group-section]="'controls'">
-                <button
-                    type="button"
-                    [attr.aria-label]="moveUpAriaLabel"
-                    pButton
-                    pRipple
-                    severity="secondary"
-                    class="p-button-icon-only"
-                    [disabled]="targetMoveDisabled()"
-                    (click)="moveUp(targetlist, target, selectedItemsTarget, onTargetReorder, TARGET_LIST)"
-                    [attr.data-pc-section]="'targetMoveUpButton'"
-                    [buttonProps]="getButtonProps('moveup')"
-                >
-                    <AngleUpIcon *ngIf="!moveUpIconTemplate && !_moveUpIconTemplate" [attr.data-pc-section]="'moveupicon'" />
-                    <ng-template *ngTemplateOutlet="moveUpIconTemplate || _moveUpIconTemplate"></ng-template>
-                </button>
-                <button
-                    type="button"
-                    [attr.aria-label]="moveTopAriaLabel"
-                    pButton
-                    pRipple
-                    severity="secondary"
-                    [disabled]="targetMoveDisabled()"
-                    (click)="moveTop(targetlist, target, selectedItemsTarget, onTargetReorder, TARGET_LIST)"
-                    [attr.data-pc-section]="'targetMoveTopButton'"
-                    [buttonProps]="getButtonProps('movetop')"
-                >
-                    <AngleDoubleUpIcon *ngIf="!moveTopIconTemplate && !_moveTopIconTemplate" [attr.data-pc-section]="'movetopicon'" />
-                    <ng-template *ngTemplateOutlet="moveTopIconTemplate || moveTopIconTemplate"></ng-template>
-                </button>
-                <button
-                    type="button"
-                    [attr.aria-label]="moveDownAriaLabel"
-                    pButton
-                    pRipple
-                    severity="secondary"
-                    [disabled]="targetMoveDisabled()"
-                    (click)="moveDown(targetlist, target, selectedItemsTarget, onTargetReorder, TARGET_LIST)"
-                    [attr.data-pc-section]="'targetMoveDownButton'"
-                    [buttonProps]="getButtonProps('movedown')"
-                >
-                    <AngleDownIcon *ngIf="!moveDownIconTemplate && !_moveDownIconTemplate" [attr.data-pc-section]="'movedownicon'" />
-                    <ng-template *ngTemplateOutlet="moveDownIconTemplate || _moveDownIconTemplate"></ng-template>
-                </button>
-                <button
-                    type="button"
-                    [attr.aria-label]="moveBottomAriaLabel"
-                    pButton
-                    pRipple
-                    severity="secondary"
-                    [disabled]="targetMoveDisabled()"
-                    (click)="moveBottom(targetlist, target, selectedItemsTarget, onTargetReorder, TARGET_LIST)"
-                    [attr.data-pc-section]="'targetMoveBottomButton'"
-                    [buttonProps]="getButtonProps('movebottom')"
-                >
-                    <AngleDoubleDownIcon *ngIf="!moveBottomIconTemplate && !_moveBottomIconTemplate" [attr.data-pc-section]="'movebottomicon'" />
-                    <ng-template *ngTemplateOutlet="moveBottomIconTemplate || _moveBottomIconTemplate"></ng-template>
-                </button>
-            </div>
+            @if (showTargetControls) {
+                <div [class]="cx('targetControls')" [attr.data-pc-section]="'targetControls'" [attr.data-pc-group-section]="'controls'">
+                    <button
+                        type="button"
+                        [attr.aria-label]="moveUpAriaLabel"
+                        pButton
+                        pRipple
+                        severity="secondary"
+                        class="p-button-icon-only"
+                        [disabled]="targetMoveDisabled()"
+                        (click)="moveUp(targetlist, target, selectedItemsTarget, onTargetReorder, TARGET_LIST)"
+                        [attr.data-pc-section]="'targetMoveUpButton'"
+                        [buttonProps]="getButtonProps('moveup')"
+                    >
+                        @if (!moveUpIconTemplate && !_moveUpIconTemplate) {
+                            <AngleUpIcon [attr.data-pc-section]="'moveupicon'" />
+                        }
+                        <ng-template *ngTemplateOutlet="moveUpIconTemplate || _moveUpIconTemplate"></ng-template>
+                    </button>
+                    <button
+                        type="button"
+                        [attr.aria-label]="moveTopAriaLabel"
+                        pButton
+                        pRipple
+                        severity="secondary"
+                        [disabled]="targetMoveDisabled()"
+                        (click)="moveTop(targetlist, target, selectedItemsTarget, onTargetReorder, TARGET_LIST)"
+                        [attr.data-pc-section]="'targetMoveTopButton'"
+                        [buttonProps]="getButtonProps('movetop')"
+                    >
+                        @if (!moveTopIconTemplate && !_moveTopIconTemplate) {
+                            <AngleDoubleUpIcon [attr.data-pc-section]="'movetopicon'" />
+                        }
+                        <ng-template *ngTemplateOutlet="moveTopIconTemplate || moveTopIconTemplate"></ng-template>
+                    </button>
+                    <button
+                        type="button"
+                        [attr.aria-label]="moveDownAriaLabel"
+                        pButton
+                        pRipple
+                        severity="secondary"
+                        [disabled]="targetMoveDisabled()"
+                        (click)="moveDown(targetlist, target, selectedItemsTarget, onTargetReorder, TARGET_LIST)"
+                        [attr.data-pc-section]="'targetMoveDownButton'"
+                        [buttonProps]="getButtonProps('movedown')"
+                    >
+                        @if (!moveDownIconTemplate && !_moveDownIconTemplate) {
+                            <AngleDownIcon [attr.data-pc-section]="'movedownicon'" />
+                        }
+                        <ng-template *ngTemplateOutlet="moveDownIconTemplate || _moveDownIconTemplate"></ng-template>
+                    </button>
+                    <button
+                        type="button"
+                        [attr.aria-label]="moveBottomAriaLabel"
+                        pButton
+                        pRipple
+                        severity="secondary"
+                        [disabled]="targetMoveDisabled()"
+                        (click)="moveBottom(targetlist, target, selectedItemsTarget, onTargetReorder, TARGET_LIST)"
+                        [attr.data-pc-section]="'targetMoveBottomButton'"
+                        [buttonProps]="getButtonProps('movebottom')"
+                    >
+                        @if (!moveBottomIconTemplate && !_moveBottomIconTemplate) {
+                            <AngleDoubleDownIcon [attr.data-pc-section]="'movebottomicon'" />
+                        }
+                        <ng-template *ngTemplateOutlet="moveBottomIconTemplate || _moveBottomIconTemplate"></ng-template>
+                    </button>
+                </div>
+            }
         </div>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -27,9 +27,11 @@ interface Column {
                     <ng-template #header let-columns>
                         <tr>
                             <th style="width:3rem"></th>
-                            <th *ngFor="let col of columns" pReorderableColumn>
-                                {{ col.header }}
-                            </th>
+                            @for (col of columns; track col) {
+                                <th pReorderableColumn>
+                                    {{ col.header }}
+                                </th>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #body let-rowData let-columns="columns" let-index="rowIndex">
@@ -37,9 +39,11 @@ interface Column {
                             <td>
                                 <span class="pi pi-bars" pReorderableRowHandle></span>
                             </td>
-                            <td *ngFor="let col of columns">
-                                {{ rowData[col.field] }}
-                            </td>
+                            @for (col of columns; track col) {
+                                <td>
+                                    {{ rowData[col.field] }}
+                                </td>
+                            }
                         </tr>
                     </ng-template>
                 </p-table>
@@ -77,9 +81,11 @@ export class ReorderDoc {
     <ng-template #header let-columns>
         <tr>
             <th style="width:3rem"></th>
-            <th *ngFor="let col of columns" pReorderableColumn>
-                {{col.header}}
-            </th>
+            @for (col of columns; track col) {
+                <th pReorderableColumn>
+                    {{ col.header }}
+                </th>
+            }
         </tr>
     </ng-template>
     <ng-template #body let-rowData let-columns="columns" let-index="rowIndex">
@@ -87,9 +93,11 @@ export class ReorderDoc {
             <td>
                 <span class="pi pi-bars" pReorderableRowHandle></span>
             </td>
-            <td *ngFor="let col of columns">
-                {{rowData[col.field]}}
-            </td>
+            @for (col of columns; track col) {
+                <td>
+                    {{ rowData[col.field] }}
+                </td>
+            }
         </tr>
     </ng-template>
 </p-table>`,
@@ -98,24 +106,24 @@ export class ReorderDoc {
         <ng-template #header let-columns>
             <tr>
                 <th style="width:3rem"></th>
-                <th *ngFor="let col of columns" pReorderableColumn>
-                    {{col.header}}
-                </th>
+                @for (col of columns; track col) {
+                    <th pReorderableColumn>
+                        {{ col.header }}
+                    </th>
+                }
             </tr>
         </ng-template>
-        <ng-template
-            #body
-            let-rowData
-            let-columns="columns"
-            let-index="rowIndex">
-                <tr [pReorderableRow]="index">
+        <ng-template #body let-rowData let-columns="columns" let-index="rowIndex">
+            <tr [pReorderableRow]="index">
+                <td>
+                    <span class="pi pi-bars" pReorderableRowHandle></span>
+                </td>
+                @for (col of columns; track col) {
                     <td>
-                        <span class="pi pi-bars" pReorderableRowHandle></span>
+                        {{ rowData[col.field] }}
                     </td>
-                    <td *ngFor="let col of columns">
-                        {{rowData[col.field]}}
-                    </td>
-                </tr>
+                }
+            </tr>
         </ng-template>
     </p-table>
 </div>`,

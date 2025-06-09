@@ -1,10 +1,10 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
 
 @Component({
     selector: 'p-deferred-demo',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     template: `
         @if (!visible) {
             <div class="card">

@@ -12,17 +12,16 @@ import { MenuItem } from 'primeng/api';
         <div class="card flex justify-center">
             <p-breadcrumb class="max-w-full" [model]="items">
                 <ng-template #item let-item>
-                    <ng-container *ngIf="item.route; else elseBlock">
+                    @if (item.route) {
                         <a [routerLink]="item.route" class="p-breadcrumb-item-link">
                             <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
                             <span class="text-primary font-semibold">{{ item.label }}</span>
                         </a>
-                    </ng-container>
-                    <ng-template #elseBlock>
+                    } @else {
                         <a [href]="item.url">
                             <span class="text-color">{{ item.label }}</span>
                         </a>
-                    </ng-template>
+                    }
                 </ng-template>
             </p-breadcrumb>
         </div>
@@ -41,34 +40,32 @@ export class RouterDoc implements OnInit {
     code: Code = {
         basic: `<p-breadcrumb class="max-w-full" [model]="items">
     <ng-template #item let-item>
-        <ng-container *ngIf="item.route; else elseBlock">
-            <a [routerLink]="item.route" class="p-breadcrumb-item-link">
-                <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
-                <span class="text-primary font-semibold">{{ item.label }}</span>
-            </a>
-        </ng-container>
-        <ng-template #elseBlock>
-            <a [href]="item.url">
-                <span class="text-color">{{ item.label }}</span>
-            </a>
-        </ng-template>
+        @if (item.route) {
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+            <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+            <span class="text-primary font-semibold">{{ item.label }}</span>
+        </a>
+        } @else {
+        <a [href]="item.url">
+            <span class="text-color">{{ item.label }}</span>
+        </a>
+              }
     </ng-template>
 </p-breadcrumb>`,
 
         html: `<div class="card flex justify-center">
     <p-breadcrumb class="max-w-full" [model]="items">
         <ng-template #item let-item>
-            <ng-container *ngIf="item.route; else elseBlock">
-                <a [routerLink]="item.route" class="p-breadcrumb-item-link">
-                    <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
-                    <span class="text-primary font-semibold">{{ item.label }}</span>
-                </a>
-            </ng-container>
-            <ng-template #elseBlock>
-                <a [href]="item.url">
-                    <span class="text-color">{{ item.label }}</span>
-                </a>
-            </ng-template>
+            @if (item.route) {
+            <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+                <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+                <span class="text-primary font-semibold">{{ item.label }}</span>
+            </a>
+            } @else {
+            <a [href]="item.url">
+                <span class="text-color">{{ item.label }}</span>
+            </a>
+            }
         </ng-template>
     </p-breadcrumb>
 </div>`,

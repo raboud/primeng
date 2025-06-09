@@ -31,34 +31,42 @@ import { PrimeNG } from 'primeng/config';
                 </ng-template>
                 <ng-template #content let-files let-uploadedFiles="uploadedFiles" let-removeFileCallback="removeFileCallback" let-removeUploadedFileCallback="removeUploadedFileCallback">
                     <div class="flex flex-col gap-8 pt-4">
-                        <div *ngIf="files?.length > 0">
-                            <h5>Pending</h5>
-                            <div class="flex flex-wrap gap-4">
-                                <div *ngFor="let file of files; let i = index" class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
-                                    <div>
-                                        <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
-                                    </div>
-                                    <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
-                                    <div>{{ formatSize(file.size) }}</div>
-                                    <p-badge value="Pending" severity="warn" />
-                                    <p-button icon="pi pi-times" (click)="onRemoveTemplatingFile($event, file, removeFileCallback, index)" [outlined]="true" [rounded]="true" severity="danger" />
+                        @if (files?.length > 0) {
+                            <div>
+                                <h5>Pending</h5>
+                                <div class="flex flex-wrap gap-4">
+                                    @for (file of files; track file; let i = $index) {
+                                        <div class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
+                                            <div>
+                                                <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+                                            </div>
+                                            <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                                            <div>{{ formatSize(file.size) }}</div>
+                                            <p-badge value="Pending" severity="warn" />
+                                            <p-button icon="pi pi-times" (click)="onRemoveTemplatingFile($event, file, removeFileCallback, index)" [outlined]="true" [rounded]="true" severity="danger" />
+                                        </div>
+                                    }
                                 </div>
                             </div>
-                        </div>
-                        <div *ngIf="uploadedFiles?.length > 0">
-                            <h5>Completed</h5>
-                            <div class="flex flex-wrap gap-4">
-                                <div *ngFor="let file of uploadedFiles; let i = index" class="card m-0 px-12 flex flex-col border border-surface items-center gap-4">
-                                    <div>
-                                        <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
-                                    </div>
-                                    <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
-                                    <div>{{ formatSize(file.size) }}</div>
-                                    <p-badge value="Completed" class="mt-4" severity="success" />
-                                    <p-button icon="pi pi-times" (onClick)="removeUploadedFileCallback(index)" [outlined]="true" [rounded]="true" severity="danger" />
+                        }
+                        @if (uploadedFiles?.length > 0) {
+                            <div>
+                                <h5>Completed</h5>
+                                <div class="flex flex-wrap gap-4">
+                                    @for (file of uploadedFiles; track file; let i = $index) {
+                                        <div class="card m-0 px-12 flex flex-col border border-surface items-center gap-4">
+                                            <div>
+                                                <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+                                            </div>
+                                            <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                                            <div>{{ formatSize(file.size) }}</div>
+                                            <p-badge value="Completed" class="mt-4" severity="success" />
+                                            <p-button icon="pi pi-times" (onClick)="removeUploadedFileCallback(index)" [outlined]="true" [rounded]="true" severity="danger" />
+                                        </div>
+                                    }
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </ng-template>
                 <ng-template #file></ng-template>
@@ -148,36 +156,44 @@ export class TemplateDoc {
         </div>
     </ng-template>
     <ng-template #content let-files let-uploadedFiles="uploadedFiles" let-removeFileCallback="removeFileCallback" let-removeUploadedFileCallback="removeUploadedFileCallback">
-        <div class="flex flex-col gap-8 pt-4">
-            <div *ngIf="files?.length > 0">
-                <h5>Pending</h5>
-                <div class="flex flex-wrap gap-4">
-                    <div *ngFor="let file of files; let i = index" class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
-                        <div>
-                            <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
-                        </div>
-                        <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
-                        <div>{{ formatSize(file.size) }}</div>
-                        <p-badge value="Pending" severity="warn" />
-                        <p-button icon="pi pi-times" (click)="onRemoveTemplatingFile($event, file, removeFileCallback, index)" [outlined]="true" [rounded]="true" severity="danger" />
-                    </div>
+    <div class="flex flex-col gap-8 pt-4">
+        @if (files?.length > 0) {
+        <div>
+            <h5>Pending</h5>
+            <div class="flex flex-wrap gap-4">
+            @for (file of files; track file; let i = $index) {
+                <div class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
+                <div>
+                    <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
                 </div>
-            </div>
-            <div *ngIf="uploadedFiles?.length > 0">
-                <h5>Completed</h5>
-                <div class="flex flex-wrap gap-4">
-                    <div *ngFor="let file of uploadedFiles; let i = index" class="card m-0 px-12 flex flex-col border border-surface items-center gap-4">
-                        <div>
-                            <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
-                        </div>
-                        <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
-                        <div>{{ formatSize(file.size) }}</div>
-                        <p-badge value="Completed" class="mt-4" severity="success" />
-                        <p-button icon="pi pi-times" (onClick)="removeUploadedFileCallback(index)" [outlined]="true" [rounded]="true" severity="danger" />
-                    </div>
+                <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                <div>{{ formatSize(file.size) }}</div>
+                <p-badge value="Pending" severity="warn" />
+                <p-button icon="pi pi-times" (click)="onRemoveTemplatingFile($event, file, removeFileCallback, index)" [outlined]="true" [rounded]="true" severity="danger" />
                 </div>
+            }
             </div>
         </div>
+        }
+        @if (uploadedFiles?.length > 0) {
+        <div>
+            <h5>Completed</h5>
+            <div class="flex flex-wrap gap-4">
+            @for (file of uploadedFiles; track file; let i = $index) {
+                <div class="card m-0 px-12 flex flex-col border border-surface items-center gap-4">
+                <div>
+                    <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+                </div>
+                <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                <div>{{ formatSize(file.size) }}</div>
+                <p-badge value="Completed" class="mt-4" severity="success" />
+                <p-button icon="pi pi-times" (onClick)="removeUploadedFileCallback(index)" [outlined]="true" [rounded]="true" severity="danger" />
+                </div>
+            }
+            </div>
+        </div>
+        }
+    </div>
     </ng-template>
     <ng-template #file></ng-template>
     <ng-template #empty>
@@ -203,36 +219,44 @@ export class TemplateDoc {
             </div>
         </ng-template>
         <ng-template #content let-files let-uploadedFiles="uploadedFiles" let-removeFileCallback="removeFileCallback" let-removeUploadedFileCallback="removeUploadedFileCallback">
-            <div class="flex flex-col gap-8 pt-4">
-                <div *ngIf="files?.length > 0">
-                    <h5>Pending</h5>
-                    <div class="flex flex-wrap gap-4">
-                        <div *ngFor="let file of files; let i = index" class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
-                            <div>
-                                <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
-                            </div>
-                            <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
-                            <div>{{ formatSize(file.size) }}</div>
-                            <p-badge value="Pending" severity="warn" />
-                            <p-button icon="pi pi-times" (click)="onRemoveTemplatingFile($event, file, removeFileCallback, index)" [outlined]="true" [rounded]="true" severity="danger" />
-                        </div>
+        <div class="flex flex-col gap-8 pt-4">
+            @if (files?.length > 0) {
+            <div>
+                <h5>Pending</h5>
+                <div class="flex flex-wrap gap-4">
+                @for (file of files; track file; let i = $index) {
+                    <div class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
+                    <div>
+                        <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
                     </div>
-                </div>
-                <div *ngIf="uploadedFiles?.length > 0">
-                    <h5>Completed</h5>
-                    <div class="flex flex-wrap gap-4">
-                        <div *ngFor="let file of uploadedFiles; let i = index" class="card m-0 px-12 flex flex-col border border-surface items-center gap-4">
-                            <div>
-                                <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
-                            </div>
-                            <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
-                            <div>{{ formatSize(file.size) }}</div>
-                            <p-badge value="Completed" class="mt-4" severity="success" />
-                            <p-button icon="pi pi-times" (onClick)="removeUploadedFileCallback(index)" [outlined]="true" [rounded]="true" severity="danger" />
-                        </div>
+                    <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                    <div>{{ formatSize(file.size) }}</div>
+                    <p-badge value="Pending" severity="warn" />
+                    <p-button icon="pi pi-times" (click)="onRemoveTemplatingFile($event, file, removeFileCallback, index)" [outlined]="true" [rounded]="true" severity="danger" />
                     </div>
+                }
                 </div>
             </div>
+            }
+            @if (uploadedFiles?.length > 0) {
+            <div>
+                <h5>Completed</h5>
+                <div class="flex flex-wrap gap-4">
+                @for (file of uploadedFiles; track file; let i = $index) {
+                    <div class="card m-0 px-12 flex flex-col border border-surface items-center gap-4">
+                    <div>
+                        <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+                    </div>
+                    <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                    <div>{{ formatSize(file.size) }}</div>
+                    <p-badge value="Completed" class="mt-4" severity="success" />
+                    <p-button icon="pi pi-times" (onClick)="removeUploadedFileCallback(index)" [outlined]="true" [rounded]="true" severity="danger" />
+                    </div>
+                }
+                </div>
+            </div>
+            }
+        </div>
         </ng-template>
         <ng-template #file></ng-template>
         <ng-template #empty>

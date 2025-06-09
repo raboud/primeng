@@ -75,34 +75,41 @@ export const CHIPS_VALUE_ACCESSOR: any = {
                 (keydown)="onContainerKeyDown($event)"
                 [attr.data-pc-section]="'container'"
             >
-                <li
-                    #token
-                    *ngFor="let item of value; let i = index"
-                    [attr.id]="id + '_chips_item_' + i"
-                    role="option"
-                    [attr.ariaLabel]="item"
-                    [attr.aria-selected]="true"
-                    [attr.aria-setsize]="value.length"
-                    [attr.aria-posinset]="i + 1"
-                    [attr.data-p-focused]="focusedIndex === i"
-                    [ngClass]="{ 'p-inputchips-chip-item': true, 'p-focus': focusedIndex === i }"
-                    (click)="onItemClick($event, item)"
-                    (contextmenu)="onItemContextMenu($event, item)"
-                    [attr.data-pc-section]="'token'"
-                >
-                    <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
-                    <p-chip *ngIf="!itemTemplate" class="p-inputchips-chip" [label]="field ? resolveFieldData(item, field) : item" [removeIcon]="chipIcon" removable (onRemove)="removeItem($event, i)">
+                @for (item of value; track item; let i = $index) {
+                    <li
+                        #token
+                        [attr.id]="id + '_chips_item_' + i"
+                        role="option"
+                        [attr.ariaLabel]="item"
+                        [attr.aria-selected]="true"
+                        [attr.aria-setsize]="value.length"
+                        [attr.aria-posinset]="i + 1"
+                        [attr.data-p-focused]="focusedIndex === i"
+                        [ngClass]="{ 'p-inputchips-chip-item': true, 'p-focus': focusedIndex === i }"
+                        (click)="onItemClick($event, item)"
+                        (contextmenu)="onItemContextMenu($event, item)"
+                        [attr.data-pc-section]="'token'"
+                    >
                         <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
-                        <ng-template #removeicon>
-                            <ng-container *ngIf="!disabled">
-                                <TimesCircleIcon [styleClass]="'p-chips-token-icon'" *ngIf="!removeTokenIconTemplate" (click)="removeItem($event, i)" [attr.data-pc-section]="'removeTokenIcon'" [attr.aria-hidden]="true" />
-                                <span *ngIf="removeTokenIconTemplate" class="p-chips-token-icon" (click)="removeItem($event, i)" [attr.data-pc-section]="'removeTokenIcon'" [attr.aria-hidden]="true">
-                                    <ng-template *ngTemplateOutlet="removeTokenIconTemplate; context: { removeItem: removeItem.bind(this) }"></ng-template>
-                                </span>
-                            </ng-container>
-                        </ng-template>
-                    </p-chip>
-                </li>
+                        @if (!itemTemplate) {
+                            <p-chip class="p-inputchips-chip" [label]="field ? resolveFieldData(item, field) : item" [removeIcon]="chipIcon" removable (onRemove)="removeItem($event, i)">
+                                <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+                                <ng-template #removeicon>
+                                    @if (!disabled) {
+                                        @if (!removeTokenIconTemplate) {
+                                            <TimesCircleIcon [styleClass]="'p-chips-token-icon'" (click)="removeItem($event, i)" [attr.data-pc-section]="'removeTokenIcon'" [attr.aria-hidden]="true" />
+                                        }
+                                        @if (removeTokenIconTemplate) {
+                                            <span class="p-chips-token-icon" (click)="removeItem($event, i)" [attr.data-pc-section]="'removeTokenIcon'" [attr.aria-hidden]="true">
+                                                <ng-template *ngTemplateOutlet="removeTokenIconTemplate; context: { removeItem: removeItem.bind(this) }"></ng-template>
+                                            </span>
+                                        }
+                                    }
+                                </ng-template>
+                            </p-chip>
+                        }
+                    </li>
+                }
                 <li class="p-inputchips-input-item" [ngClass]="{ 'p-chips-clearable': showClear && !disabled }" [attr.data-pc-section]="'inputToken'" role="option">
                     <input
                         #inputtext
@@ -124,12 +131,18 @@ export const CHIPS_VALUE_ACCESSOR: any = {
                         class="test"
                     />
                 </li>
-                <li *ngIf="value != null && filled && !disabled && showClear">
-                    <TimesIcon *ngIf="!clearIconTemplate" [styleClass]="'p-chips-clear-icon'" (click)="clear()" />
-                    <span *ngIf="clearIconTemplate" class="p-chips-clear-icon" (click)="clear()">
-                        <ng-template *ngTemplateOutlet="clearIconTemplate"></ng-template>
-                    </span>
-                </li>
+                @if (value != null && filled && !disabled && showClear) {
+                    <li>
+                        @if (!clearIconTemplate) {
+                            <TimesIcon [styleClass]="'p-chips-clear-icon'" (click)="clear()" />
+                        }
+                        @if (clearIconTemplate) {
+                            <span class="p-chips-clear-icon" (click)="clear()">
+                                <ng-template *ngTemplateOutlet="clearIconTemplate"></ng-template>
+                            </span>
+                        }
+                    </li>
+                }
             </ul>
         </div>
     `,

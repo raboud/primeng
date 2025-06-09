@@ -12,7 +12,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
             <p-virtualscroller [items]="items" [itemSize]="[50, 100]" orientation="both" styleClass="border border-surface" [style]="{ width: '200px', height: '200px' }">
                 <ng-template #item let-item let-options="options">
                     <div class="flex items-center p-2" [ngClass]="{ 'bg-surface-100 dark:bg-surface-700': options.odd }" style="height: 50px;">
-                        <div *ngFor="let el of item" style="width: 100px">{{ el }}</div>
+                        @for (el of item; track el) {
+                            <div style="width: 100px">{{ el }}</div>
+                        }
                     </div>
                 </ng-template>
             </p-virtualscroller>
@@ -35,8 +37,10 @@ export class GridDoc implements OnInit {
         basic: `<p-virtualscroller [items]="items" [itemSize]="[50, 100]" orientation="both" styleClass="border border-surface" [style]="{ width: '200px', height: '200px' }">
     <ng-template #item let-item let-options="options">
         <div class="flex items-center p-2" [ngClass]="{ 'bg-surface-100 dark:bg-surface-700': options.odd }" style="height: 50px;">
-            <div *ngFor="let el of item" style="width: 100px">{{ el }}</div>
-        </div>
+            @for (el of item; track el) {
+                <div style="width: 100px">{{ el }}</div>
+            }
+    </div>
     </ng-template>
 </p-virtualscroller>`,
 
@@ -44,7 +48,9 @@ export class GridDoc implements OnInit {
    <p-virtualscroller [items]="items" [itemSize]="[50, 100]" orientation="both" styleClass="border border-surface" [style]="{ width: '200px', height: '200px' }">
         <ng-template #item let-item let-options="options">
             <div class="flex items-center p-2" [ngClass]="{ 'bg-surface-100 dark:bg-surface-700': options.odd }" style="height: 50px;">
-                <div *ngFor="let el of item" style="width: 100px">{{ el }}</div>
+                @for (el of item; track el) {
+                  <div style="width: 100px">{{ el }}</div>
+                }
             </div>
         </ng-template>
     </p-virtualscroller>

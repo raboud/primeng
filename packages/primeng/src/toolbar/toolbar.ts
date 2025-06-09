@@ -14,15 +14,21 @@ import { ToolbarStyle } from './style/toolbarstyle';
     imports: [CommonModule, SharedModule],
     template: `
         <ng-content></ng-content>
-        <div [class]="cx('start')" *ngIf="startTemplate || _startTemplate" [attr.data-pc-section]="'start'">
-            <ng-container *ngTemplateOutlet="startTemplate || _startTemplate"></ng-container>
-        </div>
-        <div [class]="cx('center')" *ngIf="centerTemplate || _centerTemplate" [attr.data-pc-section]="'center'">
-            <ng-container *ngTemplateOutlet="centerTemplate || _centerTemplate"></ng-container>
-        </div>
-        <div [class]="cx('end')" *ngIf="endTemplate || _endTemplate" [attr.data-pc-section]="'end'">
-            <ng-container *ngTemplateOutlet="endTemplate || _endTemplate"></ng-container>
-        </div>
+        @if (startTemplate || _startTemplate) {
+            <div [class]="cx('start')" [attr.data-pc-section]="'start'">
+                <ng-container *ngTemplateOutlet="startTemplate || _startTemplate"></ng-container>
+            </div>
+        }
+        @if (centerTemplate || _centerTemplate) {
+            <div [class]="cx('center')" [attr.data-pc-section]="'center'">
+                <ng-container *ngTemplateOutlet="centerTemplate || _centerTemplate"></ng-container>
+            </div>
+        }
+        @if (endTemplate || _endTemplate) {
+            <div [class]="cx('end')" [attr.data-pc-section]="'end'">
+                <ng-container *ngTemplateOutlet="endTemplate || _endTemplate"></ng-container>
+            </div>
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

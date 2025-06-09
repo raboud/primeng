@@ -10,90 +10,93 @@ import { useCodeSandbox, useStackBlitz } from './codeeditor';
     standalone: true,
     imports: [CommonModule, ButtonModule, TooltipModule],
     template: `
-        <div *ngIf="code" class="doc-section-code">
-            <div class="doc-section-code-buttons animate-scalein animate-duration-300">
-                <ng-container *ngIf="fullCodeVisible">
-                    <button *ngIf="code.html" (click)="changeLang('html')" class="py-0 px-2 rounded-border h-8" [ngClass]="{ 'code-active': lang === 'html' }">
-                        <span>HTML</span>
+        @if (code) {
+            <div class="doc-section-code">
+                <div class="doc-section-code-buttons animate-scalein animate-duration-300">
+                    @if (fullCodeVisible) {
+                        @if (code.html) {
+                            <button (click)="changeLang('html')" class="py-0 px-2 rounded-border h-8" [ngClass]="{ 'code-active': lang === 'html' }">
+                                <span>HTML</span>
+                            </button>
+                        }
+                        @if (code.typescript) {
+                            <button (click)="changeLang('typescript')" class="py-0 px-2 rounded-border h-8" [ngClass]="{ 'code-active': lang === 'typescript' }">
+                                <span>TS</span>
+                            </button>
+                        }
+                        @if (code.scss) {
+                            <button (click)="changeLang('scss')" class="py-0 px-2 rounded-border h-8" [ngClass]="{ 'code-active': lang === 'scss' }">
+                                <span>SCSS</span>
+                            </button>
+                        }
+                        @if (code.data) {
+                            <button
+                                pTooltip="View Data"
+                                tooltipPosition="bottom"
+                                tooltipStyleClass="doc-section-code-tooltip"
+                                (click)="changeLang('data')"
+                                class="h-8 w-8 p-0 inline-flex items-center justify-center"
+                                [ngClass]="{ 'doc-section-code-active text-primary': lang === 'data' }"
+                            >
+                                <i class="pi pi-database"></i>
+                            </button>
+                        }
+                    }
+                    @if (!hideToggleCode) {
+                        <button pTooltip="Toggle Full Code" tooltipStyleClass="doc-section-code-tooltip" tooltipPosition="bottom" class="h-8 w-8 p-0 inline-flex items-center justify-center" (click)="toggleCode()">
+                            <i class="pi pi-code"></i>
+                        </button>
+                    }
+                    @if (!hideStackBlitz && !hideToggleCode) {
+                        <button pTooltip="Edit in StackBlitz" tooltipPosition="bottom" tooltipStyleClass="doc-section-code-tooltip" class="h-8 w-8 p-0 inline-flex items-center justify-center" (click)="openStackBlitz()">
+                            <svg role="img" width="13" height="18" viewBox="0 0 13 19" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="display: 'block'">
+                                <path d="M0 10.6533H5.43896L2.26866 18.1733L12.6667 7.463H7.1986L10.3399 0L0 10.6533Z" />
+                            </svg>
+                        </button>
+                    }
+                    <button type="button" class="h-8 w-8 p-0 inline-flex items-center justify-center" (click)="copyCode()" pTooltip="Copy Code" tooltipPosition="bottom" tooltipStyleClass="doc-section-code-tooltip">
+                        <i class="pi pi-copy"></i>
                     </button>
-                    <button *ngIf="code.typescript" (click)="changeLang('typescript')" class="py-0 px-2 rounded-border h-8" [ngClass]="{ 'code-active': lang === 'typescript' }">
-                        <span>TS</span>
-                    </button>
-                    <button *ngIf="code.scss" (click)="changeLang('scss')" class="py-0 px-2 rounded-border h-8" [ngClass]="{ 'code-active': lang === 'scss' }">
-                        <span>SCSS</span>
-                    </button>
-
-                    <button
-                        *ngIf="code.data"
-                        pTooltip="View Data"
-                        tooltipPosition="bottom"
-                        tooltipStyleClass="doc-section-code-tooltip"
-                        (click)="changeLang('data')"
-                        class="h-8 w-8 p-0 inline-flex items-center justify-center"
-                        [ngClass]="{ 'doc-section-code-active text-primary': lang === 'data' }"
-                    >
-                        <i class="pi pi-database"></i>
-                    </button>
-                </ng-container>
-                <button *ngIf="!hideToggleCode" pTooltip="Toggle Full Code" tooltipStyleClass="doc-section-code-tooltip" tooltipPosition="bottom" class="h-8 w-8 p-0 inline-flex items-center justify-center" (click)="toggleCode()">
-                    <i class="pi pi-code"></i>
-                </button>
-
-                <button
-                    pTooltip="Edit in StackBlitz"
-                    tooltipPosition="bottom"
-                    tooltipStyleClass="doc-section-code-tooltip"
-                    *ngIf="!hideStackBlitz && !hideToggleCode"
-                    class="h-8 w-8 p-0 inline-flex items-center justify-center"
-                    (click)="openStackBlitz()"
-                >
-                    <svg role="img" width="13" height="18" viewBox="0 0 13 19" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="display: 'block'">
-                        <path d="M0 10.6533H5.43896L2.26866 18.1733L12.6667 7.463H7.1986L10.3399 0L0 10.6533Z" />
-                    </svg>
-                </button>
-
-                <button type="button" class="h-8 w-8 p-0 inline-flex items-center justify-center" (click)="copyCode()" pTooltip="Copy Code" tooltipPosition="bottom" tooltipStyleClass="doc-section-code-tooltip">
-                    <i class="pi pi-copy"></i>
-                </button>
+                </div>
+                <div dir="ltr">
+                    @if (lang === 'basic' && importCode) {
+                        <pre class="language-javascript">
+                            <code #codeElement>{{ code.basic }}</code>
+                        </pre>
+                    }
+                    @if (lang === 'basic' && !importCode) {
+                        <pre class="language-markup">
+                            <code #codeElement>{{ code.basic }}</code>
+                        </pre>
+                    }
+                    @if (lang === 'html') {
+                        <pre class="language-markup">
+                            <code #codeElement>{{code.html}}</code>
+                        </pre>
+                    }
+                    @if (lang === 'typescript') {
+                        <pre class="language-typescript">
+                            <code #codeElement>{{code.typescript}}</code>
+                        </pre>
+                    }
+                    @if (lang === 'data') {
+                        <pre class="language-json">
+                            <code #codeElement>{{code.data}}</code>
+                        </pre>
+                    }
+                    @if (lang === 'scss') {
+                        <pre class="language-scss">
+                            <code #codeElement>{{code.scss}}</code>
+                        </pre>
+                    }
+                    @if (lang === 'command') {
+                        <pre class="language-shell">
+                            <code #codeElement>{{code.command}}</code>
+                        </pre>
+                    }
+                </div>
             </div>
-
-            <div dir="ltr">
-                <pre *ngIf="lang === 'basic' && importCode" class="language-javascript"><code #codeElement>
-{{code.basic}}
-
-</code></pre>
-
-                <pre *ngIf="lang === 'basic' && !importCode" class="language-markup"><code #codeElement>
-{{code.basic}}
-
-</code></pre>
-
-                <pre *ngIf="lang === 'html'" class="language-markup"><code #codeElement>
-{{code.html}}
-
-</code></pre>
-
-                <pre *ngIf="lang === 'typescript'" class="language-typescript"><code #codeElement>
-{{code.typescript}}
-
-</code></pre>
-
-                <pre *ngIf="lang === 'data'" class="language-json"><code #codeElement>
-{{code.data}}
-
-</code></pre>
-
-                <pre *ngIf="lang === 'scss'" class="language-scss"><code #codeElement>
-{{code.scss}}
-
-</code></pre>
-
-                <pre *ngIf="lang === 'command'" class="language-shell"><code #codeElement>
-{{code.command}}
-
-</code></pre>
-            </div>
-        </div>
+        }
     `
 })
 export class AppCodeComponent {

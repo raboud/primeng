@@ -18,29 +18,36 @@ import { ScrollTopStyle } from './style/scrolltopstyle';
     standalone: true,
     imports: [CommonModule, ChevronUpIcon, Button, SharedModule],
     template: `
-        <p-button
-            *ngIf="visible"
-            [@animation]="{
-                value: 'open',
-                params: { showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions }
-            }"
-            (@animation.start)="onEnter($event)"
-            (@animation.done)="onLeave($event)"
-            [attr.aria-label]="buttonAriaLabel"
-            (click)="onClick()"
-            [styleClass]="cx('root')"
-            [ngStyle]="style"
-            type="button"
-            [buttonProps]="buttonProps"
-        >
-            <ng-template #icon>
-                <ng-container *ngIf="!iconTemplate && !_iconTemplate">
-                    <span *ngIf="_icon" [class]="cn(cx('icon'), _icon)"></span>
-                    <ChevronUpIcon *ngIf="!_icon" [styleClass]="cx('icon')" [ngStyle]="{ 'font-size': '1rem', scale: '1.5' }" />
-                </ng-container>
-                <ng-template [ngIf]="!icon" *ngTemplateOutlet="iconTemplate || _iconTemplate; context: { styleClass: cx('icon') }"></ng-template>
-            </ng-template>
-        </p-button>
+        @if (visible) {
+            <p-button
+                [@animation]="{
+                    value: 'open',
+                    params: { showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions }
+                }"
+                (@animation.start)="onEnter($event)"
+                (@animation.done)="onLeave($event)"
+                [attr.aria-label]="buttonAriaLabel"
+                (click)="onClick()"
+                [styleClass]="cx('root')"
+                [ngStyle]="style"
+                type="button"
+                [buttonProps]="buttonProps"
+            >
+                <ng-template #icon>
+                    @if (!iconTemplate && !_iconTemplate) {
+                        @if (_icon) {
+                            <span [class]="cn(cx('icon'), _icon)"></span>
+                        }
+                        @if (!_icon) {
+                            <ChevronUpIcon [styleClass]="cx('icon')" [ngStyle]="{ 'font-size': '1rem', scale: '1.5' }" />
+                        }
+                    }
+                    @if (!icon) {
+                        <ng-template *ngTemplateOutlet="iconTemplate || _iconTemplate; context: { styleClass: cx('icon') }"></ng-template>
+                    }
+                </ng-template>
+            </p-button>
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

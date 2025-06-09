@@ -11,13 +11,13 @@ import { ProviderDoc } from '@/doc/configuration/providerdoc';
 import { RippleDoc } from '@/doc/configuration/rippledoc';
 import { ThemeDoc } from '@/doc/configuration/themedoc';
 import { ZIndexDoc } from '@/doc/configuration/zindexdoc';
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 
 @Component({
     selector: 'configuration',
     standalone: true,
-    imports: [CommonModule, ConfigurationDocModule],
+    imports: [ConfigurationDocModule],
     template: `<app-doc docTitle="Configuration - PrimeNG" header="Configuration" description="Application wide configuration for PrimeNG." [docs]="docs"></app-doc>`
 })
 export class ConfigurationDemo {

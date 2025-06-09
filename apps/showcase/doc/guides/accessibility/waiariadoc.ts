@@ -49,14 +49,18 @@ export class WAIARIADoc {
 
     code2: Code = {
         basic: `<div class="fancy-checkbox">
-    <i *ngIf="checked" class="checked-icon"></i>
+    @if (checked) {
+        <i class="checked-icon"></i>
+    }
 </div>`
     };
 
     code3: Code = {
         basic: `<span id="chk-label">Remember Me></span>
 <div class="fancy-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="chk-label" (click)="toggle()" (keydown)="onKeyDown($event)">
-    <i *ngIf="checked" class="checked-icon"></i>
+    @if (checked) {
+        <i class="checked-icon"></i>
+    }
 </div>`
     };
 
@@ -64,7 +68,9 @@ export class WAIARIADoc {
         basic: `<label for="chkbox">Remember Me></label>
 <div class="fancy-checkbox" (click)="toggle()">
     <input class="p-sr-only" type="checkbox" id="chkbox" (focus)="updateParentVisuals()" (blur)="updateParentVisuals()" (keydown)="$event.keyCode === 32 && updateParentVisuals()">
-    <i *ngIf="checked" class="checked-icon"></i>
+    @if (checked) {
+        <i class="checked-icon"></i>
+    }
 </div>`
     };
 }

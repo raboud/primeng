@@ -54,60 +54,65 @@ import { DockStyle } from './style/dockstyle';
                 (mouseleave)="onListMouseLeave()"
             >
                 @for (item of model; track item.label; let i = $index) {
-                    <li
-                        *ngIf="item.visible !== false"
-                        [attr.id]="getItemId(item, i)"
-                        [class]="cn(cx('item', { item, id: getItemId(item, i) }), item?.styleClass)"
-                        role="menuitem"
-                        [attr.aria-label]="item.label"
-                        [attr.aria-disabled]="disabled(item)"
-                        (click)="onItemClick($event, item)"
-                        (mouseenter)="onItemMouseEnter(i)"
-                        [attr.data-pc-section]="'menuitem'"
-                        [attr.data-p-focused]="isItemActive(getItemId(item, i))"
-                        [attr.data-p-disabled]="disabled(item) || false"
-                    >
-                        <div [class]="cx('itemContent')" [attr.data-pc-section]="'content'">
-                            <a
-                                *ngIf="isClickableRouterLink(item); else elseBlock"
-                                pRipple
-                                [routerLink]="item.routerLink"
-                                [queryParams]="item.queryParams"
-                                [class]="cx('itemLink')"
-                                [routerLinkActiveOptions]="item.routerLinkActiveOptions || { exact: false }"
-                                [target]="item.target"
-                                [attr.tabindex]="item.disabled ? null : item.tabindex ? item.tabindex : '-1'"
-                                pTooltip
-                                [tooltipOptions]="item.tooltipOptions"
-                                [fragment]="item.fragment"
-                                [queryParamsHandling]="item.queryParamsHandling"
-                                [preserveFragment]="item.preserveFragment"
-                                [skipLocationChange]="item.skipLocationChange"
-                                [replaceUrl]="item.replaceUrl"
-                                [state]="item.state"
-                                [attr.aria-hidden]="true"
-                            >
-                                <span [class]="cn(cx('itemIcon'), item.icon)" *ngIf="item.icon && !itemTemplate && !_itemTemplate" [ngStyle]="item.iconStyle"></span>
-                                <ng-container *ngTemplateOutlet="itemTemplate || itemTemplate; context: { $implicit: item }"></ng-container>
-                            </a>
-                            <ng-template #elseBlock>
-                                <a
-                                    [tooltipPosition]="item.tooltipPosition"
-                                    [attr.href]="item.url || null"
-                                    [class]="cx('itemLink')"
-                                    pRipple
-                                    pTooltip
-                                    [tooltipOptions]="item.tooltipOptions"
-                                    [target]="item.target"
-                                    [attr.tabindex]="item.disabled ? null : item.tabindex ? item.tabindex : '-1'"
-                                    [attr.aria-hidden]="true"
-                                >
-                                    <span [class]="cn(cx('itemIcon'), item.icon)" *ngIf="item.icon && !itemTemplate && !_itemTemplate" [ngStyle]="item.iconStyle"></span>
-                                    <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item }"></ng-container>
-                                </a>
-                            </ng-template>
-                        </div>
-                    </li>
+                    @if (item.visible !== false) {
+                        <li
+                            [attr.id]="getItemId(item, i)"
+                            [class]="cn(cx('item', { item, id: getItemId(item, i) }), item?.styleClass)"
+                            role="menuitem"
+                            [attr.aria-label]="item.label"
+                            [attr.aria-disabled]="disabled(item)"
+                            (click)="onItemClick($event, item)"
+                            (mouseenter)="onItemMouseEnter(i)"
+                            [attr.data-pc-section]="'menuitem'"
+                            [attr.data-p-focused]="isItemActive(getItemId(item, i))"
+                            [attr.data-p-disabled]="disabled(item) || false"
+                        >
+                            <div [class]="cx('itemContent')" [attr.data-pc-section]="'content'">
+                                @if (isClickableRouterLink(item)) {
+                                    <a
+                                        pRipple
+                                        [routerLink]="item.routerLink"
+                                        [queryParams]="item.queryParams"
+                                        [class]="cx('itemLink')"
+                                        [routerLinkActiveOptions]="item.routerLinkActiveOptions || { exact: false }"
+                                        [target]="item.target"
+                                        [attr.tabindex]="item.disabled ? null : item.tabindex ? item.tabindex : '-1'"
+                                        pTooltip
+                                        [tooltipOptions]="item.tooltipOptions"
+                                        [fragment]="item.fragment"
+                                        [queryParamsHandling]="item.queryParamsHandling"
+                                        [preserveFragment]="item.preserveFragment"
+                                        [skipLocationChange]="item.skipLocationChange"
+                                        [replaceUrl]="item.replaceUrl"
+                                        [state]="item.state"
+                                        [attr.aria-hidden]="true"
+                                    >
+                                        @if (item.icon && !itemTemplate && !_itemTemplate) {
+                                            <span [class]="cn(cx('itemIcon'), item.icon)" [ngStyle]="item.iconStyle"></span>
+                                        }
+                                        <ng-container *ngTemplateOutlet="itemTemplate || itemTemplate; context: { $implicit: item }"></ng-container>
+                                    </a>
+                                } @else {
+                                    <a
+                                        [tooltipPosition]="item.tooltipPosition"
+                                        [attr.href]="item.url || null"
+                                        [class]="cx('itemLink')"
+                                        pRipple
+                                        pTooltip
+                                        [tooltipOptions]="item.tooltipOptions"
+                                        [target]="item.target"
+                                        [attr.tabindex]="item.disabled ? null : item.tabindex ? item.tabindex : '-1'"
+                                        [attr.aria-hidden]="true"
+                                    >
+                                        @if (item.icon && !itemTemplate && !_itemTemplate) {
+                                            <span [class]="cn(cx('itemIcon'), item.icon)" [ngStyle]="item.iconStyle"></span>
+                                        }
+                                        <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item }"></ng-container>
+                                    </a>
+                                }
+                            </div>
+                        </li>
+                    }
                 }
             </ul>
         </div>

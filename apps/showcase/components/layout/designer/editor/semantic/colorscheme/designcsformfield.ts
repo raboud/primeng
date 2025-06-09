@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { DesignTokenField } from '@/components/layout/designer/editor/designtokenfield';
 import { FieldsetModule } from 'primeng/fieldset';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'design-cs-form-field',
     standalone: true,
-    imports: [CommonModule, DesignTokenField, FormsModule, FieldsetModule],
+    imports: [DesignTokenField, FormsModule, FieldsetModule],
     template: ` <p-fieldset legend="Form Field" [toggleable]="true">
         <section class="grid grid-cols-4 mb-3 gap-2">
             <div class="flex flex-col gap-1">

@@ -1,4 +1,4 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, booleanAttribute, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Inject, Input, NgModule, NgZone, OnDestroy, Output, PLATFORM_ID, ViewEncapsulation } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { SharedModule } from 'primeng/api';
@@ -12,7 +12,7 @@ import { ChartStyle } from './public_api';
 @Component({
     selector: 'p-chart',
     standalone: true,
-    imports: [CommonModule, SharedModule],
+    imports: [SharedModule],
     template: `
         <canvas role="img" [attr.aria-label]="ariaLabel" [attr.aria-labelledby]="ariaLabelledBy" [attr.width]="responsive && !width ? null : width" [attr.height]="responsive && !height ? null : height" (click)="onCanvasClick($event)"></canvas>
     `,

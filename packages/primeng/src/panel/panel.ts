@@ -54,46 +54,57 @@ export interface PanelHeaderIconsTemplateContext {
     standalone: true,
     imports: [CommonModule, PlusIcon, MinusIcon, ButtonModule, SharedModule],
     template: `
-        <div [class]="cx('header')" *ngIf="showHeader" (click)="onHeaderClick($event)" [attr.id]="id + '-titlebar'">
-            <span [class]="cx('title')" *ngIf="_header" [attr.id]="id + '_header'">{{ _header }}</span>
-            <ng-content select="p-header"></ng-content>
-            <ng-container *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-container>
-            <div [class]="cx('icons')">
-                <ng-template *ngTemplateOutlet="iconTemplate || _iconTemplate"></ng-template>
-                <p-button
-                    *ngIf="toggleable"
-                    [attr.id]="id + '_header'"
-                    severity="secondary"
-                    [text]="true"
-                    [rounded]="true"
-                    type="button"
-                    role="button"
-                    [styleClass]="cx('pcToggleButton')"
-                    [attr.aria-label]="buttonAriaLabel"
-                    [attr.aria-controls]="id + '_content'"
-                    [attr.aria-expanded]="!collapsed"
-                    (click)="onIconClick($event)"
-                    (keydown)="onKeyDown($event)"
-                    [buttonProps]="toggleButtonProps"
-                >
-                    <ng-template #icon>
-                        <ng-container *ngIf="!headerIconsTemplate && !_headerIconsTemplate && !toggleButtonProps?.icon">
-                            <ng-container *ngIf="!collapsed">
-                                <span *ngIf="expandIcon" [class]="expandIcon"></span>
-                                <MinusIcon *ngIf="!expandIcon" />
-                            </ng-container>
-
-                            <ng-container *ngIf="collapsed">
-                                <span *ngIf="collapseIcon" [class]="collapseIcon"></span>
-                                <PlusIcon *ngIf="!collapseIcon" />
-                            </ng-container>
-                        </ng-container>
-
-                        <ng-template *ngTemplateOutlet="headerIconsTemplate || _headerIconsTemplate; context: { $implicit: collapsed }"></ng-template>
-                    </ng-template>
-                </p-button>
+        @if (showHeader) {
+            <div [class]="cx('header')" (click)="onHeaderClick($event)" [attr.id]="id + '-titlebar'">
+                @if (_header) {
+                    <span [class]="cx('title')" [attr.id]="id + '_header'">{{ _header }}</span>
+                }
+                <ng-content select="p-header"></ng-content>
+                <ng-container *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-container>
+                <div [class]="cx('icons')">
+                    <ng-template *ngTemplateOutlet="iconTemplate || _iconTemplate"></ng-template>
+                    @if (toggleable) {
+                        <p-button
+                            [attr.id]="id + '_header'"
+                            severity="secondary"
+                            [text]="true"
+                            [rounded]="true"
+                            type="button"
+                            role="button"
+                            [styleClass]="cx('pcToggleButton')"
+                            [attr.aria-label]="buttonAriaLabel"
+                            [attr.aria-controls]="id + '_content'"
+                            [attr.aria-expanded]="!collapsed"
+                            (click)="onIconClick($event)"
+                            (keydown)="onKeyDown($event)"
+                            [buttonProps]="toggleButtonProps"
+                        >
+                            <ng-template #icon>
+                                @if (!headerIconsTemplate && !_headerIconsTemplate && !toggleButtonProps?.icon) {
+                                    @if (!collapsed) {
+                                        @if (expandIcon) {
+                                            <span [class]="expandIcon"></span>
+                                        }
+                                        @if (!expandIcon) {
+                                            <MinusIcon />
+                                        }
+                                    }
+                                    @if (collapsed) {
+                                        @if (collapseIcon) {
+                                            <span [class]="collapseIcon"></span>
+                                        }
+                                        @if (!collapseIcon) {
+                                            <PlusIcon />
+                                        }
+                                    }
+                                }
+                                <ng-template *ngTemplateOutlet="headerIconsTemplate || _headerIconsTemplate; context: { $implicit: collapsed }"></ng-template>
+                            </ng-template>
+                        </p-button>
+                    }
+                </div>
             </div>
-        </div>
+        }
         <div
             [class]="cx('contentContainer')"
             [id]="id + '_content'"
@@ -127,10 +138,12 @@ export interface PanelHeaderIconsTemplateContext {
                 <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate"></ng-container>
             </div>
 
-            <div [class]="cx('footer')" *ngIf="footerFacet || footerTemplate || _footerTemplate">
-                <ng-content select="p-footer"></ng-content>
-                <ng-container *ngTemplateOutlet="footerTemplate || _footerTemplate"></ng-container>
-            </div>
+            @if (footerFacet || footerTemplate || _footerTemplate) {
+                <div [class]="cx('footer')">
+                    <ng-content select="p-footer"></ng-content>
+                    <ng-container *ngTemplateOutlet="footerTemplate || _footerTemplate"></ng-container>
+                </div>
+            }
         </div>
     `,
     animations: [

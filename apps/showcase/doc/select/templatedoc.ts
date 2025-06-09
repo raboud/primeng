@@ -15,10 +15,12 @@ import { Component, OnInit } from '@angular/core';
         <div class="card flex justify-center">
             <p-select [options]="countries" [(ngModel)]="selectedCountry" optionLabel="name" placeholder="Select a country" class="w-full md:w-56">
                 <ng-template #selectedItem let-selectedOption>
-                    <div class="flex items-center gap-2" *ngIf="selectedOption">
-                        <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + selectedOption.code.toLowerCase()" style="width: 18px" />
-                        <div>{{ selectedOption.name }}</div>
-                    </div>
+                    @if (selectedOption) {
+                        <div class="flex items-center gap-2">
+                            <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + selectedOption.code.toLowerCase()" style="width: 18px" />
+                            <div>{{ selectedOption.name }}</div>
+                        </div>
+                    }
                 </ng-template>
                 <ng-template let-country #item>
                     <div class="flex items-center gap-2">
@@ -65,14 +67,12 @@ export class TemplateDoc implements OnInit {
     code: Code = {
         basic: `<p-select [options]="countries" [(ngModel)]="selectedCountry" optionLabel="name" placeholder="Select a country" class="w-full md:w-56">
     <ng-template #selectedItem let-selectedOption>
-        <div class="flex items-center gap-2" *ngIf="selectedOption">
-            <img
-                src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
-                [class]="'flag flag-' + selectedOption.code.toLowerCase()"
-                style="width: 18px"
-            />
+        @if (selectedOption) {
+        <div class="flex items-center gap-2">
+            <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + selectedOption.code.toLowerCase()" style="width: 18px" />
             <div>{{ selectedOption.name }}</div>
         </div>
+        }
     </ng-template>
     <ng-template let-country #item>
         <div class="flex items-center gap-2">
@@ -100,14 +100,12 @@ export class TemplateDoc implements OnInit {
         html: `<div class="card flex justify-center">
     <p-select [options]="countries" [(ngModel)]="selectedCountry" optionLabel="name" placeholder="Select a country" class="w-full md:w-56">
         <ng-template #selectedItem let-selectedOption>
-            <div class="flex items-center gap-2" *ngIf="selectedOption">
-                <img
-                    src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
-                    [class]="'flag flag-' + selectedOption.code.toLowerCase()"
-                    style="width: 18px"
-                />
+            @if (selectedOption) {
+            <div class="flex items-center gap-2">
+                <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + selectedOption.code.toLowerCase()" style="width: 18px" />
                 <div>{{ selectedOption.name }}</div>
             </div>
+            }
         </ng-template>
         <ng-template let-country #item>
             <div class="flex items-center gap-2">

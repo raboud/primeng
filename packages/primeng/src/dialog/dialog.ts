@@ -46,72 +46,97 @@ const hideAnimation = animation([animate('{{transition}}', style({ transform: '{
     standalone: true,
     imports: [CommonModule, Button, FocusTrap, TimesIcon, WindowMaximizeIcon, WindowMinimizeIcon, SharedModule],
     template: `
-        <div *ngIf="maskVisible" [class]="cx('mask')" [style]="sx('mask')" [ngStyle]="maskStyle">
-            <div
-                *ngIf="visible"
-                #container
-                [class]="cx('root')"
-                [style]="sx('root')"
-                [ngStyle]="style"
-                pFocusTrap
-                [pFocusTrapDisabled]="focusTrap === false"
-                [@animation]="{
-                    value: 'visible',
-                    params: { transform: transformOptions, transition: transitionOptions }
-                }"
-                (@animation.start)="onAnimationStart($event)"
-                (@animation.done)="onAnimationEnd($event)"
-                [attr.role]="role"
-                [attr.aria-labelledby]="ariaLabelledBy"
-                [attr.aria-modal]="true"
-            >
-                <ng-container *ngIf="_headlessTemplate || headlessTemplate || headlessT; else notHeadless">
-                    <ng-container *ngTemplateOutlet="_headlessTemplate || headlessTemplate || headlessT"></ng-container>
-                </ng-container>
-
-                <ng-template #notHeadless>
-                    <div *ngIf="resizable" [class]="cx('resizeHandle')" style="z-index: 90;" (mousedown)="initResize($event)"></div>
-                    <div #titlebar [class]="cx('header')" (mousedown)="initDrag($event)" *ngIf="showHeader">
-                        <span [id]="ariaLabelledBy" [class]="cx('title')" *ngIf="!_headerTemplate && !headerTemplate && !headerT">{{ header }}</span>
-                        <ng-container *ngTemplateOutlet="_headerTemplate || headerTemplate || headerT"></ng-container>
-                        <div [class]="cx('headerActions')">
-                            <p-button *ngIf="maximizable" [styleClass]="cx('pcMaximizeButton')" (onClick)="maximize()" (keydown.enter)="maximize()" [tabindex]="maximizable ? '0' : '-1'" [ariaLabel]="maximizeLabel" [buttonProps]="maximizeButtonProps">
-                                <span *ngIf="maximizeIcon && !_maximizeiconTemplate && !_minimizeiconTemplate" [ngClass]="maximized ? minimizeIcon : maximizeIcon"></span>
-                                <ng-container *ngIf="!maximizeIcon && !maximizeButtonProps?.icon">
-                                    <WindowMaximizeIcon *ngIf="!maximized && !_maximizeiconTemplate && !maximizeIconTemplate && !maximizeIconT" />
-                                    <WindowMinimizeIcon *ngIf="maximized && !_minimizeiconTemplate && !minimizeIconTemplate && !minimizeIconT" />
-                                </ng-container>
-                                <ng-container *ngIf="!maximized">
-                                    <ng-template *ngTemplateOutlet="_maximizeiconTemplate || maximizeIconTemplate || maximizeIconT"></ng-template>
-                                </ng-container>
-                                <ng-container *ngIf="maximized">
-                                    <ng-template *ngTemplateOutlet="_minimizeiconTemplate || minimizeIconTemplate || minimizeIconT"></ng-template>
-                                </ng-container>
-                            </p-button>
-                            <p-button *ngIf="closable" [styleClass]="cx('pcCloseButton')" [ariaLabel]="closeAriaLabel" (onClick)="close($event)" (keydown.enter)="close($event)" [tabindex]="closeTabindex" [buttonProps]="closeButtonProps">
-                                <ng-template #icon>
-                                    <ng-container *ngIf="!_closeiconTemplate && !closeIconTemplate && !closeIconT && !closeButtonProps?.icon">
-                                        <span *ngIf="closeIcon" [class]="closeIcon"></span>
-                                        <TimesIcon *ngIf="!closeIcon" />
-                                    </ng-container>
-                                    <span *ngIf="_closeiconTemplate || closeIconTemplate || closeIconT">
-                                        <ng-template *ngTemplateOutlet="_closeiconTemplate || closeIconTemplate || closeIconT"></ng-template>
-                                    </span>
-                                </ng-template>
-                            </p-button>
-                        </div>
+        @if (maskVisible) {
+            <div [class]="cx('mask')" [style]="sx('mask')" [ngStyle]="maskStyle">
+                @if (visible) {
+                    <div
+                        #container
+                        [class]="cx('root')"
+                        [style]="sx('root')"
+                        [ngStyle]="style"
+                        pFocusTrap
+                        [pFocusTrapDisabled]="focusTrap === false"
+                        [@animation]="{
+                            value: 'visible',
+                            params: { transform: transformOptions, transition: transitionOptions }
+                        }"
+                        (@animation.start)="onAnimationStart($event)"
+                        (@animation.done)="onAnimationEnd($event)"
+                        [attr.role]="role"
+                        [attr.aria-labelledby]="ariaLabelledBy"
+                        [attr.aria-modal]="true"
+                    >
+                        @if (_headlessTemplate || headlessTemplate || headlessT) {
+                            <ng-container *ngTemplateOutlet="_headlessTemplate || headlessTemplate || headlessT"></ng-container>
+                        } @else {
+                            @if (resizable) {
+                                <div [class]="cx('resizeHandle')" style="z-index: 90;" (mousedown)="initResize($event)"></div>
+                            }
+                            @if (showHeader) {
+                                <div #titlebar [class]="cx('header')" (mousedown)="initDrag($event)">
+                                    @if (!_headerTemplate && !headerTemplate && !headerT) {
+                                        <span [id]="ariaLabelledBy" [class]="cx('title')">{{ header }}</span>
+                                    }
+                                    <ng-container *ngTemplateOutlet="_headerTemplate || headerTemplate || headerT"></ng-container>
+                                    <div [class]="cx('headerActions')">
+                                        @if (maximizable) {
+                                            <p-button [styleClass]="cx('pcMaximizeButton')" (onClick)="maximize()" (keydown.enter)="maximize()" [tabindex]="maximizable ? '0' : '-1'" [ariaLabel]="maximizeLabel" [buttonProps]="maximizeButtonProps">
+                                                @if (maximizeIcon && !_maximizeiconTemplate && !_minimizeiconTemplate) {
+                                                    <span [ngClass]="maximized ? minimizeIcon : maximizeIcon"></span>
+                                                }
+                                                @if (!maximizeIcon && !maximizeButtonProps?.icon) {
+                                                    @if (!maximized && !_maximizeiconTemplate && !maximizeIconTemplate && !maximizeIconT) {
+                                                        <WindowMaximizeIcon />
+                                                    }
+                                                    @if (maximized && !_minimizeiconTemplate && !minimizeIconTemplate && !minimizeIconT) {
+                                                        <WindowMinimizeIcon />
+                                                    }
+                                                }
+                                                @if (!maximized) {
+                                                    <ng-template *ngTemplateOutlet="_maximizeiconTemplate || maximizeIconTemplate || maximizeIconT"></ng-template>
+                                                }
+                                                @if (maximized) {
+                                                    <ng-template *ngTemplateOutlet="_minimizeiconTemplate || minimizeIconTemplate || minimizeIconT"></ng-template>
+                                                }
+                                            </p-button>
+                                        }
+                                        @if (closable) {
+                                            <p-button [styleClass]="cx('pcCloseButton')" [ariaLabel]="closeAriaLabel" (onClick)="close($event)" (keydown.enter)="close($event)" [tabindex]="closeTabindex" [buttonProps]="closeButtonProps">
+                                                <ng-template #icon>
+                                                    @if (!_closeiconTemplate && !closeIconTemplate && !closeIconT && !closeButtonProps?.icon) {
+                                                        @if (closeIcon) {
+                                                            <span [class]="closeIcon"></span>
+                                                        }
+                                                        @if (!closeIcon) {
+                                                            <TimesIcon />
+                                                        }
+                                                    }
+                                                    @if (_closeiconTemplate || closeIconTemplate || closeIconT) {
+                                                        <span>
+                                                            <ng-template *ngTemplateOutlet="_closeiconTemplate || closeIconTemplate || closeIconT"></ng-template>
+                                                        </span>
+                                                    }
+                                                </ng-template>
+                                            </p-button>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            <div #content [class]="cx('content')" [ngStyle]="contentStyle" [attr.data-pc-section]="'content'">
+                                <ng-content></ng-content>
+                                <ng-container *ngTemplateOutlet="_contentTemplate || contentTemplate || contentT"></ng-container>
+                            </div>
+                            @if (_footerTemplate || footerTemplate || footerT) {
+                                <div #footer [class]="cx('footer')">
+                                    <ng-content select="p-footer"></ng-content>
+                                    <ng-container *ngTemplateOutlet="_footerTemplate || footerTemplate || footerT"></ng-container>
+                                </div>
+                            }
+                        }
                     </div>
-                    <div #content [class]="cx('content')" [ngStyle]="contentStyle" [attr.data-pc-section]="'content'">
-                        <ng-content></ng-content>
-                        <ng-container *ngTemplateOutlet="_contentTemplate || contentTemplate || contentT"></ng-container>
-                    </div>
-                    <div #footer [class]="cx('footer')" *ngIf="_footerTemplate || footerTemplate || footerT">
-                        <ng-content select="p-footer"></ng-content>
-                        <ng-container *ngTemplateOutlet="_footerTemplate || footerTemplate || footerT"></ng-container>
-                    </div>
-                </ng-template>
+                }
             </div>
-        </div>
+        }
     `,
     animations: [trigger('animation', [transition('void => visible', [useAnimation(showAnimation)]), transition('visible => void', [useAnimation(hideAnimation)])])],
     changeDetection: ChangeDetectionStrategy.OnPush,

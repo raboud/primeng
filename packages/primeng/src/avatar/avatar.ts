@@ -14,9 +14,17 @@ import { AvatarStyle } from './style/avatarstyle';
     imports: [CommonModule, SharedModule],
     template: `
         <ng-content></ng-content>
-        <span [class]="cx('label')" *ngIf="label; else iconTemplate">{{ label }}</span>
-        <ng-template #iconTemplate><span [class]="icon" [ngClass]="cx('icon')" *ngIf="icon; else imageTemplate"></span></ng-template>
-        <ng-template #imageTemplate> <img [src]="image" *ngIf="image" (error)="imageError($event)" [attr.aria-label]="ariaLabel" /></ng-template>
+        @if (label) {
+            <span [class]="cx('label')">{{ label }}</span>
+        } @else {
+            @if (icon) {
+                <span [class]="icon" [ngClass]="cx('icon')"></span>
+            } @else {
+                @if (image) {
+                    <img [src]="image" (error)="imageError($event)" [attr.aria-label]="ariaLabel" />
+                }
+            }
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

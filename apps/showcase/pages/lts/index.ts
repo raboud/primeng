@@ -1,6 +1,6 @@
 import { AppCodeModule } from '@/components/doc/app.code.component';
 import { Code } from '@/domain/code';
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -9,7 +9,7 @@ import { TagModule } from 'primeng/tag';
 
 @Component({
     standalone: true,
-    imports: [CommonModule, TagModule, AppCodeModule, RouterModule, RippleModule],
+    imports: [TagModule, AppCodeModule, RouterModule, RippleModule],
     template: `
         <div>
             <div class="flex flex-col xl:flex-row mb-8 gap-8">

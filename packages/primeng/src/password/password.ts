@@ -419,55 +419,65 @@ export const Password_VALUE_ACCESSOR: any = {
             [attr.data-pc-section]="'input'"
             [pAutoFocus]="autofocus"
         />
-        <ng-container *ngIf="showClear && value != null">
-            <TimesIcon *ngIf="!clearIconTemplate && !_clearIconTemplate" [class]="cx('clearIcon')" (click)="clear()" [attr.data-pc-section]="'clearIcon'" />
+        @if (showClear && value != null) {
+            @if (!clearIconTemplate && !_clearIconTemplate) {
+                <TimesIcon [class]="cx('clearIcon')" (click)="clear()" [attr.data-pc-section]="'clearIcon'" />
+            }
             <span (click)="clear()" [class]="cx('clearIcon')" [attr.data-pc-section]="'clearIcon'">
                 <ng-template *ngTemplateOutlet="clearIconTemplate || _clearIconTemplate"></ng-template>
             </span>
-        </ng-container>
+        }
 
-        <ng-container *ngIf="toggleMask">
-            <ng-container *ngIf="unmasked">
-                <EyeSlashIcon [class]="cx('maskIcon')" *ngIf="!hideIconTemplate && !_hideIconTemplate" (click)="onMaskToggle()" [attr.data-pc-section]="'hideIcon'" />
-                <span *ngIf="hideIconTemplate || _hideIconTemplate" (click)="onMaskToggle()">
-                    <ng-template *ngTemplateOutlet="hideIconTemplate || _hideIconTemplate; context: { class: cx('maskIcon') }"></ng-template>
-                </span>
-            </ng-container>
-            <ng-container *ngIf="!unmasked">
-                <EyeIcon *ngIf="!showIconTemplate && !_showIconTemplate" [class]="cx('unmaskIcon')" (click)="onMaskToggle()" [attr.data-pc-section]="'showIcon'" />
-                <span *ngIf="showIconTemplate || _showIconTemplate" (click)="onMaskToggle()">
-                    <ng-template *ngTemplateOutlet="showIconTemplate || _showIconTemplate; context: { class: cx('unmaskIcon') }"></ng-template>
-                </span>
-            </ng-container>
-        </ng-container>
+        @if (toggleMask) {
+            @if (unmasked) {
+                @if (!hideIconTemplate && !_hideIconTemplate) {
+                    <EyeSlashIcon [class]="cx('maskIcon')" (click)="onMaskToggle()" [attr.data-pc-section]="'hideIcon'" />
+                }
+                @if (hideIconTemplate || _hideIconTemplate) {
+                    <span (click)="onMaskToggle()">
+                        <ng-template *ngTemplateOutlet="hideIconTemplate || _hideIconTemplate; context: { class: cx('maskIcon') }"></ng-template>
+                    </span>
+                }
+            }
+            @if (!unmasked) {
+                @if (!showIconTemplate && !_showIconTemplate) {
+                    <EyeIcon [class]="cx('unmaskIcon')" (click)="onMaskToggle()" [attr.data-pc-section]="'showIcon'" />
+                }
+                @if (showIconTemplate || _showIconTemplate) {
+                    <span (click)="onMaskToggle()">
+                        <ng-template *ngTemplateOutlet="showIconTemplate || _showIconTemplate; context: { class: cx('unmaskIcon') }"></ng-template>
+                    </span>
+                }
+            }
+        }
 
-        <div
-            #overlay
-            *ngIf="overlayVisible"
-            [class]="cx('overlay')"
-            (click)="onOverlayClick($event)"
-            [@overlayAnimation]="{
-                value: 'visible',
-                params: { showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions }
-            }"
-            (@overlayAnimation.start)="onAnimationStart($event)"
-            (@overlayAnimation.done)="onAnimationEnd($event)"
-            [attr.data-pc-section]="'panel'"
-        >
-            <ng-container *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-container>
-            <ng-container *ngIf="contentTemplate || _contentTemplate; else content">
-                <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate"></ng-container>
-            </ng-container>
-            <ng-template #content>
-                <div [class]="cx('content')">
-                    <div [class]="cx('meter')" [attr.data-pc-section]="'meter'">
-                        <div [class]="cx('meterLabel')" [ngStyle]="{ width: meter ? meter.width : '' }" [attr.data-pc-section]="'meterLabel'"></div>
+        @if (overlayVisible) {
+            <div
+                #overlay
+                [class]="cx('overlay')"
+                (click)="onOverlayClick($event)"
+                [@overlayAnimation]="{
+                    value: 'visible',
+                    params: { showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions }
+                }"
+                (@overlayAnimation.start)="onAnimationStart($event)"
+                (@overlayAnimation.done)="onAnimationEnd($event)"
+                [attr.data-pc-section]="'panel'"
+            >
+                <ng-container *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-container>
+                @if (contentTemplate || _contentTemplate) {
+                    <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate"></ng-container>
+                } @else {
+                    <div [class]="cx('content')">
+                        <div [class]="cx('meter')" [attr.data-pc-section]="'meter'">
+                            <div [class]="cx('meterLabel')" [ngStyle]="{ width: meter ? meter.width : '' }" [attr.data-pc-section]="'meterLabel'"></div>
+                        </div>
+                        <div [class]="cx('meterText')" [attr.data-pc-section]="'info'">{{ infoText }}</div>
                     </div>
-                    <div [class]="cx('meterText')" [attr.data-pc-section]="'info'">{{ infoText }}</div>
-                </div>
-            </ng-template>
-            <ng-container *ngTemplateOutlet="footerTemplate || _footerTemplate"></ng-container>
-        </div>
+                }
+                <ng-container *ngTemplateOutlet="footerTemplate || _footerTemplate"></ng-container>
+            </div>
+        }
     `,
     animations: [trigger('overlayAnimation', [transition(':enter', [style({ opacity: 0, transform: 'scaleY(0.8)' }), animate('{{showTransitionParams}}')]), transition(':leave', [animate('{{hideTransitionParams}}', style({ opacity: 0 }))])])],
     providers: [Password_VALUE_ACCESSOR, PasswordStyle],

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, ChangeDetectionStrategy, Component, ContentChild, ContentChildren, ElementRef, forwardRef, inject, Input, NgModule, QueryList, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, ContentChild, ContentChildren, forwardRef, inject, Input, NgModule, QueryList, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { getOuterHeight } from '@primeuix/utils';
 import { PrimeTemplate, SharedModule } from 'primeng/api';
 import { BaseComponent } from 'primeng/basecomponent';
@@ -12,14 +12,20 @@ import { MeterGroupStyle } from './style/metergroupstyle';
     imports: [CommonModule, SharedModule],
     template: `
         <ol [class]="cx('labelList')">
-            <li *ngFor="let labelItem of value; let index = index; trackBy: parentInstance.trackByFn" [class]="cx('label')">
-                <ng-container *ngIf="!iconTemplate">
-                    <i *ngIf="labelItem.icon" [class]="labelItem.icon" [ngClass]="cx('labelIcon')" [ngStyle]="{ color: labelItem.color }"></i>
-                    <span *ngIf="!labelItem.icon" [class]="cx('labelMarker')" [ngStyle]="{ backgroundColor: labelItem.color }"></span>
-                </ng-container>
-                <ng-container *ngTemplateOutlet="iconTemplate; context: { $implicit: labelItem, icon: labelItem.icon }"></ng-container>
-                <span [class]="cx('labelText')">{{ labelItem.label }} ({{ parentInstance.percentValue(labelItem.value) }})</span>
-            </li>
+            @for (labelItem of value; track parentInstance.trackByFn(index); let index = $index) {
+                <li [class]="cx('label')">
+                    @if (!iconTemplate) {
+                        @if (labelItem.icon) {
+                            <i [class]="labelItem.icon" [ngClass]="cx('labelIcon')" [ngStyle]="{ color: labelItem.color }"></i>
+                        }
+                        @if (!labelItem.icon) {
+                            <span [class]="cx('labelMarker')" [ngStyle]="{ backgroundColor: labelItem.color }"></span>
+                        }
+                    }
+                    <ng-container *ngTemplateOutlet="iconTemplate; context: { $implicit: labelItem, icon: labelItem.icon }"></ng-container>
+                    <span [class]="cx('labelText')">{{ labelItem.label }} ({{ parentInstance.percentValue(labelItem.value) }})</span>
+                </li>
+            }
         </ol>
     `
 })
@@ -48,12 +54,14 @@ export class MeterGroupLabel extends BaseComponent {
     imports: [CommonModule, MeterGroupLabel, SharedModule],
     template: `
         @if (labelPosition === 'start') {
-            <p-meterGroupLabel *ngIf="!labelTemplate && !_labelTemplate" [value]="value" [labelPosition]="labelPosition" [labelOrientation]="labelOrientation" [min]="min" [max]="max" [iconTemplate]="iconTemplate || _iconTemplate" />
+            @if (!labelTemplate && !_labelTemplate) {
+                <p-meterGroupLabel [value]="value" [labelPosition]="labelPosition" [labelOrientation]="labelOrientation" [min]="min" [max]="max" [iconTemplate]="iconTemplate || _iconTemplate" />
+            }
             <ng-container *ngTemplateOutlet="labelTemplate || labelTemplate; context: { $implicit: value, totalPercent: totalPercent(), percentages: percentages() }"></ng-container>
         }
         <ng-container *ngTemplateOutlet="startTemplate || _startTemplate; context: { $implicit: value, totalPercent: totalPercent(), percentages: percentages() }"></ng-container>
         <div [class]="cx('meters')">
-            <ng-container *ngFor="let meterItem of value; let index = index; trackBy: trackByFn">
+            @for (meterItem of value; track trackByFn(index); let index = $index) {
                 <ng-container
                     *ngTemplateOutlet="
                         meterTemplate || _meterTemplate;
@@ -68,14 +76,16 @@ export class MeterGroupLabel extends BaseComponent {
                     "
                 >
                 </ng-container>
-                <ng-container *ngIf="!meterTemplate && !_meterTemplate && meterItem.value > 0">
+                @if (!meterTemplate && !_meterTemplate && meterItem.value > 0) {
                     <span [class]="cx('meter')" [ngStyle]="meterStyle(meterItem)"></span>
-                </ng-container>
-            </ng-container>
+                }
+            }
         </div>
         <ng-container *ngTemplateOutlet="endTemplate || _endTemplate; context: { $implicit: value, totalPercent: totalPercent(), percentages: percentages() }"></ng-container>
         @if (labelPosition === 'end') {
-            <p-meterGroupLabel *ngIf="!labelTemplate && !_labelTemplate" [value]="value" [labelPosition]="labelPosition" [labelOrientation]="labelOrientation" [min]="min" [max]="max" [iconTemplate]="iconTemplate || _iconTemplate" />
+            @if (!labelTemplate && !_labelTemplate) {
+                <p-meterGroupLabel [value]="value" [labelPosition]="labelPosition" [labelOrientation]="labelOrientation" [min]="min" [max]="max" [iconTemplate]="iconTemplate || _iconTemplate" />
+            }
             <ng-container *ngTemplateOutlet="labelTemplate || _labelTemplate; context: { $implicit: value, totalPercent: totalPercent(), percentages: percentages() }"></ng-container>
         }
     `,

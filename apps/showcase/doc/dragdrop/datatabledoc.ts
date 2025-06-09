@@ -12,22 +12,24 @@ import { Component, OnInit } from '@angular/core';
         </app-docsectiontext>
         <div class="card grid grid-cols-12 gap-4 grid-nogutter">
             <div class="col-span-12 md:col-span-6 drag-column">
-                <div *ngFor="let product of availableProducts">
-                    <div class="product-item" pDraggable="products" (onDragStart)="dragStart(product)" (onDragEnd)="dragEnd()">
-                        <div class="image-container">
-                            <img src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" [alt]="product.name" class="product-image" />
-                        </div>
-                        <div class="product-list-detail">
-                            <h5 class="mb-2">{{ product.name }}</h5>
-                            <i class="pi pi-tag product-category-icon"></i>
-                            <span class="product-category">{{ product.category }}</span>
-                        </div>
-                        <div class="product-list-action">
-                            <h6 class="mb-2">{{ product.price }}</h6>
-                            <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" />
+                @for (product of availableProducts; track product) {
+                    <div>
+                        <div class="product-item" pDraggable="products" (onDragStart)="dragStart(product)" (onDragEnd)="dragEnd()">
+                            <div class="image-container">
+                                <img src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" [alt]="product.name" class="product-image" />
+                            </div>
+                            <div class="product-list-detail">
+                                <h5 class="mb-2">{{ product.name }}</h5>
+                                <i class="pi pi-tag product-category-icon"></i>
+                                <span class="product-category">{{ product.category }}</span>
+                            </div>
+                            <div class="product-list-action">
+                                <h6 class="mb-2">{{ product.price }}</h6>
+                                <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" />
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
             <div class="col-span-12 md:col-span-6 drop-column" pDroppable="products" (onDrop)="drop()">
                 <p-table [value]="selectedProducts">
@@ -109,37 +111,24 @@ export class DataTableDoc implements OnInit {
     code: Code = {
         basic: `<div class="card grid grid-cols-12 gap-4 grid-nogutter">
     <div class="col-span-12 md:col-span-6 drag-column">
-        <div *ngFor="let product of availableProducts">
-            <div
-                class="product-item"
-                pDraggable="products"
-                (onDragStart)="dragStart(product)"
-                (onDragEnd)="dragEnd()">
+        @for (product of availableProducts; track product) {
+            <div>
+                <div class="product-item" pDraggable="products" (onDragStart)="dragStart(product)" (onDragEnd)="dragEnd()">
                     <div class="image-container">
-                        <img
-                            src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
-                            [alt]="product.name"
-                            class="product-image" />
+                        <img src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" [alt]="product.name" class="product-image" />
                     </div>
                     <div class="product-list-detail">
-                        <h5 class="mb-2">
-                            {{product.name}}
-                        </h5>
+                        <h5 class="mb-2">{{ product.name }}</h5>
                         <i class="pi pi-tag product-category-icon"></i>
-                        <span class="product-category">
-                            {{product.category}}
-                        </span>
-                        </div>
-                        <div class="product-list-action">
-                        <h6 class="mb-2">
-                            {{product.price}}
-                        </h6>
-                        <p-tag
-                            [value]="product.inventoryStatus"
-                            [severity]="getSeverity(product.inventoryStatus)" />
+                        <span class="product-category">{{ product.category }}</span>
                     </div>
+                    <div class="product-list-action">
+                        <h6 class="mb-2">{{ product.price }}</h6>
+                        <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" />
+                    </div>
+                </div>
             </div>
-        </div>
+        }
     </div>
     <div class="col-span-12 md:col-span-6 drop-column" pDroppable="products" (onDrop)="drop()">
     <p-table [value]="selectedProducts">
@@ -180,37 +169,24 @@ export class DataTableDoc implements OnInit {
 </div>`,
         html: `<div class="card grid grid-cols-12 gap-4 grid-nogutter">
     <div class="col-span-12 md:col-span-6 drag-column">
-        <div *ngFor="let product of availableProducts">
-            <div
-                class="product-item"
-                pDraggable="products"
-                (onDragStart)="dragStart(product)"
-                (onDragEnd)="dragEnd()">
+        @for (product of availableProducts; track product) {
+            <div>
+                <div class="product-item" pDraggable="products" (onDragStart)="dragStart(product)" (onDragEnd)="dragEnd()">
                     <div class="image-container">
-                        <img
-                            src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
-                            [alt]="product.name"
-                            class="product-image" />
+                        <img src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" [alt]="product.name" class="product-image" />
                     </div>
                     <div class="product-list-detail">
-                        <h5 class="mb-2">
-                            {{product.name}}
-                        </h5>
+                        <h5 class="mb-2">{{ product.name }}</h5>
                         <i class="pi pi-tag product-category-icon"></i>
-                        <span class="product-category">
-                            {{product.category}}
-                        </span>
-                        </div>
-                        <div class="product-list-action">
-                        <h6 class="mb-2">
-                            {{product.price}}
-                        </h6>
-                        <p-tag
-                            [value]="product.inventoryStatus"
-                            [severity]="getSeverity(product.inventoryStatus)" />
+                        <span class="product-category">{{ product.category }}</span>
                     </div>
+                    <div class="product-list-action">
+                        <h6 class="mb-2">{{ product.price }}</h6>
+                        <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" />
+                    </div>
+                </div>
             </div>
-        </div>
+        }
     </div>
     <div class="col-span-12 md:col-span-6 drop-column" pDroppable="products" (onDrop)="drop()">
     <p-table [value]="selectedProducts">

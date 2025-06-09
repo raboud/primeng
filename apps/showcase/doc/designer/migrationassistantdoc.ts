@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { AppCodeModule } from '@/components/doc/app.code.component';
 import { AppDocModule } from '@/components/doc/app.doc.module';
 import { RouterModule } from '@angular/router';
@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 @Component({
     selector: 'migration-assistant-doc',
     standalone: true,
-    imports: [CommonModule, AppCodeModule, AppDocModule, RouterModule],
+    imports: [AppCodeModule, AppDocModule, RouterModule],
     template: `<app-docsectiontext>
         <p>
             Prime UI libraries continue to evolve with each version. New tokens are likely to be added with each major release, in order to keep your themes up to date the migration assistant is available featuring automated migration. The

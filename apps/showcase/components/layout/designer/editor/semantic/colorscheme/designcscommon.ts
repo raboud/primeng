@@ -1,6 +1,6 @@
 import { DesignColorPalette } from '@/components/layout/designer/editor/designcolorpalette';
 import { DesignTokenField } from '@/components/layout/designer/editor/designtokenfield';
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { palette } from '@primeuix/themes';
@@ -9,7 +9,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 @Component({
     selector: 'design-cs-common',
     standalone: true,
-    imports: [CommonModule, DesignColorPalette, DesignTokenField, FormsModule, FieldsetModule],
+    imports: [DesignColorPalette, DesignTokenField, FormsModule, FieldsetModule],
     template: ` <p-fieldset legend="Common" [toggleable]="true">
         <section class="flex justify-between items-center mb-4 gap-8">
             <div class="flex gap-2 items-center">

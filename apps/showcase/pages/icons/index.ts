@@ -8,12 +8,12 @@ import { ImportDoc } from '@/doc/icons/importdoc';
 import { ListDoc } from '@/doc/icons/listdoc';
 import { SizeDoc } from '@/doc/icons/sizedoc';
 import { SpinDoc } from '@/doc/icons/spindoc';
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 
 @Component({
     standalone: true,
-    imports: [CommonModule, IconsDocModule],
+    imports: [IconsDocModule],
     template: `
         <app-doc
             title="Angular Icon Library - PrimeNG"

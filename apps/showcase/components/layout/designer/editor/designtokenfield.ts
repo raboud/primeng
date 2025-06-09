@@ -1,5 +1,5 @@
 import { DesignerService } from '@/service/designerservice';
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, computed, EventEmitter, inject, input, Input, model, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { $dt } from '@primeuix/themes';
@@ -10,13 +10,15 @@ import { UniqueComponentId } from 'primeng/utils';
 @Component({
     selector: 'design-token-field',
     standalone: true,
-    imports: [CommonModule, AutoCompleteModule, FormsModule, TooltipModule, ReactiveFormsModule],
+    imports: [AutoCompleteModule, FormsModule, TooltipModule, ReactiveFormsModule],
     template: `<div class="group">
         <div class="flex justify-between items-center">
             <label for="inputId" class="text-xs text-zinc-700 dark:text-white/70 block capitalize text-ellipsis overflow-hidden w-full whitespace-nowrap mb-px" title="label">{{ label }}</label>
-            <button *ngIf="switchable" type="button" (click)="transfer($event)" tabindex="-1" style="line-height:14px;">
-                <i class="pi pi-sort-alt text-zinc-500 dark:text-white/50 !hidden group-hover:!inline-block animate-fadein" title="Transfer between color scheme and common" style="font-size: .75rem !important; line-height: 14px;"></i>
-            </button>
+            @if (switchable) {
+                <button type="button" (click)="transfer($event)" tabindex="-1" style="line-height:14px;">
+                    <i class="pi pi-sort-alt text-zinc-500 dark:text-white/50 !hidden group-hover:!inline-block animate-fadein" title="Transfer between color scheme and common" style="font-size: .75rem !important; line-height: 14px;"></i>
+                </button>
+            }
         </div>
         <div [id]="id" class="relative">
             <p-autocomplete
@@ -40,7 +42,9 @@ import { UniqueComponentId } from 'primeng/utils';
                     <div [pTooltip]="getTooltipData(option)" tooltipPosition="left" class="w-full flex items-center justify-between gap-4 px-2">
                         <span>{{ option.label }}</span>
                         @if (getIsColor(option)) {
-                            <div *ngIf="option.isColor" class="border border-surface-200 dark:border-surface-700 w-4 h-4 rounded-full" [style]="{ backgroundColor: resolveColor(option.value) }"></div>
+                            @if (option.isColor) {
+                                <div class="border border-surface-200 dark:border-surface-700 w-4 h-4 rounded-full" [style]="{ backgroundColor: resolveColor(option.value) }"></div>
+                            }
                         } @else {
                             <div class="text-xs max-w-16 text-ellipsis whitespace-nowrap overflow-hidden">
                                 {{ option.value }}
@@ -49,7 +53,9 @@ import { UniqueComponentId } from 'primeng/utils';
                     </div>
                 </ng-template>
             </p-autocomplete>
-            <div *ngIf="type() === 'color'" class="absolute right-[4px] top-1/2 -mt-3 w-6 h-6 rounded-md border border-surface-300 dark:border-surface-600" [style]="{ backgroundColor: previewColor() }"></div>
+            @if (type() === 'color') {
+                <div class="absolute right-[4px] top-1/2 -mt-3 w-6 h-6 rounded-md border border-surface-300 dark:border-surface-600" [style]="{ backgroundColor: previewColor() }"></div>
+            }
         </div>
     </div>`,
     changeDetection: ChangeDetectionStrategy.OnPush

@@ -43,55 +43,59 @@ const hideAnimation = animation([animate('{{transition}}', style({ transform: '{
     standalone: true,
     imports: [CommonModule, SharedModule, TimesIcon, ButtonModule],
     template: `
-        <div
-            #maskRef
-            *ngIf="visible"
-            [ngClass]="cx('mask')"
-            [ngStyle]="sx('mask')"
-            [style]="maskStyle"
-            [@panelState]="{ value: 'visible', params: { transform: transformOptions, transition: transitionOptions } }"
-            (@panelState.start)="onAnimationStart($event)"
-            (@panelState.done)="onAnimationEnd($event)"
-            [attr.data-pc-name]="'mask'"
-            [attr.data-pc-section]="'mask'"
-            (click)="maskClickListener($event)"
-        >
-            <div [ngClass]="cx('root')" [class]="styleClass" [attr.data-pc-section]="'root'" (keydown)="onKeyDown($event)">
-                @if (headlessTemplate || _headlessTemplate) {
-                    <ng-container *ngTemplateOutlet="headlessTemplate || _headlessTemplate"></ng-container>
-                } @else {
-                    <div [ngClass]="cx('header')" [attr.data-pc-section]="'header'">
-                        <ng-container *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-container>
-                        <p-button
-                            *ngIf="showCloseIcon"
-                            [ngClass]="cx('closeButton')"
-                            (onClick)="close($event)"
-                            (keydown.enter)="close($event)"
-                            [buttonProps]="closeButtonProps"
-                            [ariaLabel]="ariaCloseLabel"
-                            [attr.data-pc-section]="'closebutton'"
-                            [attr.data-pc-group-section]="'iconcontainer'"
-                        >
-                            <TimesIcon *ngIf="!closeIconTemplate && !_closeIconTemplate" [attr.data-pc-section]="'closeicon'" />
-                            <span *ngIf="closeIconTemplate || _closeIconTemplate" class="p-sidebar-close-icon" [attr.data-pc-section]="'closeicon'">
-                                <ng-template *ngTemplateOutlet="closeIconTemplate || _closeIconTemplate"></ng-template>
-                            </span>
-                        </p-button>
-                    </div>
-
-                    <div [ngClass]="cx('content')" [attr.data-pc-section]="'content'">
-                        <ng-content></ng-content>
-                        <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate"></ng-container>
-                    </div>
-
-                    <ng-container *ngIf="footerTemplate || _footerTemplate">
-                        <div [ngClass]="cx('footer')" [attr.data-pc-section]="'footer'">
-                            <ng-container *ngTemplateOutlet="footerTemplate || _footerTemplate"></ng-container>
+        @if (visible) {
+            <div
+                #maskRef
+                [ngClass]="cx('mask')"
+                [ngStyle]="sx('mask')"
+                [style]="maskStyle"
+                [@panelState]="{ value: 'visible', params: { transform: transformOptions, transition: transitionOptions } }"
+                (@panelState.start)="onAnimationStart($event)"
+                (@panelState.done)="onAnimationEnd($event)"
+                [attr.data-pc-name]="'mask'"
+                [attr.data-pc-section]="'mask'"
+                (click)="maskClickListener($event)"
+            >
+                <div [ngClass]="cx('root')" [class]="styleClass" [attr.data-pc-section]="'root'" (keydown)="onKeyDown($event)">
+                    @if (headlessTemplate || _headlessTemplate) {
+                        <ng-container *ngTemplateOutlet="headlessTemplate || _headlessTemplate"></ng-container>
+                    } @else {
+                        <div [ngClass]="cx('header')" [attr.data-pc-section]="'header'">
+                            <ng-container *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-container>
+                            @if (showCloseIcon) {
+                                <p-button
+                                    [ngClass]="cx('closeButton')"
+                                    (onClick)="close($event)"
+                                    (keydown.enter)="close($event)"
+                                    [buttonProps]="closeButtonProps"
+                                    [ariaLabel]="ariaCloseLabel"
+                                    [attr.data-pc-section]="'closebutton'"
+                                    [attr.data-pc-group-section]="'iconcontainer'"
+                                >
+                                    @if (!closeIconTemplate && !_closeIconTemplate) {
+                                        <TimesIcon [attr.data-pc-section]="'closeicon'" />
+                                    }
+                                    @if (closeIconTemplate || _closeIconTemplate) {
+                                        <span class="p-sidebar-close-icon" [attr.data-pc-section]="'closeicon'">
+                                            <ng-template *ngTemplateOutlet="closeIconTemplate || _closeIconTemplate"></ng-template>
+                                        </span>
+                                    }
+                                </p-button>
+                            }
                         </div>
-                    </ng-container>
-                }
+                        <div [ngClass]="cx('content')" [attr.data-pc-section]="'content'">
+                            <ng-content></ng-content>
+                            <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate"></ng-container>
+                        </div>
+                        @if (footerTemplate || _footerTemplate) {
+                            <div [ngClass]="cx('footer')" [attr.data-pc-section]="'footer'">
+                                <ng-container *ngTemplateOutlet="footerTemplate || _footerTemplate"></ng-container>
+                            </div>
+                        }
+                    }
+                </div>
             </div>
-        </div>
+        }
     `,
     animations: [trigger('panelState', [transition('void => visible', [useAnimation(showAnimation)]), transition('visible => void', [useAnimation(hideAnimation)])])],
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
 import { BaseComponent } from 'primeng/basecomponent';
 import { TabPanelsStyle } from './style/tabpanelsstyle';
@@ -10,7 +9,7 @@ import { TabPanelsStyle } from './style/tabpanelsstyle';
 @Component({
     selector: 'p-tabpanels',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     template: ` <ng-content></ng-content>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

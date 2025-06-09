@@ -25,70 +25,89 @@ const hideAnimation = animation([animate('{{transition}}', style({ transform: '{
     imports: [CommonModule, SharedModule, DynamicDialogContent, WindowMaximizeIcon, WindowMinimizeIcon, TimesIcon, Button, FocusTrap],
     template: `
         <div #mask [style]="sx('mask')" [class]="cn(cx('mask'), ddconfig.maskStyleClass)">
-            <div
-                *ngIf="visible"
-                #container
-                [class]="cn(cx('root'), ddconfig.styleClass)"
-                [ngStyle]="ddconfig.style"
-                [style]="sx('root')"
-                [@animation]="{
-                    value: 'visible',
-                    params: {
-                        transform: transformOptions,
-                        transition: ddconfig.transitionOptions || '150ms cubic-bezier(0, 0, 0.2, 1)'
+            @if (visible) {
+                <div
+                    #container
+                    [class]="cn(cx('root'), ddconfig.styleClass)"
+                    [ngStyle]="ddconfig.style"
+                    [style]="sx('root')"
+                    [@animation]="{
+                        value: 'visible',
+                        params: {
+                            transform: transformOptions,
+                            transition: ddconfig.transitionOptions || '150ms cubic-bezier(0, 0, 0.2, 1)'
+                        }
+                    }"
+                    (@animation.start)="onAnimationStart($event)"
+                    (@animation.done)="onAnimationEnd($event)"
+                    role="dialog"
+                    pFocusTrap
+                    [pFocusTrapDisabled]="ddconfig.focusTrap === false"
+                    [style.width]="ddconfig.width"
+                    [style.height]="ddconfig.height"
+                    [attr.aria-labelledby]="ariaLabelledBy"
+                    [attr.aria-modal]="true"
+                    [attr.id]="dialogId"
+                >
+                    @if (ddconfig.resizable) {
+                        <div [class]="cx('resizeHandle')" (mousedown)="initResize($event)"></div>
                     }
-                }"
-                (@animation.start)="onAnimationStart($event)"
-                (@animation.done)="onAnimationEnd($event)"
-                role="dialog"
-                pFocusTrap
-                [pFocusTrapDisabled]="ddconfig.focusTrap === false"
-                [style.width]="ddconfig.width"
-                [style.height]="ddconfig.height"
-                [attr.aria-labelledby]="ariaLabelledBy"
-                [attr.aria-modal]="true"
-                [attr.id]="dialogId"
-            >
-                <div *ngIf="ddconfig.resizable" [class]="cx('resizeHandle')" (mousedown)="initResize($event)"></div>
-                <div #titlebar [class]="cx('header')" (mousedown)="initDrag($event)" *ngIf="ddconfig.showHeader !== false">
-                    <ng-container *ngComponentOutlet="headerTemplate"></ng-container>
-                    <ng-container *ngIf="!headerTemplate">
-                        <span [class]="cx('title')" [id]="ariaLabelledBy">{{ ddconfig.header }}</span>
-                        <div [class]="cx('headerActions')">
-                            <p-button *ngIf="ddconfig.maximizable" [styleClass]="cx('pcMaximizeButton')" (onClick)="maximize()" (keydown.enter)="maximize()" rounded text [tabindex]="maximizable ? '0' : '-1'">
-                                <ng-container *ngIf="!maximizeIcon">
-                                    <WindowMaximizeIcon *ngIf="!maximized && !maximizeIconTemplate" />
-                                    <WindowMinimizeIcon *ngIf="maximized && !minimizeIconTemplate" />
-                                </ng-container>
-                                <ng-container *ngIf="!maximized">
-                                    <ng-template *ngTemplateOutlet="maximizeIconTemplate"></ng-template>
-                                </ng-container>
-                                <ng-container *ngIf="maximized">
-                                    <ng-template *ngTemplateOutlet="minimizeIconTemplate"></ng-template>
-                                </ng-container>
-                            </p-button>
-                            <p-button *ngIf="closable" [styleClass]="cx('pcCloseButton')" [ariaLabel]="ddconfig.closeAriaLabel || defaultCloseAriaLabel" (onClick)="hide()" (keydown.enter)="hide()" rounded text severity="secondary">
-                                <ng-container *ngIf="!closeIconTemplate">
-                                    <TimesIcon />
-                                </ng-container>
-                                <span *ngIf="closeIconTemplate">
-                                    <ng-template *ngTemplateOutlet="closeIconTemplate"></ng-template>
-                                </span>
-                            </p-button>
+                    @if (ddconfig.showHeader !== false) {
+                        <div #titlebar [class]="cx('header')" (mousedown)="initDrag($event)">
+                            <ng-container *ngComponentOutlet="headerTemplate"></ng-container>
+                            @if (!headerTemplate) {
+                                <span [class]="cx('title')" [id]="ariaLabelledBy">{{ ddconfig.header }}</span>
+                                <div [class]="cx('headerActions')">
+                                    @if (ddconfig.maximizable) {
+                                        <p-button [styleClass]="cx('pcMaximizeButton')" (onClick)="maximize()" (keydown.enter)="maximize()" rounded text [tabindex]="maximizable ? '0' : '-1'">
+                                            @if (!maximizeIcon) {
+                                                @if (!maximized && !maximizeIconTemplate) {
+                                                    <WindowMaximizeIcon />
+                                                }
+                                                @if (maximized && !minimizeIconTemplate) {
+                                                    <WindowMinimizeIcon />
+                                                }
+                                            }
+                                            @if (!maximized) {
+                                                <ng-template *ngTemplateOutlet="maximizeIconTemplate"></ng-template>
+                                            }
+                                            @if (maximized) {
+                                                <ng-template *ngTemplateOutlet="minimizeIconTemplate"></ng-template>
+                                            }
+                                        </p-button>
+                                    }
+                                    @if (closable) {
+                                        <p-button [styleClass]="cx('pcCloseButton')" [ariaLabel]="ddconfig.closeAriaLabel || defaultCloseAriaLabel" (onClick)="hide()" (keydown.enter)="hide()" rounded text severity="secondary">
+                                            @if (!closeIconTemplate) {
+                                                <TimesIcon />
+                                            }
+                                            @if (closeIconTemplate) {
+                                                <span>
+                                                    <ng-template *ngTemplateOutlet="closeIconTemplate"></ng-template>
+                                                </span>
+                                            }
+                                        </p-button>
+                                    }
+                                </div>
+                            }
                         </div>
-                    </ng-container>
+                    }
+                    <div #content [class]="cx('content')" [style]="ddconfig.contentStyle">
+                        @if (!contentTemplate) {
+                            <ng-template pDynamicDialogContent></ng-template>
+                        }
+                        <ng-container *ngComponentOutlet="contentTemplate"></ng-container>
+                    </div>
+                    @if (ddconfig.footer || footerTemplate) {
+                        <div #footer [class]="cx('footer')">
+                            @if (!footerTemplate) {
+                                {{ ddconfig.footer }}
+                            }
+                            <ng-container *ngComponentOutlet="footerTemplate"></ng-container>
+                        </div>
+                    }
                 </div>
-                <div #content [class]="cx('content')" [style]="ddconfig.contentStyle">
-                    <ng-template pDynamicDialogContent *ngIf="!contentTemplate"></ng-template>
-                    <ng-container *ngComponentOutlet="contentTemplate"></ng-container>
-                </div>
-                <div #footer [class]="cx('footer')" *ngIf="ddconfig.footer || footerTemplate">
-                    <ng-container *ngIf="!footerTemplate">
-                        {{ ddconfig.footer }}
-                    </ng-container>
-                    <ng-container *ngComponentOutlet="footerTemplate"></ng-container>
-                </div>
-            </div>
+            }
         </div>
     `,
     animations: [trigger('animation', [transition('void => visible', [useAnimation(showAnimation)]), transition('visible => void', [useAnimation(hideAnimation)])])],

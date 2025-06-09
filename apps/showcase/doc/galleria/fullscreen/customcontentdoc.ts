@@ -10,11 +10,15 @@ import { Component, model, OnInit } from '@angular/core';
             <p>Using <i>activeIndex</i>, Galleria is displayed with a specific initial image.</p>
         </app-docsectiontext>
         <div class="card flex justify-center">
-            <div *ngIf="images() && images().length > 0" class="grid grid-cols-12 gap-4" style="max-width: 800px;">
-                <div *ngFor="let image of images(); let index = index" class="col-span-4" key="index">
-                    <img [src]="image.thumbnailImageSrc" [alt]="image.alt" style="cursor: pointer" (click)="imageClick(index)" />
+            @if (images() && images().length > 0) {
+                <div class="grid grid-cols-12 gap-4" style="max-width: 800px;">
+                    @for (image of images(); track image; let index = $index) {
+                        <div class="col-span-4" key="index">
+                            <img [src]="image.thumbnailImageSrc" [alt]="image.alt" style="cursor: pointer" (click)="imageClick(index)" />
+                        </div>
+                    }
                 </div>
-            </div>
+            }
             <p-galleria
                 [(value)]="images"
                 [(visible)]="displayCustom"
@@ -75,11 +79,15 @@ export class CustomContentDoc implements OnInit {
     </ng-template>
 </p-galleria>`,
         html: `<div class="card flex justify-center">
-    <div *ngIf="images() && images().length > 0" class="grid grid-cols-12 gap-4" style="max-width: 800px;">
-        <div *ngFor="let image of images(); let index = index" class="col-span-4" key="index">
+    @if (images() && images().length > 0) {
+    <div class="grid grid-cols-12 gap-4" style="max-width: 800px;">
+        @for (image of images(); track image; let index = $index) {
+        <div class="col-span-4" key="index">
             <img [src]="image.thumbnailImageSrc" [alt]="image.alt" style="cursor: pointer" (click)="imageClick(index)" />
         </div>
+        }
     </div>
+    }
     <p-galleria
         [(value)]="images"
         [(visible)]="displayCustom"

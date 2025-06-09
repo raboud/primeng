@@ -21,21 +21,27 @@ interface Column {
                     <ng-template #caption><div class="text-xl font-bold">File Viewer</div> </ng-template>
                     <ng-template #header let-columns>
                         <tr>
-                            <th *ngFor="let col of columns">
-                                {{ col.header }}
-                            </th>
+                            @for (col of columns; track col) {
+                                <th>
+                                    {{ col.header }}
+                                </th>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
                         <tr [ttRow]="rowNode">
-                            <td *ngFor="let col of columns; let i = index; let last = last">
-                                <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
-                                {{ rowData[col.field] }}
-                                <ng-container *ngIf="last">
-                                    <p-button icon="pi pi-search" rounded="true" [style]="{ 'margin-right': '.5em' }" />
-                                    <p-button icon="pi pi-pencil" rounded="true" severity="success" />
-                                </ng-container>
-                            </td>
+                            @for (col of columns; track col; let i = $index; let last = $last) {
+                                <td>
+                                    @if (i === 0) {
+                                        <p-treetable-toggler [rowNode]="rowNode" />
+                                    }
+                                    {{ rowData[col.field] }}
+                                    @if (last) {
+                                        <p-button icon="pi pi-search" rounded="true" [style]="{ 'margin-right': '.5em' }" />
+                                        <p-button icon="pi pi-pencil" rounded="true" severity="success" />
+                                    }
+                                </td>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #summary>
@@ -71,21 +77,27 @@ export class TemplateDoc {
     <ng-template #caption><div class="text-xl font-bold">File Viewer</div> </ng-template>
     <ng-template #header let-columns>
         <tr>
-            <th *ngFor="let col of columns">
-                {{ col.header }}
-            </th>
+            @for (col of columns; track col) {
+                <th>
+                    {{ col.header }}
+                </th>
+                }
         </tr>
     </ng-template>
     <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
         <tr [ttRow]="rowNode">
-            <td *ngFor="let col of columns; let i = index; let last = last">
-                <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
+            @for (col of columns; track col; let i = $index; let last = $last) {
+                <td>
+                    @if (i === 0) {
+                        <p-treetable-toggler [rowNode]="rowNode" />
+                    }
                     {{ rowData[col.field] }}
-                <ng-container *ngIf="last">
-                    <p-button icon="pi pi-search" rounded="true" [style]="{ 'margin-right': '.5em' }" />
-                    <p-button icon="pi pi-pencil" rounded="true" severity="success" />
-                </ng-container>
-            </td>
+                    @if (last) {
+                        <p-button icon="pi pi-search" rounded="true" [style]="{ 'margin-right': '.5em' }" />
+                        <p-button icon="pi pi-pencil" rounded="true" severity="success" />
+                        }
+                </td>
+            }
         </tr>
     </ng-template>
     <ng-template #summary>
@@ -100,21 +112,27 @@ export class TemplateDoc {
         <ng-template #caption><div class="text-xl font-bold">File Viewer</div> </ng-template>
         <ng-template #header let-columns>
             <tr>
-                <th *ngFor="let col of columns">
-                    {{ col.header }}
-                </th>
+                @for (col of columns; track col) {
+                    <th>
+                        {{ col.header }}
+                    </th>
+                }
             </tr>
         </ng-template>
         <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
             <tr [ttRow]="rowNode">
-                <td *ngFor="let col of columns; let i = index; let last = last">
-                    <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
+                @for (col of columns; track col; let i = $index; let last = $last) {
+                    <td>
+                        @if (i === 0) {
+                            <p-treetable-toggler [rowNode]="rowNode" />
+                        }
                         {{ rowData[col.field] }}
-                    <ng-container *ngIf="last">
-                        <p-button icon="pi pi-search" rounded="true" [style]="{ 'margin-right': '.5em' }" />
-                        <p-button icon="pi pi-pencil" rounded="true" severity="success" />
-                    </ng-container>
-                </td>
+                        @if (last) {
+                            <p-button icon="pi pi-search" rounded="true" [style]="{ 'margin-right': '.5em' }" />
+                            <p-button icon="pi pi-pencil" rounded="true" severity="success" />
+                        }
+                    </td>
+                }
             </tr>
         </ng-template>
         <ng-template #summary>

@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TabsModule } from 'primeng/tabs';
 import { FieldsetModule } from 'primeng/fieldset';
-import { CommonModule } from '@angular/common';
+
 import { DesignerService } from '@/service/designerservice';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { AppConfigService } from '@/service/appconfigservice';
 @Component({
     selector: 'design-component',
     standalone: true,
-    imports: [CommonModule, FieldsetModule, TabsModule, DesignComponentSection],
+    imports: [FieldsetModule, TabsModule, DesignComponentSection],
     template: `<section class="flex flex-col gap-3">
         <div class="text-lg font-semibold capitalize mb-2">{{ componentKey() }}</div>
         <p-fieldset legend="Common" [toggleable]="true">

@@ -26,12 +26,14 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
                     <ng-template #body let-customer let-rowIndex="rowIndex" let-rowgroup="rowgroup" let-rowspan="rowspan">
                         <tr>
                             <td>{{ rowIndex }}</td>
-                            <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
-                                <div class="flex items-center gap-2">
-                                    <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" />
-                                    <span>{{ customer.representative.name }}</span>
-                                </div>
-                            </td>
+                            @if (rowgroup) {
+                                <td [attr.rowspan]="rowspan">
+                                    <div class="flex items-center gap-2">
+                                        <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" />
+                                        <span>{{ customer.representative.name }}</span>
+                                    </div>
+                                </td>
+                            }
                             <td>
                                 {{ customer.name }}
                             </td>
@@ -119,12 +121,14 @@ export class RowspanGroupingDoc {
     <ng-template #body let-customer let-rowIndex="rowIndex" let-rowgroup="rowgroup" let-rowspan="rowspan">
         <tr>
             <td>{{ rowIndex }}</td>
-            <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
-                <div class="flex items-center gap-2">
+            @if (rowgroup) {
+                <td [attr.rowspan]="rowspan">
+                    <div class="flex items-center gap-2">
                     <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" />
                     <span>{{ customer.representative.name }}</span>
-                </div>
-            </td>
+                    </div>
+                </td>
+            }
             <td>
                 {{ customer.name }}
             </td>
@@ -159,12 +163,14 @@ export class RowspanGroupingDoc {
         <ng-template #body let-customer let-rowIndex="rowIndex" let-rowgroup="rowgroup" let-rowspan="rowspan">
             <tr>
                 <td>{{ rowIndex }}</td>
-                <td *ngIf="rowgroup" [attr.rowspan]="rowspan">
-                    <div class="flex items-center gap-2">
+                @if (rowgroup) {
+                    <td [attr.rowspan]="rowspan">
+                        <div class="flex items-center gap-2">
                         <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" />
                         <span>{{ customer.representative.name }}</span>
-                    </div>
-                </td>
+                        </div>
+                    </td>
+                }
                 <td>
                     {{ customer.name }}
                 </td>

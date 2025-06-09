@@ -1,5 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { CommonModule } from '@angular/common';
+
+import { NgClass, NgStyle } from '@angular/common';
 import {
     AfterContentInit,
     booleanAttribute,
@@ -76,7 +77,7 @@ export interface AccordionToggleIconTemplateContext {
  */
 @Component({
     selector: 'p-accordion-panel, p-accordionpanel',
-    imports: [CommonModule],
+    imports: [],
     standalone: true,
     template: `<ng-content />`,
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -121,21 +122,29 @@ export class AccordionPanel extends BaseComponent {
  */
 @Component({
     selector: 'p-accordion-header, p-accordionheader',
-    imports: [CommonModule, ChevronDownIcon, ChevronUpIcon],
+    imports: [ChevronDownIcon, ChevronUpIcon],
     standalone: true,
     template: `
         <ng-content />
         @if (toggleicon) {
             <ng-template *ngTemplateOutlet="toggleicon; context: { active: active() }"></ng-template>
         } @else {
-            <ng-container *ngIf="active()">
-                <span *ngIf="pcAccordion.collapseIcon" [class]="pcAccordion.collapseIcon" [ngClass]="pcAccordion.iconClass" [attr.aria-hidden]="true"></span>
-                <ChevronDownIcon *ngIf="!pcAccordion.collapseIcon" [ngClass]="pcAccordion.iconClass" [attr.aria-hidden]="true" />
-            </ng-container>
-            <ng-container *ngIf="!active()">
-                <span *ngIf="pcAccordion.expandIcon" [class]="pcAccordion.expandIcon" [ngClass]="pcAccordion.iconClass" [attr.aria-hidden]="true"></span>
-                <ChevronUpIcon *ngIf="!pcAccordion.expandIcon" [ngClass]="pcAccordion.iconClass" [attr.aria-hidden]="true" />
-            </ng-container>
+            @if (active()) {
+                @if (pcAccordion.collapseIcon) {
+                    <span [class]="pcAccordion.collapseIcon" [ngClass]="pcAccordion.iconClass" [attr.aria-hidden]="true"></span>
+                }
+                @if (!pcAccordion.collapseIcon) {
+                    <ChevronDownIcon [ngClass]="pcAccordion.iconClass" [attr.aria-hidden]="true" />
+                }
+            }
+            @if (!active()) {
+                @if (pcAccordion.expandIcon) {
+                    <span [class]="pcAccordion.expandIcon" [ngClass]="pcAccordion.iconClass" [attr.aria-hidden]="true"></span>
+                }
+                @if (!pcAccordion.expandIcon) {
+                    <ChevronUpIcon [ngClass]="pcAccordion.iconClass" [attr.aria-hidden]="true" />
+                }
+            }
         }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -296,7 +305,7 @@ export class AccordionHeader extends BaseComponent {
 
 @Component({
     selector: 'p-accordion-content, p-accordioncontent',
-    imports: [CommonModule],
+    imports: [],
     standalone: true,
     template: ` <div [class]="cx('content')">
         <ng-content />
@@ -359,7 +368,7 @@ export class AccordionContent extends BaseComponent {
 @Component({
     selector: 'p-accordionTab, p-accordion-tab, p-accordiontab',
     standalone: true,
-    imports: [CommonModule, ChevronDownIcon, ChevronUpIcon],
+    imports: [ChevronDownIcon, ChevronUpIcon, NgClass, NgStyle],
     template: `
         <button
             class="p-accordionheader"
@@ -391,14 +400,22 @@ export class AccordionContent extends BaseComponent {
             @if (iconTemplate || _iconTemplate) {
                 <ng-template *ngTemplateOutlet="iconTemplate || _iconTemplate; context: { $implicit: selected }"></ng-template>
             } @else {
-                <ng-container *ngIf="selected">
-                    <span *ngIf="accordion.collapseIcon" [class]="accordion.collapseIcon" [ngClass]="iconClass" [attr.aria-hidden]="true"></span>
-                    <ChevronDownIcon *ngIf="!accordion.collapseIcon" [ngClass]="iconClass" [attr.aria-hidden]="true" />
-                </ng-container>
-                <ng-container *ngIf="!selected">
-                    <span *ngIf="accordion.expandIcon" [class]="accordion.expandIcon" [ngClass]="iconClass" [attr.aria-hidden]="true"></span>
-                    <ChevronUpIcon *ngIf="!accordion.expandIcon" [ngClass]="iconClass" [attr.aria-hidden]="true" />
-                </ng-container>
+                @if (selected) {
+                    @if (accordion.collapseIcon) {
+                        <span [class]="accordion.collapseIcon" [ngClass]="iconClass" [attr.aria-hidden]="true"></span>
+                    }
+                    @if (!accordion.collapseIcon) {
+                        <ChevronDownIcon [ngClass]="iconClass" [attr.aria-hidden]="true" />
+                    }
+                }
+                @if (!selected) {
+                    @if (accordion.expandIcon) {
+                        <span [class]="accordion.expandIcon" [ngClass]="iconClass" [attr.aria-hidden]="true"></span>
+                    }
+                    @if (!accordion.expandIcon) {
+                        <ChevronUpIcon [ngClass]="iconClass" [attr.aria-hidden]="true" />
+                    }
+                }
             }
         </button>
         <div
@@ -412,9 +429,9 @@ export class AccordionContent extends BaseComponent {
         >
             <div class="p-accordioncontent-content" [ngClass]="contentStyleClass" [ngStyle]="contentStyle">
                 <ng-content />
-                <ng-container *ngIf="(contentTemplate || _contentTemplate) && (cache ? loaded : selected)">
+                @if ((contentTemplate || _contentTemplate) && (cache ? loaded : selected)) {
                     <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate"></ng-container>
-                </ng-container>
+                }
             </div>
         </div>
     `,
@@ -690,7 +707,7 @@ export class AccordionTab extends BaseComponent implements AfterContentInit, OnD
 @Component({
     selector: 'p-accordion',
     standalone: true,
-    imports: [CommonModule, SharedModule],
+    imports: [SharedModule],
     template: ` <ng-content /> `,
     host: {
         '[class]': "cx('root')"

@@ -23,23 +23,29 @@ interface Column {
                 <p-table [columns]="cols" [value]="virtualCars" [scrollable]="true" scrollHeight="400px" [rows]="100" [virtualScroll]="true" [virtualScrollItemSize]="46" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)">
                     <ng-template #header let-columns>
                         <tr>
-                            <th *ngFor="let col of columns" style="width: 20%;">
-                                {{ col.header }}
-                            </th>
+                            @for (col of columns; track col) {
+                                <th style="width: 20%;">
+                                    {{ col.header }}
+                                </th>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #body let-rowData let-columns="columns">
                         <tr style="height:46px">
-                            <td *ngFor="let col of columns">
-                                {{ rowData[col.field] }}
-                            </td>
+                            @for (col of columns; track col) {
+                                <td>
+                                    {{ rowData[col.field] }}
+                                </td>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #loadingbody let-columns="columns">
                         <tr style="height:46px">
-                            <td *ngFor="let col of columns; let even = even">
-                                <p-skeleton [ngStyle]="{ width: even ? (col.field === 'year' ? '30%' : '40%') : '60%' }" />
-                            </td>
+                            @for (col of columns; track col; let even = $even) {
+                                <td>
+                                    <p-skeleton [ngStyle]="{ width: even ? (col.field === 'year' ? '30%' : '40%') : '60%' }" />
+                                </td>
+                            }
                         </tr>
                     </ng-template>
                 </p-table>
@@ -91,47 +97,59 @@ export class VirtualScrollLazyDoc {
         basic: `<p-table [columns]="cols" [value]="virtualCars" [scrollable]="true" scrollHeight="400px" [rows]="100" [virtualScroll]="true" [virtualScrollItemSize]="46" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)">
     <ng-template #header let-columns>
         <tr>
-            <th *ngFor="let col of columns" style="width: 20%;">
-                {{col.header}}
+            @for (col of columns; track col) {
+            <th style="width: 20%;">
+                {{ col.header }}
             </th>
+            }
         </tr>
     </ng-template>
     <ng-template #body let-rowData let-columns="columns">
         <tr style="height:46px">
-            <td *ngFor="let col of columns">
-                {{rowData[col.field]}}
+            @for (col of columns; track col) {
+            <td>
+                {{ rowData[col.field] }}
             </td>
+            }
         </tr>
     </ng-template>
     <ng-template #loadingbody let-columns="columns">
         <tr style="height:46px">
-            <td *ngFor="let col of columns; let even = even">
-                <p-skeleton [ngStyle]="{'width': even ? (col.field === 'year' ? '30%' : '40%') : '60%'}" />
+            @for (col of columns; track col; let even = $even) {
+            <td>
+                <p-skeleton [ngStyle]="{ width: even ? (col.field === 'year' ? '30%' : '40%') : '60%' }" />
             </td>
+            }
         </tr>
     </ng-template>
 </p-table>`,
         html: `<div class="card">
     <p-table [columns]="cols" [value]="virtualCars" [scrollable]="true" scrollHeight="400px" [rows]="100" [virtualScroll]="true" [virtualScrollItemSize]="46" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)">
         <ng-template #header let-columns>
-            <tr>
-                <th *ngFor="let col of columns" style="width: 20%;">
-                    {{col.header}}
-                </th>
-            </tr>
+        <tr>
+            @for (col of columns; track col) {
+            <th style="width: 20%;">
+                {{ col.header }}
+            </th>
+            }
+        </tr>
         </ng-template>
         <ng-template #body let-rowData let-columns="columns">
             <tr style="height:46px">
-                <td *ngFor="let col of columns">
-                    {{rowData[col.field]}}
+                @for (col of columns; track col) {
+                <td>
+                    {{ rowData[col.field] }}
                 </td>
+                }
             </tr>
         </ng-template>
         <ng-template #loadingbody let-columns="columns">
             <tr style="height:46px">
-                <td *ngFor="let col of columns; let even = even">
-                    <p-skeleton [ngStyle]="{'width': even ? (col.field === 'year' ? '30%' : '40%') : '60%'}" />
-                </td>
+                @for (col of columns; track col; let even = $even) {
+                    <td>
+                        <p-skeleton [ngStyle]="{ width: even ? (col.field === 'year' ? '30%' : '40%') : '60%' }" />
+                    </td>
+                }
             </tr>
         </ng-template>
     </p-table>

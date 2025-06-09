@@ -11,10 +11,12 @@ import { Component, OnInit } from '@angular/core';
         </app-docsectiontext>
         <div class="card">
             <div class="flex flex-wrap gap-4 mb-8">
-                <div *ngFor="let option of positionOptions" class="flex items-center">
-                    <p-radiobutton [name]="option.label" [value]="option.value" [label]="option.label" [(ngModel)]="position" [inputId]="option.label" />
-                    <label [for]="option.label" class="ml-2"> {{ option.label }} </label>
-                </div>
+                @for (option of positionOptions; track option) {
+                    <div class="flex items-center">
+                        <p-radiobutton [name]="option.label" [value]="option.value" [label]="option.label" [(ngModel)]="position" [inputId]="option.label" />
+                        <label [for]="option.label" class="ml-2"> {{ option.label }} </label>
+                    </div>
+                }
             </div>
             <p-galleria [(value)]="images" [thumbnailsPosition]="position" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
                 <ng-template #item let-item>
@@ -73,10 +75,12 @@ export class ThumbnailDoc implements OnInit {
 
     code: Code = {
         basic: `<div class="flex flex-wrap gap-4 mb-8">
-    <div *ngFor="let option of positionOptions" class="flex items-center">
-        <p-radiobutton [name]="option.label" [value]="option.value" [label]="option.label" [(ngModel)]="position" [inputId]="label" />
-        <label [for]="option.label" class="ml-2"> {{ option.label }} </label>
-    </div>
+    @for (option of positionOptions; track option) {
+        <div class="flex items-center">
+           <p-radiobutton [name]="option.label" [value]="option.value" [label]="option.label" [(ngModel)]="position" [inputId]="option.label" />
+            <label [for]="option.label" class="ml-2"> {{ option.label }} </label>
+        </div>
+    }
 </div>
 <p-galleria [(value)]="images" [thumbnailsPosition]="position" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5" >
     <ng-template pTemplate="item" let-item>
@@ -90,10 +94,12 @@ export class ThumbnailDoc implements OnInit {
 </p-galleria>`,
         html: `<div class="card">
     <div class="flex flex-wrap gap-4 mb-8">
-        <div *ngFor="let option of positionOptions" class="flex items-center">
-            <p-radiobutton [name]="option.label" [value]="option.value" [label]="option.label" [(ngModel)]="position" [inputId]="label" />
-            <label [for]="option.label" class="ml-2"> {{ option.label }} </label>
-        </div>
+        @for (option of positionOptions; track option) {
+            <div class="flex items-center">
+                <p-radiobutton [name]="option.label" [value]="option.value" [label]="option.label" [(ngModel)]="position" [inputId]="option.label" />
+                <label [for]="option.label" class="ml-2"> {{ option.label }} </label>
+            </div>
+        }
     </div>
     <p-galleria [(value)]="images" [thumbnailsPosition]="position" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
         <ng-template pTemplate="item" let-item>

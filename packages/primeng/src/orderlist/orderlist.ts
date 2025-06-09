@@ -42,19 +42,27 @@ import { OrderListStyle } from './style/orderliststyle';
     template: `
         <div [class]="cx('controls')" [attr.data-pc-section]="'controls'">
             <button type="button" [disabled]="moveDisabled()" pButton pRipple (click)="moveUp()" [attr.aria-label]="moveUpAriaLabel" [attr.data-pc-section]="'moveUpButton'" [buttonProps]="getButtonProps('up')">
-                <AngleUpIcon *ngIf="!moveUpIconTemplate && !_moveUpIconTemplate" [attr.data-pc-section]="'moveupicon'" />
+                @if (!moveUpIconTemplate && !_moveUpIconTemplate) {
+                    <AngleUpIcon [attr.data-pc-section]="'moveupicon'" />
+                }
                 <ng-template *ngTemplateOutlet="moveUpIconTemplate || _moveUpIconTemplate"></ng-template>
             </button>
             <button type="button" [disabled]="moveDisabled()" pButton pRipple (click)="moveTop()" [attr.aria-label]="moveTopAriaLabel" [attr.data-pc-section]="'moveTopButton'" [buttonProps]="getButtonProps('top')">
-                <AngleDoubleUpIcon *ngIf="!moveTopIconTemplate && !_moveTopIconTemplate" [attr.data-pc-section]="'movetopicon'" />
+                @if (!moveTopIconTemplate && !_moveTopIconTemplate) {
+                    <AngleDoubleUpIcon [attr.data-pc-section]="'movetopicon'" />
+                }
                 <ng-template *ngTemplateOutlet="moveTopIconTemplate || _moveTopIconTemplate"></ng-template>
             </button>
             <button type="button" [disabled]="moveDisabled()" pButton pRipple (click)="moveDown()" [attr.aria-label]="moveDownAriaLabel" [attr.data-pc-section]="'moveDownButton'" [buttonProps]="getButtonProps('down')">
-                <AngleDownIcon *ngIf="!moveDownIconTemplate && !_moveDownIconTemplate" [attr.data-pc-section]="'movedownicon'" />
+                @if (!moveDownIconTemplate && !_moveDownIconTemplate) {
+                    <AngleDownIcon [attr.data-pc-section]="'movedownicon'" />
+                }
                 <ng-template *ngTemplateOutlet="moveDownIconTemplate || _moveDownIconTemplate"></ng-template>
             </button>
             <button type="button" [disabled]="moveDisabled()" pButton pRipple (click)="moveBottom()" [attr.aria-label]="moveBottomAriaLabel" [attr.data-pc-section]="'moveBottomButton'" [buttonProps]="getButtonProps('bottom')">
-                <AngleDoubleDownIcon *ngIf="!moveBottomIconTemplate && !_moveBottomIconTemplate" [attr.data-pc-section]="'movebottomicon'" />
+                @if (!moveBottomIconTemplate && !_moveBottomIconTemplate) {
+                    <AngleDoubleDownIcon [attr.data-pc-section]="'movebottomicon'" />
+                }
                 <ng-template *ngTemplateOutlet="moveBottomIconTemplate || _moveBottomIconTemplate"></ng-template>
             </button>
         </div>
@@ -83,26 +91,26 @@ import { OrderListStyle } from './style/orderliststyle';
             [dragdrop]="dragdrop"
             (onDrop)="onDrop($event)"
         >
-            <ng-container *ngIf="headerTemplate || _headerTemplate">
+            @if (headerTemplate || _headerTemplate) {
                 <ng-template #header>
                     <ng-template *ngTemplateOutlet="headerTemplate || _headerTemplate"></ng-template>
                 </ng-template>
-            </ng-container>
-            <ng-container *ngIf="itemTemplate || _itemTemplate">
+            }
+            @if (itemTemplate || _itemTemplate) {
                 <ng-template #item let-option let-selected="selected" let-index="index">
                     <ng-template *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: option, selected: selected, index: index }"></ng-template>
                 </ng-template>
-            </ng-container>
-            <ng-container *ngIf="emptyMessageTemplate || _emptyMessageTemplate">
+            }
+            @if (emptyMessageTemplate || _emptyMessageTemplate) {
                 <ng-template #empty>
                     <ng-template *ngTemplateOutlet="emptyMessageTemplate || _emptyMessageTemplate"></ng-template>
                 </ng-template>
-            </ng-container>
-            <ng-container *ngIf="emptyFilterMessageTemplate || _emptyFilterMessageTemplate">
+            }
+            @if (emptyFilterMessageTemplate || _emptyFilterMessageTemplate) {
                 <ng-template #emptyfilter>
                     <ng-template *ngTemplateOutlet="emptyFilterMessageTemplate || _emptyFilterMessageTemplate"></ng-template>
                 </ng-template>
-            </ng-container>
+            }
         </p-listbox>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,

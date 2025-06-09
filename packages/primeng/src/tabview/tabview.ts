@@ -42,21 +42,14 @@ import { TabViewChangeEvent, TabViewCloseEvent } from './tabview.interface';
     standalone: true,
     imports: [CommonModule, SharedModule],
     template: `
-        <div
-            *ngIf="!closed"
-            class="p-tabview-panel"
-            role="tabpanel"
-            [hidden]="!selected"
-            [attr.id]="tabView.getTabContentId(id)"
-            [attr.aria-hidden]="!selected"
-            [attr.aria-labelledby]="tabView.getTabHeaderActionId(id)"
-            [attr.data-pc-name]="'tabpanel'"
-        >
-            <ng-content></ng-content>
-            <ng-container *ngIf="(contentTemplate || _contentTemplate) && (cache ? loaded : selected)">
-                <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate"></ng-container>
-            </ng-container>
-        </div>
+        @if (!closed) {
+            <div class="p-tabview-panel" role="tabpanel" [hidden]="!selected" [attr.id]="tabView.getTabContentId(id)" [attr.aria-hidden]="!selected" [attr.aria-labelledby]="tabView.getTabHeaderActionId(id)" [attr.data-pc-name]="'tabpanel'">
+                <ng-content></ng-content>
+                @if ((contentTemplate || _contentTemplate) && (cache ? loaded : selected)) {
+                    <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate"></ng-container>
+                }
+            </div>
+        }
     `,
 
     providers: [TabsStyle]
@@ -271,19 +264,14 @@ export class TabPanel extends BaseComponent implements AfterContentInit, OnDestr
     imports: [CommonModule, SharedModule, TooltipModule, Ripple, TimesIcon, ChevronLeftIcon, ChevronRightIcon],
     template: `
         <div #elementToObserve class="p-tablist">
-            <button
-                *ngIf="scrollable && !backwardIsDisabled && autoHideButtons"
-                #prevBtn
-                class="p-tablist-prev-button p-tablist-nav-button"
-                (click)="navBackward()"
-                [attr.tabindex]="tabindex"
-                [attr.aria-label]="prevButtonAriaLabel"
-                type="button"
-                pRipple
-            >
-                <ChevronLeftIcon *ngIf="!previousIconTemplate && !_previousIconTemplate" [attr.aria-hidden]="true" />
-                <ng-template *ngTemplateOutlet="previousIconTemplate && _previousIconTemplate"></ng-template>
-            </button>
+            @if (scrollable && !backwardIsDisabled && autoHideButtons) {
+                <button #prevBtn class="p-tablist-prev-button p-tablist-nav-button" (click)="navBackward()" [attr.tabindex]="tabindex" [attr.aria-label]="prevButtonAriaLabel" type="button" pRipple>
+                    @if (!previousIconTemplate && !_previousIconTemplate) {
+                        <ChevronLeftIcon [attr.aria-hidden]="true" />
+                    }
+                    <ng-template *ngTemplateOutlet="previousIconTemplate && _previousIconTemplate"></ng-template>
+                </button>
+            }
             <div #content class="p-tablist-content" [ngClass]="{ 'p-tablist-viewport': scrollable }" (scroll)="onScroll($event)" [attr.data-pc-section]="'navcontent'">
                 <div #navbar class="p-tablist-tab-list" role="tablist" [attr.data-pc-section]="'nav'">
                     @for (tab of tabs; track tab; let i = $index) {
@@ -343,13 +331,15 @@ export class TabPanel extends BaseComponent implements AfterContentInit, OnDestr
                     }
                 </div>
             </div>
-            <button *ngIf="scrollable && !forwardIsDisabled && buttonVisible" #nextBtn [attr.tabindex]="tabindex" [attr.aria-label]="nextButtonAriaLabel" class="p-tablist-next-button p-tablist-nav-button" (click)="navForward()" type="button" pRipple>
-                @if (nextIconTemplate || _nextIconTemplate) {
-                    <ng-template *ngTemplateOutlet="nextIconTemplate || _nextIconTemplate"></ng-template>
-                } @else {
-                    <ChevronRightIcon [attr.aria-hidden]="true" />
-                }
-            </button>
+            @if (scrollable && !forwardIsDisabled && buttonVisible) {
+                <button #nextBtn [attr.tabindex]="tabindex" [attr.aria-label]="nextButtonAriaLabel" class="p-tablist-next-button p-tablist-nav-button" (click)="navForward()" type="button" pRipple>
+                    @if (nextIconTemplate || _nextIconTemplate) {
+                        <ng-template *ngTemplateOutlet="nextIconTemplate || _nextIconTemplate"></ng-template>
+                    } @else {
+                        <ChevronRightIcon [attr.aria-hidden]="true" />
+                    }
+                </button>
+            }
         </div>
         <div class="p-tabpanels">
             <ng-content></ng-content>

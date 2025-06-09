@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
     AfterContentInit,
     ChangeDetectionStrategy,
@@ -64,7 +63,7 @@ export interface StepPanelContentTemplateContext {
 @Component({
     selector: 'p-step-list',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     template: ` <ng-content></ng-content>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
@@ -82,7 +81,7 @@ export class StepList extends BaseComponent {
 @Component({
     selector: 'p-stepper-separator',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     template: ` <ng-content></ng-content>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
@@ -102,7 +101,7 @@ export class StepperSeparator extends BaseComponent {
 @Component({
     selector: 'p-step-item',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     template: ` <ng-content></ng-content>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
@@ -149,7 +148,7 @@ export class StepItem extends BaseComponent {
 @Component({
     selector: 'p-step',
     standalone: true,
-    imports: [CommonModule, StepperSeparator, SharedModule],
+    imports: [StepperSeparator, SharedModule],
     template: `
         @if (!content && !_contentTemplate) {
             <button [attr.id]="id()" [class]="cx('header')" [attr.role]="'tab'" [tabindex]="isStepDisabled() ? -1 : undefined" [attr.aria-controls]="ariaControls()" [disabled]="isStepDisabled()" (click)="onStepClick()" type="button">
@@ -252,7 +251,7 @@ export class Step extends BaseComponent implements AfterContentInit {
 @Component({
     selector: 'p-step-panel',
     standalone: true,
-    imports: [CommonModule, StepperSeparator, SharedModule],
+    imports: [StepperSeparator, SharedModule],
     template: `
         @if (isSeparatorVisible()) {
             <p-stepper-separator />
@@ -356,7 +355,7 @@ export class StepPanel extends BaseComponent implements AfterContentInit {
 @Component({
     selector: 'p-step-panels',
     standalone: true,
-    imports: [CommonModule, SharedModule],
+    imports: [SharedModule],
     template: ` <ng-content></ng-content>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
@@ -376,7 +375,7 @@ export class StepPanels extends BaseComponent {
 @Component({
     selector: 'p-stepper',
     standalone: true,
-    imports: [CommonModule, SharedModule],
+    imports: [SharedModule],
     template: ` <ng-content></ng-content>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

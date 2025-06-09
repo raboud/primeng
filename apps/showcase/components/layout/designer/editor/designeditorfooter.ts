@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DesignerService } from '@/service/designerservice';
-import { CommonModule } from '@angular/common';
 
 @Component({
     standalone: true,
     selector: 'design-editor-footer',
-    imports: [CommonModule],
+    imports: [],
     template: `<div class="flex justify-end gap-2">
         <button type="button" (click)="download()" class="btn-design-outlined">Download</button>
         <button type="button" (click)="apply()" class="btn-design">Apply</button>

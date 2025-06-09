@@ -39,18 +39,17 @@ import { MenuItem } from 'primeng/api';
             </span>
             <p-contextMenu [target]="span" [model]="items">
                 <ng-template #item let-item>
-                    <ng-container *ngIf="item.route; else elseBlock">
+                    @if (item.route) {
                         <a [routerLink]="item.route" class="p-contextmenu-item-link">
                             <span [class]="item.icon"></span>
                             <span class="ml-2">{{ item.label }}</span>
                         </a>
-                    </ng-container>
-                    <ng-template #elseBlock>
+                    } @else {
                         <a [href]="item.url" class="p-contextmenu-item-link">
                             <span [class]="item.icon"></span>
                             <span class="ml-2">{{ item.label }}</span>
                         </a>
-                    </ng-template>
+                    }
                 </ng-template>
             </p-contextMenu>
         </div>
@@ -70,18 +69,17 @@ export class RouterDoc implements OnInit {
 </span>
 <p-contextMenu [target]="span" [model]="items">
     <ng-template #item let-item>
-        <ng-container *ngIf="item.route; else elseBlock">
-            <a [routerLink]="item.route" class="p-contextmenu-item-link">
-                <span [class]="item.icon"></span>
-                <span class="ml-2">{{ item.label }}</span>
-            </a>
-        </ng-container>
-        <ng-template #elseBlock>
-            <a [href]="item.url" class="p-contextmenu-item-link">
-                <span [class]="item.icon"></span>
-                <span class="ml-2">{{ item.label }}</span>
-            </a>
-        </ng-template>
+        @if (item.route) {
+        <a [routerLink]="item.route" class="p-contextmenu-item-link">
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+        </a>
+        } @else {
+        <a [href]="item.url" class="p-contextmenu-item-link">
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+        </a>
+        }
     </ng-template>
 </p-contextMenu>`,
 
@@ -155,18 +153,17 @@ export class RouterDoc implements OnInit {
     </span>
     <p-contextMenu [target]="span" [model]="items">
         <ng-template #item let-item>
-            <ng-container *ngIf="item.route; else elseBlock">
-                <a [routerLink]="item.route" class="p-contextmenu-item-link">
-                    <span [class]="item.icon"></span>
-                    <span class="ml-2">{{ item.label }}</span>
-                </a>
-            </ng-container>
-            <ng-template #elseBlock>
-                <a [href]="item.url" class="p-contextmenu-item-link">
-                    <span [class]="item.icon"></span>
-                    <span class="ml-2">{{ item.label }}</span>
-                </a>
-            </ng-template>
+            @if (item.route) {
+            <a [routerLink]="item.route" class="p-contextmenu-item-link">
+                <span [class]="item.icon"></span>
+                <span class="ml-2">{{ item.label }}</span>
+            </a>
+            } @else {
+            <a [href]="item.url" class="p-contextmenu-item-link">
+                <span [class]="item.icon"></span>
+                <span class="ml-2">{{ item.label }}</span>
+            </a>
+            }
         </ng-template>
     </p-contextMenu>
 </div>`,

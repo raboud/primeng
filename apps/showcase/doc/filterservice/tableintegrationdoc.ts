@@ -15,17 +15,23 @@ import { FilterMatchMode, FilterService, SelectItem } from 'primeng/api';
             <p-table #dt [columns]="cols" [value]="cars" [paginator]="true" [rows]="10" responsiveLayout="scroll">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
-                        <th *ngFor="let col of columns">&#123;&#123;col.header&#125;&#125;</th>
+                        @for (col of columns; track col) {
+                            <th>&#123;&#123;col.header&#125;&#125;</th>
+                        }
                     </tr>
                     <tr>
-                        <th *ngFor="let col of columns">
-                            <p-columnFilter type="text" [field]="col.field" [matchModeOptions]="matchModeOptions" [matchMode]="'custom-equals'" />
-                        </th>
+                        @for (col of columns; track col) {
+                            <th>
+                                <p-columnFilter type="text" [field]="col.field" [matchModeOptions]="matchModeOptions" [matchMode]="'custom-equals'" />
+                            </th>
+                        }
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData let-columns="columns">
                     <tr [pSelectableRow]="rowData">
-                        <td *ngFor="let col of columns">&#123;&#123;rowData[col.field]&#125;&#125;</td>
+                        @for (col of columns; track col) {
+                            <td>&#123;&#123;rowData[col.field]&#125;&#125;</td>
+                        }
                     </tr>
                 </ng-template>
             </p-table>
@@ -81,25 +87,23 @@ export class TableIntegrationDoc implements OnInit {
         basic: `<p-table #dt [columns]="cols" [value]="cars" [paginator]="true" [rows]="10" responsiveLayout="scroll">
     <ng-template pTemplate="header" let-columns>
         <tr>
-            <th *ngFor="let col of columns">
-                &#123;&#123;col.header&#125;&#125;
-            </th>
+            @for (col of columns; track col) {
+                <th>&#123;&#123;col.header&#125;&#125;</th>
+            }
         </tr>
         <tr>
-            <th *ngFor="let col of columns">
-                <p-columnFilter
-                    type="text"
-                    [field]="col.field"
-                    [matchModeOptions]="matchModeOptions"
-                    [matchMode]="'custom-equals'" />
-            </th>
+            @for (col of columns; track col) {
+                <th>
+                    <p-columnFilter type="text" [field]="col.field" [matchModeOptions]="matchModeOptions" [matchMode]="'custom-equals'" />
+                </th>
+            }
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
         <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns">
-                &#123;&#123;rowData[col.field]&#125;&#125;
-            </td>
+            @for (col of columns; track col) {
+                <td>&#123;&#123;rowData[col.field]&#125;&#125;</td>
+            }
         </tr>
     </ng-template>
 </p-table>`,
@@ -107,21 +111,23 @@ export class TableIntegrationDoc implements OnInit {
     <p-table #dt [columns]="cols" [value]="cars" [paginator]="true" [rows]="10" responsiveLayout="scroll">
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th *ngFor="let col of columns">&#123;&#123;col.header&#125;&#125;</th>
+                @for (col of columns; track col) {
+                    <th>&#123;&#123;col.header&#125;&#125;</th>
+                }
             </tr>
             <tr>
-                <th *ngFor="let col of columns">
-                    <p-columnFilter
-                        type="text"
-                        [field]="col.field"
-                        [matchModeOptions]="matchModeOptions"
-                        [matchMode]="'custom-equals'" />
-                </th>
+                @for (col of columns; track col) {
+                    <th>
+                       <p-columnFilter type="text" [field]="col.field" [matchModeOptions]="matchModeOptions" [matchMode]="'custom-equals'" />
+                    </th>
+                }
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr [pSelectableRow]="rowData">
-                <td *ngFor="let col of columns">&#123;&#123;rowData[col.field]&#125;&#125;</td>
+                @for (col of columns; track col) {
+                    <td>&#123;&#123;rowData[col.field]&#125;&#125;</td>
+                }
             </tr>
         </ng-template>
     </p-table>

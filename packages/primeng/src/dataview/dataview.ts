@@ -37,41 +37,50 @@ import { DataViewStyle } from './style/dataviewstyle';
     standalone: true,
     imports: [CommonModule, PaginatorModule, SpinnerIcon, SharedModule],
     template: `
-        <div [class]="cx('loading')" *ngIf="loading">
-            <div [class]="cx('loadingOverlay')">
-                <i *ngIf="loadingIcon" [class]="cn(cx('loadingIcon'), 'pi-spin' + loadingIcon)"></i>
-                <ng-container *ngIf="!loadingIcon">
-                    <SpinnerIcon *ngIf="!loadingicon" [spin]="true" [styleClass]="cx('loadingIcon')" />
-                    <ng-template *ngTemplateOutlet="loadingicon"></ng-template>
-                </ng-container>
+        @if (loading) {
+            <div [class]="cx('loading')">
+                <div [class]="cx('loadingOverlay')">
+                    @if (loadingIcon) {
+                        <i [class]="cn(cx('loadingIcon'), 'pi-spin' + loadingIcon)"></i>
+                    }
+                    @if (!loadingIcon) {
+                        @if (!loadingicon) {
+                            <SpinnerIcon [spin]="true" [styleClass]="cx('loadingIcon')" />
+                        }
+                        <ng-template *ngTemplateOutlet="loadingicon"></ng-template>
+                    }
+                </div>
             </div>
-        </div>
-        <div [class]="cx('header')" *ngIf="header || headerTemplate">
-            <ng-content select="p-header"></ng-content>
-            <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
-        </div>
-        <p-paginator
-            [rows]="rows"
-            [first]="first"
-            [totalRecords]="totalRecords"
-            [pageLinkSize]="pageLinks"
-            [alwaysShow]="alwaysShowPaginator"
-            (onPageChange)="paginate($event)"
-            [styleClass]="cx('pcPaginator', { position: 'top' })"
-            [rowsPerPageOptions]="rowsPerPageOptions"
-            *ngIf="paginator && (paginatorPosition === 'top' || paginatorPosition == 'both')"
-            [dropdownAppendTo]="paginatorDropdownAppendTo"
-            [dropdownScrollHeight]="paginatorDropdownScrollHeight"
-            [templateLeft]="paginatorleft"
-            [templateRight]="paginatorright"
-            [currentPageReportTemplate]="currentPageReportTemplate"
-            [showFirstLastIcon]="showFirstLastIcon"
-            [dropdownItemTemplate]="paginatordropdownitem"
-            [showCurrentPageReport]="showCurrentPageReport"
-            [showJumpToPageDropdown]="showJumpToPageDropdown"
-            [showPageLinks]="showPageLinks"
-            [styleClass]="paginatorStyleClass"
-        ></p-paginator>
+        }
+        @if (header || headerTemplate) {
+            <div [class]="cx('header')">
+                <ng-content select="p-header"></ng-content>
+                <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+            </div>
+        }
+        @if (paginator && (paginatorPosition === 'top' || paginatorPosition == 'both')) {
+            <p-paginator
+                [rows]="rows"
+                [first]="first"
+                [totalRecords]="totalRecords"
+                [pageLinkSize]="pageLinks"
+                [alwaysShow]="alwaysShowPaginator"
+                (onPageChange)="paginate($event)"
+                [styleClass]="cx('pcPaginator', { position: 'top' })"
+                [rowsPerPageOptions]="rowsPerPageOptions"
+                [dropdownAppendTo]="paginatorDropdownAppendTo"
+                [dropdownScrollHeight]="paginatorDropdownScrollHeight"
+                [templateLeft]="paginatorleft"
+                [templateRight]="paginatorright"
+                [currentPageReportTemplate]="currentPageReportTemplate"
+                [showFirstLastIcon]="showFirstLastIcon"
+                [dropdownItemTemplate]="paginatordropdownitem"
+                [showCurrentPageReport]="showCurrentPageReport"
+                [showJumpToPageDropdown]="showJumpToPageDropdown"
+                [showPageLinks]="showPageLinks"
+                [styleClass]="paginatorStyleClass"
+            ></p-paginator>
+        }
 
         <div [class]="cx('content')">
             @if (layout === 'list') {
@@ -94,41 +103,48 @@ import { DataViewStyle } from './style/dataviewstyle';
                     "
                 ></ng-container>
             }
-            <div *ngIf="isEmpty() && !loading">
-                <div [class]="cx('emptyMessage')">
-                    <ng-container *ngIf="!emptymessageTemplate; else empty">
-                        {{ emptyMessageLabel }}
-                    </ng-container>
-                    <ng-container #empty *ngTemplateOutlet="emptymessageTemplate"></ng-container>
+            @if (isEmpty() && !loading) {
+                <div>
+                    <div [class]="cx('emptyMessage')">
+                        @if (!emptymessageTemplate) {
+                            {{ emptyMessageLabel }}
+                        } @else {
+                            <ng-template [ngTemplateOutlet]="empty"></ng-template>
+                        }
+                        <ng-container #empty *ngTemplateOutlet="emptymessageTemplate"></ng-container>
+                    </div>
                 </div>
+            }
+        </div>
+        @if (paginator && (paginatorPosition === 'bottom' || paginatorPosition == 'both')) {
+            <p-paginator
+                [rows]="rows"
+                [first]="first"
+                [totalRecords]="totalRecords"
+                [pageLinkSize]="pageLinks"
+                [alwaysShow]="alwaysShowPaginator"
+                (onPageChange)="paginate($event)"
+                [styleClass]="cx('pcPaginator', { position: 'bottom' })"
+                [rowsPerPageOptions]="rowsPerPageOptions"
+                [dropdownAppendTo]="paginatorDropdownAppendTo"
+                [dropdownScrollHeight]="paginatorDropdownScrollHeight"
+                [templateLeft]="paginatorleft"
+                [templateRight]="paginatorright"
+                [currentPageReportTemplate]="currentPageReportTemplate"
+                [showFirstLastIcon]="showFirstLastIcon"
+                [dropdownItemTemplate]="paginatordropdownitem"
+                [showCurrentPageReport]="showCurrentPageReport"
+                [showJumpToPageDropdown]="showJumpToPageDropdown"
+                [showPageLinks]="showPageLinks"
+                [styleClass]="paginatorStyleClass"
+            ></p-paginator>
+        }
+        @if (footer || footerTemplate) {
+            <div [class]="cx('footer')">
+                <ng-content select="p-footer"></ng-content>
+                <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
             </div>
-        </div>
-        <p-paginator
-            [rows]="rows"
-            [first]="first"
-            [totalRecords]="totalRecords"
-            [pageLinkSize]="pageLinks"
-            [alwaysShow]="alwaysShowPaginator"
-            (onPageChange)="paginate($event)"
-            [styleClass]="cx('pcPaginator', { position: 'bottom' })"
-            [rowsPerPageOptions]="rowsPerPageOptions"
-            *ngIf="paginator && (paginatorPosition === 'bottom' || paginatorPosition == 'both')"
-            [dropdownAppendTo]="paginatorDropdownAppendTo"
-            [dropdownScrollHeight]="paginatorDropdownScrollHeight"
-            [templateLeft]="paginatorleft"
-            [templateRight]="paginatorright"
-            [currentPageReportTemplate]="currentPageReportTemplate"
-            [showFirstLastIcon]="showFirstLastIcon"
-            [dropdownItemTemplate]="paginatordropdownitem"
-            [showCurrentPageReport]="showCurrentPageReport"
-            [showJumpToPageDropdown]="showJumpToPageDropdown"
-            [showPageLinks]="showPageLinks"
-            [styleClass]="paginatorStyleClass"
-        ></p-paginator>
-        <div [class]="cx('footer')" *ngIf="footer || footerTemplate">
-            <ng-content select="p-footer"></ng-content>
-            <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
-        </div>
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

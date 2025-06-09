@@ -13,13 +13,19 @@ import { ProgressBarStyle } from './style/progressbarstyle';
     standalone: true,
     imports: [CommonModule, SharedModule],
     template: `
-        <div *ngIf="mode === 'determinate'" [class]="cn(cx('value'), valueStyleClass)" [style.width]="value + '%'" style="display:flex" [style.background]="color" [attr.data-pc-section]="'value'">
-            <div [class]="cx('label')">
-                <div *ngIf="showValue && !contentTemplate && !_contentTemplate" [style.display]="value != null && value !== 0 ? 'flex' : 'none'" [attr.data-pc-section]="'label'">{{ value }}{{ unit }}</div>
-                <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { $implicit: value }"></ng-container>
+        @if (mode === 'determinate') {
+            <div [class]="cn(cx('value'), valueStyleClass)" [style.width]="value + '%'" style="display:flex" [style.background]="color" [attr.data-pc-section]="'value'">
+                <div [class]="cx('label')">
+                    @if (showValue && !contentTemplate && !_contentTemplate) {
+                        <div [style.display]="value != null && value !== 0 ? 'flex' : 'none'" [attr.data-pc-section]="'label'">{{ value }}{{ unit }}</div>
+                    }
+                    <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { $implicit: value }"></ng-container>
+                </div>
             </div>
-        </div>
-        <div *ngIf="mode === 'indeterminate'" [class]="cn(cx('value'), valueStyleClass)" [style.background]="color" [attr.data-pc-section]="'value'"></div>
+        }
+        @if (mode === 'indeterminate') {
+            <div [class]="cn(cx('value'), valueStyleClass)" [style.background]="color" [attr.data-pc-section]="'value'"></div>
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

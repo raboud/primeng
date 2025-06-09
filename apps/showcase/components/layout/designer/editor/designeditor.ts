@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { TabsModule } from 'primeng/tabs';
 import { DesignBorderRadius } from './primitive/designborderradius';
 import { DesignColors } from './primitive/designcolors';
@@ -29,7 +29,6 @@ import { Subscription } from 'rxjs';
     selector: 'design-editor',
     standalone: true,
     imports: [
-        CommonModule,
         TabsModule,
         FormsModule,
         ButtonModule,
@@ -112,9 +111,11 @@ import { Subscription } from 'rxjs';
             </p-tabpanel>
 
             <p-tabpanel [value]="2">
-                <form *ngIf="isComponentRoute()" (keydown)="onKeyDown($event)">
-                    <design-component />
-                </form>
+                @if (isComponentRoute()) {
+                    <form (keydown)="onKeyDown($event)">
+                        <design-component />
+                    </form>
+                }
             </p-tabpanel>
 
             <p-tabpanel [value]="3">

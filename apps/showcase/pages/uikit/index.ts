@@ -1,5 +1,5 @@
 import { AppConfigService } from '@/service/appconfigservice';
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
     standalone: true,
-    imports: [CommonModule, RippleModule, RouterModule],
+    imports: [RippleModule, RouterModule],
     template: `
         <div>
             <div style="border-radius: 50px; max-height: 500px" class="overflow-hidden mb-8 flex items-center">

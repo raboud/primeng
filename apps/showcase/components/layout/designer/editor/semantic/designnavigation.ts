@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { DesignTokenField } from '@/components/layout/designer/editor/designtokenfield';
 import { FieldsetModule } from 'primeng/fieldset';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ import { DesignerService } from '@/service/designerservice';
 @Component({
     selector: 'design-navigation',
     standalone: true,
-    imports: [CommonModule, DesignTokenField, FormsModule, FieldsetModule],
+    imports: [DesignTokenField, FormsModule, FieldsetModule],
     template: ` <p-fieldset legend="Navigation" [toggleable]="true">
         <div class="text-sm mb-1 font-semibold text-surface-950 dark:text-surface-0">List</div>
         <section class="grid grid-cols-4 mb-3 gap-2">

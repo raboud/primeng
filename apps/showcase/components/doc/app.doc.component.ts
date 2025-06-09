@@ -14,9 +14,11 @@ import { AppDocService } from './app.doc.service';
                 <li [ngClass]="{ 'doc-tabmenu-active': docService.activeTab() === 0 }">
                     <button type="button" (click)="activateTab(0)">FEATURES</button>
                 </li>
-                <li *ngIf="apiDocs" [ngClass]="{ 'doc-tabmenu-active': docService.activeTab() === 1 }">
-                    <button type="button" (click)="activateTab(1)">API</button>
-                </li>
+                @if (apiDocs) {
+                    <li [ngClass]="{ 'doc-tabmenu-active': docService.activeTab() === 1 }">
+                        <button type="button" (click)="activateTab(1)">API</button>
+                    </li>
+                }
             }
             @if (themeDocs) {
                 <li [ngClass]="{ 'doc-tabmenu-active': docService.activeTab() === 2 }">

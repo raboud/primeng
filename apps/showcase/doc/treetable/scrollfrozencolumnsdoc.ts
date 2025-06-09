@@ -20,21 +20,27 @@ interface Column {
                 <p-treetable [value]="files" [columns]="scrollableCols" [frozenColumns]="frozenCols" [scrollable]="true" scrollHeight="250px" frozenWidth="200px" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
                     <ng-template #colgroup let-columns>
                         <colgroup>
-                            <col *ngFor="let col of columns" style="width:250px" />
+                            @for (col of columns; track col) {
+                                <col style="width:250px" />
+                            }
                         </colgroup>
                     </ng-template>
                     <ng-template #header let-columns>
                         <tr>
-                            <th *ngFor="let col of columns">
-                                {{ col.header }}
-                            </th>
+                            @for (col of columns; track col) {
+                                <th>
+                                    {{ col.header }}
+                                </th>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #body let-rowData="rowData" let-columns="columns">
                         <tr [ttRow]="rowNode" style="height: 57px">
-                            <td *ngFor="let col of columns; let i = index">
-                                {{ rowData[col.field] }}
-                            </td>
+                            @for (col of columns; track col; let i = $index) {
+                                <td>
+                                    {{ rowData[col.field] }}
+                                </td>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #frozenbody let-rowNode let-rowData="rowData">
@@ -87,29 +93,35 @@ export class FrozenColumnsDoc {
         basic: `<p-treetable [value]="files" [columns]="scrollableCols" [frozenColumns]="frozenCols" [scrollable]="true" scrollHeight="250px" frozenWidth="200px" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template #colgroup let-columns>
         <colgroup>
-            <col *ngFor="let col of columns" style="width:250px" />
+        @for (col of columns; track col) {
+            <col style="width:250px" />
+        }
         </colgroup>
     </ng-template>
     <ng-template #header let-columns>
         <tr>
-            <th *ngFor="let col of columns">
-                {{ col.header }}
+        @for (col of columns; track col) {
+            <th>
+            {{ col.header }}
             </th>
+        }
         </tr>
     </ng-template>
     <ng-template #body let-rowData="rowData" let-columns="columns">
         <tr [ttRow]="rowNode" style="height: 57px">
-            <td *ngFor="let col of columns; let i = index">
-                {{ rowData[col.field] }}
+        @for (col of columns; track col; let i = $index) {
+            <td>
+            {{ rowData[col.field] }}
             </td>
+        }
         </tr>
     </ng-template>
     <ng-template #frozenbody let-rowNode let-rowData="rowData">
         <tr [ttRow]="rowNode" style="height: 57px">
-            <td>
-                <p-treetable-toggler [rowNode]="rowNode" />
-                {{ rowData.name }}
-            </td>
+        <td>
+            <p-treetable-toggler [rowNode]="rowNode" />
+            {{ rowData.name }}
+        </td>
         </tr>
     </ng-template>
 </p-treetable>`,
@@ -118,29 +130,35 @@ export class FrozenColumnsDoc {
     <p-treetable [value]="files" [columns]="scrollableCols" [frozenColumns]="frozenCols" [scrollable]="true" scrollHeight="250px" frozenWidth="200px" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template #colgroup let-columns>
             <colgroup>
-                <col *ngFor="let col of columns" style="width:250px" />
+                @for (col of columns; track col) {
+                    <col style="width:250px" />
+                }
             </colgroup>
         </ng-template>
         <ng-template #header let-columns>
             <tr>
-                <th *ngFor="let col of columns">
-                    {{ col.header }}
-                </th>
-            </tr>
+                @for (col of columns; track col) {
+                    <th>
+                        {{ col.header }}
+                    </th>
+                }
+                </tr>
         </ng-template>
         <ng-template #body let-rowData="rowData" let-columns="columns">
             <tr [ttRow]="rowNode" style="height: 57px">
-                <td *ngFor="let col of columns; let i = index">
-                    {{ rowData[col.field] }}
+            @for (col of columns; track col; let i = $index) {
+                <td>
+                {{ rowData[col.field] }}
                 </td>
+            }
             </tr>
         </ng-template>
         <ng-template #frozenbody let-rowNode let-rowData="rowData">
             <tr [ttRow]="rowNode" style="height: 57px">
-                <td>
-                    <p-treetable-toggler [rowNode]="rowNode" />
-                    {{ rowData.name }}
-                </td>
+            <td>
+                <p-treetable-toggler [rowNode]="rowNode" />
+                {{ rowData.name }}
+            </td>
             </tr>
         </ng-template>
     </p-treetable>

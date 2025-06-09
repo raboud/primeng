@@ -42,7 +42,7 @@ import { SpeedDialStyle } from './style/speeddialstyle';
     imports: [CommonModule, ButtonModule, Ripple, TooltipModule, RouterModule, PlusIcon, SharedModule],
     template: `
         <div #container [class]="cn(cx('root'), className)" [style]="style" [ngStyle]="sx('root')" [attr.data-pc-name]="'speeddial'" [attr.data-pc-section]="'root'">
-            <ng-container *ngIf="!buttonTemplate && !_buttonTemplate">
+            @if (!buttonTemplate && !_buttonTemplate) {
                 <button
                     type="button"
                     pButton
@@ -61,13 +61,15 @@ import { SpeedDialStyle } from './style/speeddialstyle';
                     [attr.data-pc-name]="'button'"
                     [buttonProps]="buttonProps"
                 >
-                    <PlusIcon pButtonIcon *ngIf="!buttonIconClass && !iconTemplate && !_iconTemplate" />
+                    @if (!buttonIconClass && !iconTemplate && !_iconTemplate) {
+                        <PlusIcon pButtonIcon />
+                    }
                     <ng-container *ngTemplateOutlet="iconTemplate || _iconTemplate"></ng-container>
                 </button>
-            </ng-container>
-            <ng-container *ngIf="buttonTemplate || _buttonTemplate">
+            }
+            @if (buttonTemplate || _buttonTemplate) {
                 <ng-container *ngTemplateOutlet="buttonTemplate || _buttonTemplate; context: { toggleCallback: onButtonClick.bind(this) }"></ng-container>
-            </ng-container>
+            }
             <ul
                 #list
                 [class]="cx('list')"
@@ -81,43 +83,46 @@ import { SpeedDialStyle } from './style/speeddialstyle';
                 [attr.data-pc-section]="'menu'"
                 [ngStyle]="sx('list')"
             >
-                <li
-                    *ngFor="let item of model; let i = index"
-                    [ngStyle]="getItemStyle(i)"
-                    [class]="cx('item', { item, i })"
-                    pTooltip
-                    [tooltipOptions]="item.tooltipOptions || getTooltipOptions(item)"
-                    [id]="id + '_' + i"
-                    [attr.aria-controls]="id + '_item'"
-                    role="menuitem"
-                    [attr.data-pc-section]="'menuitem'"
-                >
-                    <ng-container *ngIf="itemTemplate || _itemTemplate">
-                        <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item, index: i, toggleCallback: onItemClick.bind(this) }"></ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="!itemTemplate && !_itemTemplate">
-                        <button
-                            type="button"
-                            pButton
-                            pRipple
-                            [class]="cx('pcAction')"
-                            severity="secondary"
-                            [rounded]="true"
-                            size="small"
-                            role="menuitem"
-                            [icon]="item.icon"
-                            (click)="onItemClick($event, item)"
-                            [disabled]="item?.disabled"
-                            (keydown.enter)="onItemClick($event, item)"
-                            [attr.data-pc-section]="'action'"
-                            [attr.aria-label]="item.label"
-                            [attr.tabindex]="item.disabled || !visible ? null : item.tabindex ? item.tabindex : '0'"
-                        ></button>
-                    </ng-container>
-                </li>
+                @for (item of model; track item; let i = $index) {
+                    <li
+                        [ngStyle]="getItemStyle(i)"
+                        [class]="cx('item', { item, i })"
+                        pTooltip
+                        [tooltipOptions]="item.tooltipOptions || getTooltipOptions(item)"
+                        [id]="id + '_' + i"
+                        [attr.aria-controls]="id + '_item'"
+                        role="menuitem"
+                        [attr.data-pc-section]="'menuitem'"
+                    >
+                        @if (itemTemplate || _itemTemplate) {
+                            <ng-container *ngTemplateOutlet="itemTemplate || _itemTemplate; context: { $implicit: item, index: i, toggleCallback: onItemClick.bind(this) }"></ng-container>
+                        }
+                        @if (!itemTemplate && !_itemTemplate) {
+                            <button
+                                type="button"
+                                pButton
+                                pRipple
+                                [class]="cx('pcAction')"
+                                severity="secondary"
+                                [rounded]="true"
+                                size="small"
+                                role="menuitem"
+                                [icon]="item.icon"
+                                (click)="onItemClick($event, item)"
+                                [disabled]="item?.disabled"
+                                (keydown.enter)="onItemClick($event, item)"
+                                [attr.data-pc-section]="'action'"
+                                [attr.aria-label]="item.label"
+                                [attr.tabindex]="item.disabled || !visible ? null : item.tabindex ? item.tabindex : '0'"
+                            ></button>
+                        }
+                    </li>
+                }
             </ul>
         </div>
-        <div *ngIf="mask && visible" [class]="cn(cx('mask'), maskClassName)" [ngStyle]="maskStyle"></div>
+        @if (mask && visible) {
+            <div [class]="cn(cx('mask'), maskClassName)" [ngStyle]="maskStyle"></div>
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

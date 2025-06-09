@@ -4,12 +4,12 @@ import { DataTableDoc } from '@/doc/popover/datatabledoc';
 import { ImportDoc } from '@/doc/popover/importdoc';
 import { PopoverDocModule } from '@/doc/popover/popoverdoc.module';
 import { SelectDataDoc } from '@/doc/popover/selectdatadoc';
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 
 @Component({
     template: `<app-doc docTitle="Angular Popover Component" header="Popover" description="Popover is a container component that can overlay other components on page." [docs]="docs" [apiDocs]="['Popover']" themeDocs="popover"></app-doc>`,
-    imports: [CommonModule, PopoverDocModule],
+    imports: [PopoverDocModule],
     standalone: true
 })
 export class PopoverDemo {

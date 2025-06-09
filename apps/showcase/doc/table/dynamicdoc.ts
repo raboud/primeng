@@ -12,23 +12,27 @@ interface Column {
     selector: 'dynamic-doc',
     standalone: false,
     template: ` <app-docsectiontext>
-            <p>Columns can be defined dynamically using the <i>*ngFor</i> directive.</p>
+            <p>Columns can be defined dynamically using the <i>&#64;for</i> directive.</p>
         </app-docsectiontext>
         <p-deferred-demo (load)="loadDemoData()">
             <div class="card">
                 <p-table [columns]="cols" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
                     <ng-template #header let-columns>
                         <tr>
-                            <th *ngFor="let col of columns">
-                                {{ col.header }}
-                            </th>
+                            @for (col of columns; track col) {
+                                <th>
+                                    {{ col.header }}
+                                </th>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #body let-rowData let-columns="columns">
                         <tr>
-                            <td *ngFor="let col of columns">
-                                {{ rowData[col.field] }}
-                            </td>
+                            @for (col of columns; track col) {
+                                <td>
+                                    {{ rowData[col.field] }}
+                                </td>
+                            }
                         </tr>
                     </ng-template>
                 </p-table>
@@ -65,35 +69,43 @@ export class DynamicDoc {
         basic: `<p-table [columns]="cols" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template #header let-columns>
         <tr>
-            <th *ngFor="let col of columns">
+            @for (col of columns; track col) {
+            <th>
                 {{ col.header }}
             </th>
+            }
         </tr>
     </ng-template>
     <ng-template #body let-rowData let-columns="columns">
         <tr>
-            <td *ngFor="let col of columns">
+            @for (col of columns; track col) {
+            <td>
                 {{ rowData[col.field] }}
             </td>
+            }
         </tr>
     </ng-template>
 </p-table>`,
         html: `<div class="card">
     <p-table [columns]="cols" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template #header let-columns>
-            <tr>
-                <th *ngFor="let col of columns">
-                    {{ col.header }}
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-rowData let-columns="columns">
-            <tr>
-                <td *ngFor="let col of columns">
-                    {{ rowData[col.field] }}
-                </td>
-            </tr>
-        </ng-template>
+                  <ng-template #header let-columns>
+                    <tr>
+                      @for (col of columns; track col) {
+                        <th>
+                          {{ col.header }}
+                        </th>
+                      }
+                    </tr>
+                  </ng-template>
+                  <ng-template #body let-rowData let-columns="columns">
+                    <tr>
+                      @for (col of columns; track col) {
+                        <td>
+                          {{ rowData[col.field] }}
+                        </td>
+                      }
+                    </tr>
+                  </ng-template>
     </p-table>
 </div>`,
         typescript: `import { Component } from '@angular/core';

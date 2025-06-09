@@ -16,28 +16,31 @@ import { ChipStyle } from './style/chipstyle';
     imports: [CommonModule, TimesCircleIcon, SharedModule],
     template: `
         <ng-content></ng-content>
-        <img [class]="cx('image')" [src]="image" *ngIf="image; else iconTemplate" (error)="imageError($event)" [alt]="alt" />
-        <ng-template #iconTemplate><span *ngIf="icon" [class]="icon" [ngClass]="cx('icon')" [attr.data-pc-section]="'icon'"></span></ng-template>
-        <div [class]="cx('label')" *ngIf="label" [attr.data-pc-section]="'label'">{{ label }}</div>
-        <ng-container *ngIf="removable">
-            <ng-container *ngIf="!removeIconTemplate && !_removeIconTemplate">
-                <span
-                    tabindex="0"
-                    *ngIf="removeIcon"
-                    [class]="removeIcon"
-                    [ngClass]="cx('removeIcon')"
-                    [attr.data-pc-section]="'removeicon'"
-                    (click)="close($event)"
-                    (keydown)="onKeydown($event)"
-                    [attr.aria-label]="removeAriaLabel"
-                    role="button"
-                ></span>
-                <TimesCircleIcon tabindex="0" *ngIf="!removeIcon" [class]="cx('removeIcon')" [attr.data-pc-section]="'removeicon'" (click)="close($event)" (keydown)="onKeydown($event)" [attr.aria-label]="removeAriaLabel" role="button" />
-            </ng-container>
-            <span *ngIf="removeIconTemplate || _removeIconTemplate" tabindex="0" [attr.data-pc-section]="'removeicon'" [class]="cx('removeIcon')" (click)="close($event)" (keydown)="onKeydown($event)" [attr.aria-label]="removeAriaLabel" role="button">
-                <ng-template *ngTemplateOutlet="removeIconTemplate || _removeIconTemplate"></ng-template>
-            </span>
-        </ng-container>
+        @if (image) {
+            <img [class]="cx('image')" [src]="image" (error)="imageError($event)" [alt]="alt" />
+        } @else {
+            @if (icon) {
+                <span [class]="icon" [ngClass]="cx('icon')" [attr.data-pc-section]="'icon'"></span>
+            }
+        }
+        @if (label) {
+            <div [class]="cx('label')" [attr.data-pc-section]="'label'">{{ label }}</div>
+        }
+        @if (removable) {
+            @if (!removeIconTemplate && !_removeIconTemplate) {
+                @if (removeIcon) {
+                    <span tabindex="0" [class]="removeIcon" [ngClass]="cx('removeIcon')" [attr.data-pc-section]="'removeicon'" (click)="close($event)" (keydown)="onKeydown($event)" [attr.aria-label]="removeAriaLabel" role="button"></span>
+                }
+                @if (!removeIcon) {
+                    <TimesCircleIcon tabindex="0" [class]="cx('removeIcon')" [attr.data-pc-section]="'removeicon'" (click)="close($event)" (keydown)="onKeydown($event)" [attr.aria-label]="removeAriaLabel" role="button" />
+                }
+            }
+            @if (removeIconTemplate || _removeIconTemplate) {
+                <span tabindex="0" [attr.data-pc-section]="'removeicon'" [class]="cx('removeIcon')" (click)="close($event)" (keydown)="onKeydown($event)" [attr.aria-label]="removeAriaLabel" role="button">
+                    <ng-template *ngTemplateOutlet="removeIconTemplate || _removeIconTemplate"></ng-template>
+                </span>
+            }
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

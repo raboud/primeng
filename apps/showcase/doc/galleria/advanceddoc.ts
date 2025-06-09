@@ -37,11 +37,13 @@ import { Galleria } from 'primeng/galleria';
                 <ng-template #footer let-item>
                     <div class="custom-galleria-footer">
                         <button type="button" pButton icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
-                        <span *ngIf="images" class="title-container">
-                            <span>{{ activeIndex + 1 }}/{{ images.length }}</span>
-                            <span class="title">{{ images[activeIndex].title }}</span>
-                            <span>{{ images[activeIndex].alt }}</span>
-                        </span>
+                        @if (images) {
+                            <span class="title-container">
+                                <span>{{ activeIndex + 1 }}/{{ images.length }}</span>
+                                <span class="title">{{ images[activeIndex].title }}</span>
+                                <span>{{ images[activeIndex].alt }}</span>
+                            </span>
+                        }
                         <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()" class="fullscreen-button"></button>
                     </div>
                 </ng-template>
@@ -183,11 +185,13 @@ export class AdvancedDoc implements OnInit, OnDestroy {
     <ng-template #footer let-item>
         <div class="custom-galleria-footer">
             <button type="button" pButton icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
-            <span *ngIf="images" class="title-container">
-                <span>{{ activeIndex + 1 }}/{{ images.length }}</span>
-                <span class="title">{{ images[activeIndex].title }}</span>
-                <span>{{ images[activeIndex].alt }}</span>
-            </span>
+                @if (images) {
+                  <span class="title-container">
+                    <span>{{ activeIndex + 1 }}/{{ images.length }}</span>
+                    <span class="title">{{ images[activeIndex].title }}</span>
+                    <span>{{ images[activeIndex].alt }}</span>
+                  </span>
+                }
             <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()" class="fullscreen-button"></button>
         </div>
     </ng-template>
@@ -205,11 +209,13 @@ export class AdvancedDoc implements OnInit, OnDestroy {
         <ng-template #footer let-item>
             <div class="custom-galleria-footer">
                 <button type="button" pButton icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
-                <span *ngIf="images" class="title-container">
+                @if (images) {
+                  <span class="title-container">
                     <span>{{ activeIndex + 1 }}/{{ images.length }}</span>
                     <span class="title">{{ images[activeIndex].title }}</span>
                     <span>{{ images[activeIndex].alt }}</span>
-                </span>
+                  </span>
+                }
                 <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()" class="fullscreen-button"></button>
             </div>
         </ng-template>

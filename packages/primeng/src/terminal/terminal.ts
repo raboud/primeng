@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, Input, NgModule, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { find } from '@primeuix/utils';
@@ -15,15 +14,19 @@ import { TerminalService } from './terminalservice';
 @Component({
     selector: 'p-terminal',
     standalone: true,
-    imports: [CommonModule, FormsModule, SharedModule],
+    imports: [FormsModule, SharedModule],
     template: `
-        <div [class]="cx('welcomeMessage')" *ngIf="welcomeMessage">{{ welcomeMessage }}</div>
+        @if (welcomeMessage) {
+            <div [class]="cx('welcomeMessage')">{{ welcomeMessage }}</div>
+        }
         <div [class]="cx('commandList')">
-            <div [class]="cx('command')" *ngFor="let command of commands">
-                <span [class]="cx('promptLabel')">{{ prompt }}</span>
-                <span [class]="cx('commandValue')">{{ command.text }}</span>
-                <div [class]="cx('commandResponse')" [attr.aria-live]="'polite'">{{ command.response }}</div>
-            </div>
+            @for (command of commands; track command) {
+                <div [class]="cx('command')">
+                    <span [class]="cx('promptLabel')">{{ prompt }}</span>
+                    <span [class]="cx('commandValue')">{{ command.text }}</span>
+                    <div [class]="cx('commandResponse')" [attr.aria-live]="'polite'">{{ command.response }}</div>
+                </div>
+            }
         </div>
         <div [class]="cx('prompt')">
             <span [class]="cx('promptLabel')">{{ prompt }}</span>

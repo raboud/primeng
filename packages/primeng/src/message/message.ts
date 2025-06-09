@@ -38,13 +38,17 @@ import { MessageStyle } from './style/messagestyle';
                         <i [class]="cn(cx('icon'), icon)"></i>
                     }
 
-                    <div *ngIf="!escape; else escapeOut">
-                        <span *ngIf="!escape" [ngClass]="cx('text')" [innerHTML]="text"></span>
-                    </div>
-
-                    <ng-template #escapeOut>
-                        <span *ngIf="escape && text" [ngClass]="cx('text')">{{ text }}</span>
-                    </ng-template>
+                    @if (!escape) {
+                        <div>
+                            @if (!escape) {
+                                <span [ngClass]="cx('text')" [innerHTML]="text"></span>
+                            }
+                        </div>
+                    } @else {
+                        @if (escape && text) {
+                            <span [ngClass]="cx('text')">{{ text }}</span>
+                        }
+                    }
 
                     @if (containerTemplate || _containerTemplate) {
                         <ng-container *ngTemplateOutlet="containerTemplate || containerTemplate; context: { closeCallback: close.bind(this) }"></ng-container>

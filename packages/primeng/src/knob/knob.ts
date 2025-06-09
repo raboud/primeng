@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { booleanAttribute, ChangeDetectionStrategy, Component, EventEmitter, forwardRef, inject, Input, NgModule, numberAttribute, Output, ViewEncapsulation } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { $dt } from '@primeuix/styled';
@@ -19,7 +18,7 @@ export const KNOB_VALUE_ACCESSOR: any = {
 @Component({
     selector: 'p-knob',
     standalone: true,
-    imports: [CommonModule, SharedModule],
+    imports: [SharedModule],
     template: `
         <svg
             viewBox="0 0 100 100"
@@ -42,9 +41,11 @@ export const KNOB_VALUE_ACCESSOR: any = {
         >
             <path [attr.d]="rangePath()" [attr.stroke-width]="strokeWidth" [attr.stroke]="rangeColor" [class]="cx('range')"></path>
             <path [attr.d]="valuePath()" [attr.stroke-width]="strokeWidth" [attr.stroke]="valueColor" [class]="cx('value')"></path>
-            <text *ngIf="showValue" [attr.x]="50" [attr.y]="57" text-anchor="middle" [attr.fill]="textColor" [class]="cx('text')" [attr.name]="name">
-                {{ valueToDisplay() }}
-            </text>
+            @if (showValue) {
+                <text [attr.x]="50" [attr.y]="57" text-anchor="middle" [attr.fill]="textColor" [class]="cx('text')" [attr.name]="name">
+                    {{ valueToDisplay() }}
+                </text>
+            }
         </svg>
     `,
     providers: [KNOB_VALUE_ACCESSOR, KnobStyle],

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostBinding, inject, Input, NgModule, ViewEncapsulation } from '@angular/core';
 import { SharedModule } from 'primeng/api';
 import { BaseComponent } from 'primeng/basecomponent';
@@ -11,7 +10,7 @@ import { InputIconStyle } from './style/inputiconstyle';
 @Component({
     selector: 'p-inputicon, p-inputIcon',
     standalone: true,
-    imports: [CommonModule, SharedModule],
+    imports: [SharedModule],
     template: `<ng-content></ng-content>`,
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -14,23 +14,26 @@ import { TimelineStyle } from './style/timelinestyle';
     standalone: true,
     imports: [CommonModule, SharedModule],
     template: `
-        <div *ngFor="let event of value; let last = last" [class]="cx('event')" [attr.data-pc-section]="'event'">
-            <div [class]="cx('eventOpposite')" [attr.data-pc-section]="'opposite'">
-                <ng-container *ngTemplateOutlet="oppositeTemplate || _oppositeTemplate; context: { $implicit: event }"></ng-container>
+        @for (event of value; track event; let last = $last) {
+            <div [class]="cx('event')" [attr.data-pc-section]="'event'">
+                <div [class]="cx('eventOpposite')" [attr.data-pc-section]="'opposite'">
+                    <ng-container *ngTemplateOutlet="oppositeTemplate || _oppositeTemplate; context: { $implicit: event }"></ng-container>
+                </div>
+                <div [class]="cx('eventSeparator')" [attr.data-pc-section]="'separator'">
+                    @if (markerTemplate || _markerTemplate) {
+                        <ng-container *ngTemplateOutlet="markerTemplate || _markerTemplate; context: { $implicit: event }"></ng-container>
+                    } @else {
+                        <div [class]="cx('eventMarker')" [attr.data-pc-section]="'marker'"></div>
+                    }
+                    @if (!last) {
+                        <div [class]="cx('eventConnector')"></div>
+                    }
+                </div>
+                <div [class]="cx('eventContent')" [attr.data-pc-section]="'content'">
+                    <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { $implicit: event }"></ng-container>
+                </div>
             </div>
-            <div [class]="cx('eventSeparator')" [attr.data-pc-section]="'separator'">
-                <ng-container *ngIf="markerTemplate || _markerTemplate; else marker">
-                    <ng-container *ngTemplateOutlet="markerTemplate || _markerTemplate; context: { $implicit: event }"></ng-container>
-                </ng-container>
-                <ng-template #marker>
-                    <div [class]="cx('eventMarker')" [attr.data-pc-section]="'marker'"></div>
-                </ng-template>
-                <div *ngIf="!last" [class]="cx('eventConnector')"></div>
-            </div>
-            <div [class]="cx('eventContent')" [attr.data-pc-section]="'content'">
-                <ng-container *ngTemplateOutlet="contentTemplate || _contentTemplate; context: { $implicit: event }"></ng-container>
-            </div>
-        </div>
+        }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

@@ -15,18 +15,24 @@ import { Component, OnInit } from '@angular/core';
         <div class="card flex flex-wrap gap-4">
             <div class="p-2 border border-surface rounded-border w-60">
                 <ul class="list-none flex flex-col gap-2 p-0 m-0">
-                    <li *ngFor="let product of availableProducts" class="p-2 rounded-border shadow-sm" pDraggable (onDragStart)="dragStart(product)" (onDragEnd)="dragEnd()">
-                        {{ product.name }}
-                    </li>
+                    @for (product of availableProducts; track product) {
+                        <li class="p-2 rounded-border shadow-sm" pDraggable (onDragStart)="dragStart(product)" (onDragEnd)="dragEnd()">
+                            {{ product.name }}
+                        </li>
+                    }
                 </ul>
             </div>
             <div class="p-2 border border-surface rounded-border w-60" pDroppable (onDrop)="drop()">
                 <p class="text-center border-surface border-b">Drop Zone</p>
-                <ul class="list-none flex flex-col gap-2 p-0 m-0" *ngIf="selectedProducts">
-                    <li *ngFor="let product of selectedProducts" class="p-2 rounded-border shadow-sm">
-                        {{ product.name }}
-                    </li>
-                </ul>
+                @if (selectedProducts) {
+                    <ul class="list-none flex flex-col gap-2 p-0 m-0">
+                        @for (product of selectedProducts; track product) {
+                            <li class="p-2 rounded-border shadow-sm">
+                                {{ product.name }}
+                            </li>
+                        }
+                    </ul>
+                }
             </div>
         </div>
         <app-code [code]="code" selector="drag-drop-basic-demo" [extFiles]="extFiles"></app-code>
@@ -78,46 +84,48 @@ export class BasicDoc implements OnInit {
     code: Code = {
         basic: `<div class="p-2 border border-surface rounded-border w-60">
     <ul class="list-none flex flex-col gap-2 p-0 m-0">
-        <li
-            *ngFor="let product of availableProducts"
-            class="p-2 rounded-border shadow-sm"
-            pDraggable
-            (onDragStart)="dragStart(product)"
-            (onDragEnd)="dragEnd()">
-                {{product.name}}
+        @for (product of availableProducts; track product) {
+        <li class="p-2 rounded-border shadow-sm" pDraggable (onDragStart)="dragStart(product)" (onDragEnd)="dragEnd()">
+            {{ product.name }}
         </li>
+        }
     </ul>
 </div>
 <div class="p-2 border border-surface rounded-border w-60" pDroppable (onDrop)="drop()">
     <p class="text-center border-surface border-b">
         Drop Zone
     </p>
-    <ul class="list-none flex flex-col gap-2 p-0 m-0" *ngIf="selectedProducts" >
-        <li *ngFor="let product of selectedProducts" class="p-2 rounded-border shadow-sm">
-            {{product.name}}
-        </li>
-    </ul>
+    @if (selectedProducts) {
+        <ul class="list-none flex flex-col gap-2 p-0 m-0">
+        @for (product of selectedProducts; track product) {
+            <li class="p-2 rounded-border shadow-sm">
+            {{ product.name }}
+            </li>
+        }
+        </ul>
+    }
 </div>`,
         html: `<div class="card flex flex-wrap gap-4">
     <div class="p-2 border border-surface rounded-border w-60">
         <ul class="list-none flex flex-col gap-2 p-0 m-0">
-            <li
-                *ngFor="let product of availableProducts"
-                class="p-2 rounded-border shadow-sm"
-                pDraggable
-                (onDragStart)="dragStart(product)"
-                (onDragEnd)="dragEnd()">
-                    {{product.name}}
+            @for (product of availableProducts; track product) {
+            <li class="p-2 rounded-border shadow-sm" pDraggable (onDragStart)="dragStart(product)" (onDragEnd)="dragEnd()">
+                {{ product.name }}
             </li>
+            }
         </ul>
     </div>
     <div class="p-2 border border-surface rounded-border w-60" pDroppable (onDrop)="drop()">
         <p class="text-center border-surface border-b">Drop Zone</p>
-        <ul class="list-none flex flex-col gap-2 p-0 m-0" *ngIf="selectedProducts" >
-            <li *ngFor="let product of selectedProducts" class="p-2 rounded-border shadow-sm">
-                {{product.name}}
-            </li>
-        </ul>
+        @if (selectedProducts) {
+            <ul class="list-none flex flex-col gap-2 p-0 m-0">
+            @for (product of selectedProducts; track product) {
+                <li class="p-2 rounded-border shadow-sm">
+                {{ product.name }}
+                </li>
+            }
+            </ul>
+        }
     </div>
 </div>`,
         typescript: `import { Component, OnInit } from '@angular/core';

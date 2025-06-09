@@ -1,4 +1,4 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, booleanAttribute, ChangeDetectionStrategy, Component, computed, ElementRef, forwardRef, HostListener, inject, input, model, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { equals, focus, getAttribute } from '@primeuix/utils';
 import { SharedModule } from 'primeng/api';
@@ -15,7 +15,7 @@ import { TabStyle } from './style/tabstyle';
 @Component({
     selector: 'p-tab',
     standalone: true,
-    imports: [CommonModule, SharedModule],
+    imports: [SharedModule],
     template: ` <ng-content></ng-content>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

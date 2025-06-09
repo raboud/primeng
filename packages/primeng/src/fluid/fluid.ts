@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, NgModule, ViewEncapsulation } from '@angular/core';
 import { BaseComponent } from 'primeng/basecomponent';
 import { FluidStyle } from './style/fluidstyle';
@@ -11,7 +10,7 @@ import { FluidStyle } from './style/fluidstyle';
     selector: 'p-fluid',
     template: ` <ng-content></ng-content> `,
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     providers: [FluidStyle],

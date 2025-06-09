@@ -15,18 +15,17 @@ export class RouterDoc {
     code: Code = {
         basic: `<p-megamenu [model]="items">
     <ng-template #item let-item>
-        <ng-container *ngIf="item.route; else elseBlock">
+        @if (item.route) {
             <a [routerLink]="item.route" class="p-menuitem-link">
                 <span [class]="item.icon"></span>
                 <span class="ml-2">{{ item.label }}</span>
             </a>
-        </ng-container>
-        <ng-template #elseBlock>
+        } @else {
             <a [href]="item.url" class="p-menuitem-link">
                 <span [class]="item.icon"></span>
                 <span class="ml-2">{{ item.label }}</span>
             </a>
-        </ng-template>
+        }
     </ng-template>
 </p-megamenu>`
     };

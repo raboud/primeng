@@ -42,8 +42,8 @@ export const RATING_VALUE_ACCESSOR: any = {
     imports: [CommonModule, AutoFocus, StarFillIcon, StarIcon, SharedModule],
     standalone: true,
     template: `
-        <ng-container *ngIf="!isCustomIcon; else customTemplate">
-            <ng-template ngFor [ngForOf]="starsArray" let-star let-i="index">
+        @if (!isCustomIcon) {
+            @for (star of starsArray; track star; let i = $index) {
                 <div [class]="cx('option', { star, value })" (click)="onOptionClick($event, star + 1)">
                     <span class="p-hidden-accessible" [attr.data-p-hidden-accessible]="true">
                         <input
@@ -67,22 +67,31 @@ export const RATING_VALUE_ACCESSOR: any = {
                             [pAutoFocus]="autofocus"
                         />
                     </span>
-                    <ng-container *ngIf="!value || i >= value">
-                        <span [class]="cx('offIcon')" *ngIf="iconOffClass" [ngStyle]="iconOffStyle" [ngClass]="iconOffClass" [attr.data-pc-section]="'offIcon'"></span>
-                        <StarIcon *ngIf="!iconOffClass" [ngStyle]="iconOffStyle" [styleClass]="cx('offIcon')" [attr.data-pc-section]="'offIcon'" />
-                    </ng-container>
-                    <ng-container *ngIf="value && i < value">
-                        <span [class]="cx('onIcon')" *ngIf="iconOnClass" [ngStyle]="iconOnStyle" [ngClass]="iconOnClass" [attr.data-pc-section]="'onIcon'"></span>
-                        <StarFillIcon *ngIf="!iconOnClass" [ngStyle]="iconOnStyle" [styleClass]="cx('onIcon')" [attr.data-pc-section]="'onIcon'" />
-                    </ng-container>
+                    @if (!value || i >= value) {
+                        @if (iconOffClass) {
+                            <span [class]="cx('offIcon')" [ngStyle]="iconOffStyle" [ngClass]="iconOffClass" [attr.data-pc-section]="'offIcon'"></span>
+                        }
+                        @if (!iconOffClass) {
+                            <StarIcon [ngStyle]="iconOffStyle" [styleClass]="cx('offIcon')" [attr.data-pc-section]="'offIcon'" />
+                        }
+                    }
+                    @if (value && i < value) {
+                        @if (iconOnClass) {
+                            <span [class]="cx('onIcon')" [ngStyle]="iconOnStyle" [ngClass]="iconOnClass" [attr.data-pc-section]="'onIcon'"></span>
+                        }
+                        @if (!iconOnClass) {
+                            <StarFillIcon [ngStyle]="iconOnStyle" [styleClass]="cx('onIcon')" [attr.data-pc-section]="'onIcon'" />
+                        }
+                    }
                 </div>
-            </ng-template>
-        </ng-container>
-        <ng-template #customTemplate>
-            <span *ngFor="let star of starsArray; let i = index" (click)="onOptionClick($event, star + 1)" [attr.data-pc-section]="'onIcon'">
-                <ng-container *ngTemplateOutlet="getIconTemplate(i)"></ng-container>
-            </span>
-        </ng-template>
+            }
+        } @else {
+            @for (star of starsArray; track star; let i = $index) {
+                <span (click)="onOptionClick($event, star + 1)" [attr.data-pc-section]="'onIcon'">
+                    <ng-container *ngTemplateOutlet="getIconTemplate(i)"></ng-container>
+                </span>
+            }
+        }
     `,
     providers: [RATING_VALUE_ACCESSOR, RatingStyle],
     changeDetection: ChangeDetectionStrategy.OnPush,

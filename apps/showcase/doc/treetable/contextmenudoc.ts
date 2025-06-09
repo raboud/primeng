@@ -21,17 +21,23 @@ interface Column {
                 <p-treetable [value]="files" [columns]="cols" dataKey="name" [(contextMenuSelection)]="selectedNode" [contextMenu]="cm" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
                     <ng-template #header let-columns>
                         <tr>
-                            <th *ngFor="let col of columns">
-                                {{ col.header }}
-                            </th>
+                            @for (col of columns; track col) {
+                                <th>
+                                    {{ col.header }}
+                                </th>
+                            }
                         </tr>
                     </ng-template>
                     <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
                         <tr [ttRow]="rowNode" [ttContextMenuRow]="rowNode">
-                            <td *ngFor="let col of columns; let i = index">
-                                <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
-                                {{ rowData[col.field] }}
-                            </td>
+                            @for (col of columns; track col; let i = $index) {
+                                <td>
+                                    @if (i === 0) {
+                                        <p-treetable-toggler [rowNode]="rowNode" />
+                                    }
+                                    {{ rowData[col.field] }}
+                                </td>
+                            }
                         </tr>
                     </ng-template>
                 </p-treetable>
@@ -85,21 +91,27 @@ export class ContextMenuDoc {
         basic: `<p-toast [style]="{ marginTop: '80px' }" />
 
 <p-treetable [value]="files" [columns]="cols" dataKey="name" [(contextMenuSelection)]="selectedNode" [contextMenu]="cm" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template #header let-columns>
-        <tr>
-            <th *ngFor="let col of columns">
-                {{ col.header }}
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
-        <tr [ttRow]="rowNode" [ttContextMenuRow]="rowNode">
-            <td *ngFor="let col of columns; let i = index">
-                <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
-                {{ rowData[col.field] }}
-            </td>
-        </tr>
-    </ng-template>
+              <ng-template #header let-columns>
+                <tr>
+                  @for (col of columns; track col) {
+                    <th>
+                      {{ col.header }}
+                    </th>
+                  }
+                </tr>
+              </ng-template>
+              <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
+                <tr [ttRow]="rowNode" [ttContextMenuRow]="rowNode">
+                  @for (col of columns; track col; let i = $index) {
+                    <td>
+                      @if (i === 0) {
+                        <p-treetable-toggler [rowNode]="rowNode" />
+                      }
+                      {{ rowData[col.field] }}
+                    </td>
+                  }
+                </tr>
+              </ng-template>
 </p-treetable>
 
 <p-contextmenu #cm [model]="items" />`,
@@ -108,21 +120,27 @@ export class ContextMenuDoc {
     <p-toast [style]="{ marginTop: '80px' }" />
 
     <p-treetable [value]="files" [columns]="cols" dataKey="name" [(contextMenuSelection)]="selectedNode" [contextMenu]="cm" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template #header let-columns>
-            <tr>
-                <th *ngFor="let col of columns">
-                    {{ col.header }}
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
-            <tr [ttRow]="rowNode" [ttContextMenuRow]="rowNode">
-                <td *ngFor="let col of columns; let i = index">
-                    <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
-                    {{ rowData[col.field] }}
-                </td>
-            </tr>
-        </ng-template>
+              <ng-template #header let-columns>
+                <tr>
+                  @for (col of columns; track col) {
+                    <th>
+                      {{ col.header }}
+                    </th>
+                  }
+                </tr>
+              </ng-template>
+              <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
+                <tr [ttRow]="rowNode" [ttContextMenuRow]="rowNode">
+                  @for (col of columns; track col; let i = $index) {
+                    <td>
+                      @if (i === 0) {
+                        <p-treetable-toggler [rowNode]="rowNode" />
+                      }
+                      {{ rowData[col.field] }}
+                    </td>
+                  }
+                </tr>
+              </ng-template>
     </p-treetable>
 
     <p-contextmenu #cm [model]="items" />

@@ -16,18 +16,17 @@ import { MenuItem } from 'primeng/api';
         <div class="card flex justify-center">
             <p-menu [model]="items">
                 <ng-template #item let-item>
-                    <ng-container *ngIf="item.route; else elseBlock">
+                    @if (item.route) {
                         <a [routerLink]="item.route" class="p-menu-item-link">
                             <span [class]="item.icon"></span>
                             <span class="ml-2">{{ item.label }}</span>
                         </a>
-                    </ng-container>
-                    <ng-template #elseBlock>
+                    } @else {
                         <a [href]="item.url" class="p-menu-item-link">
                             <span [class]="item.icon"></span>
                             <span class="ml-2">{{ item.label }}</span>
                         </a>
-                    </ng-template>
+                    }
                 </ng-template>
             </p-menu>
         </div>
@@ -69,17 +68,17 @@ export class RouterDoc implements OnInit {
     code: Code = {
         basic: `<p-menu [model]="items">
     <ng-template #item let-item>
-        <ng-container *ngIf="item.route; else elseBlock">
-            <a [routerLink]="item.route" class="p-menu-item-link">
-                <span [class]="item.icon"></span>
-                <span class="ml-2">{{ item.label }}</span>
-            </a>
-        </ng-container>
-        <ng-template #elseBlock>
-            <a [href]="item.url" class="p-menu-item-link">
-                <span [class]="item.icon"></span>
-                <span class="ml-2">{{ item.label }}</span>
-            </a>
+        @if (item.route) {
+        <a [routerLink]="item.route" class="p-menu-item-link">
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+        </a>
+        } @else {
+        <a [href]="item.url" class="p-menu-item-link">
+            <span [class]="item.icon"></span>
+            <span class="ml-2">{{ item.label }}</span>
+        </a>
+        }
         </ng-template>
     </ng-template>
 </p-menu>`,
@@ -87,18 +86,17 @@ export class RouterDoc implements OnInit {
         html: `<div class="card flex justify-center">
     <p-menu [model]="items">
         <ng-template #item let-item>
-            <ng-container *ngIf="item.route; else elseBlock">
-                <a [routerLink]="item.route" class="p-menu-item-link">
-                    <span [class]="item.icon"></span>
-                    <span class="ml-2">{{ item.label }}</span>
-                </a>
-            </ng-container>
-            <ng-template #elseBlock>
-                <a [href]="item.url" class="p-menu-item-link">
-                    <span [class]="item.icon"></span>
-                    <span class="ml-2">{{ item.label }}</span>
-                </a>
-            </ng-template>
+            @if (item.route) {
+            <a [routerLink]="item.route" class="p-menu-item-link">
+                <span [class]="item.icon"></span>
+                <span class="ml-2">{{ item.label }}</span>
+            </a>
+            } @else {
+            <a [href]="item.url" class="p-menu-item-link">
+                <span [class]="item.icon"></span>
+                <span class="ml-2">{{ item.label }}</span>
+            </a>
+            }
         </ng-template>
     </p-menu>
 </div>`,

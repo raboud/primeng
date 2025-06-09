@@ -15,8 +15,12 @@ import { MenuItem } from 'primeng/api';
                     <a pRipple class="flex items-center px-4 py-2 cursor-pointer group">
                         <i [class]="item.icon + ' text-primary group-hover:text-inherit'"></i>
                         <span class="ml-2">{{ item.label }}</span>
-                        <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
-                        <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
+                        @if (item.badge) {
+                            <p-badge class="ml-auto" [value]="item.badge" />
+                        }
+                        @if (item.shortcut) {
+                            <span class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
+                        }
                     </a>
                 </ng-template>
             </p-panelmenu>
@@ -120,11 +124,12 @@ export class TemplateDoc implements OnInit {
             <span class="ml-2">
                 {{ item.label }}
             </span>
-            <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
-            <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded
-            bg-emphasis text-muted-color text-xs p-1">
-                {{ item.shortcut }}
-            </span>
+            @if (item.badge) {
+                <p-badge class="ml-auto" [value]="item.badge" />
+            }
+            @if (item.shortcut) {
+                <span class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
+            }
         </a>
     </ng-template>
 </p-panelmenu>`,
@@ -137,11 +142,12 @@ export class TemplateDoc implements OnInit {
                 <span class="ml-2">
                     {{ item.label }}
                 </span>
-                <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
-                <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded
-                 bg-emphasis text-muted-color text-xs p-1">
-                    {{ item.shortcut }}
-                </span>
+                @if (item.badge) {
+                  <p-badge class="ml-auto" [value]="item.badge" />
+                }
+                @if (item.shortcut) {
+                  <span class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut }}</span>
+                }
             </a>
         </ng-template>
     </p-panelmenu>

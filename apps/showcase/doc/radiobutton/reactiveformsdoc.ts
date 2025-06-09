@@ -11,10 +11,12 @@ import { FormControl, FormGroup } from '@angular/forms';
         </app-docsectiontext>
         <div class="card flex justify-center">
             <form class="flex flex-col gap-4" [formGroup]="formGroup">
-                <div *ngFor="let category of categories" class="field-checkbox">
-                    <p-radiobutton [inputId]="category.key" [value]="category" formControlName="selectedCategory" />
-                    <label [for]="category.key" class="ml-2">{{ category.name }}</label>
-                </div>
+                @for (category of categories; track category) {
+                    <div class="field-checkbox">
+                        <p-radiobutton [inputId]="category.key" [value]="category" formControlName="selectedCategory" />
+                        <label [for]="category.key" class="ml-2">{{ category.name }}</label>
+                    </div>
+                }
             </form>
         </div>
         <app-code [code]="code" selector="radio-button-reactive-forms-demo"></app-code>
@@ -38,18 +40,22 @@ export class ReactiveFormsDoc implements OnInit {
 
     code: Code = {
         basic: `<form class="flex flex-col gap-4" [formGroup]="formGroup">
-    <div *ngFor="let category of categories" class="field-checkbox">
-        <p-radiobutton [inputId]="category.key" [value]="category" formControlName="selectedCategory" />
-        <label [for]="category.key" class="ml-2">{{ category.name }}</label>
-    </div>
+    @for (category of categories; track category) {
+        <div class="field-checkbox">
+            <p-radiobutton [inputId]="category.key" [value]="category" formControlName="selectedCategory" />
+            <label [for]="category.key" class="ml-2">{{ category.name }}</label>
+        </div>
+    }
 </form>`,
 
         html: `<div class="card flex justify-center">
     <form class="flex flex-col gap-4" [formGroup]="formGroup">
-        <div *ngFor="let category of categories" class="field-checkbox">
-            <p-radiobutton [inputId]="category.key" [value]="category" formControlName="selectedCategory" />
-            <label [for]="category.key" class="ml-2">{{ category.name }}</label>
-        </div>
+        @for (category of categories; track category) {
+            <div class="field-checkbox">
+                <p-radiobutton [inputId]="category.key" [value]="category" formControlName="selectedCategory" />
+                <label [for]="category.key" class="ml-2">{{ category.name }}</label>
+            </div>
+        }
     </form>
 </div>`,
 
